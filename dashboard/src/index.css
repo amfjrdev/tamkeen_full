@@ -10,14 +10,33 @@
 
 /* Eye-friendly professional light theme overrides */
 html.light {
-  --bg-body: #f4f6f8;
-  --bg-card: #ffffff;
-  --bg-sidebar: #f8fafc;
-  --border-color: #e2e8f0;
-  --text-main: #0f172a;
-  --text-muted: #64748b;
+  --bg-body: #f8fafc; /* Slate-50: Clean and modern body background */
+  --bg-card: #ffffff; /* Clean white card backgrounds */
+  --bg-card-hover: #f1f5f9; /* Slate-100: Soft hover background */
+  --bg-card-nested: #f1f5f9; /* Slate-100: For nested/inner elements */
+  --bg-card-nested-hover: #e2e8f0; /* Slate-200 */
+  --bg-sidebar: #ffffff; /* White sidebar for clean enterprise SaaS look */
+  --border-color: #e2e8f0; /* Slate-200: Elegant borders */
+  --border-color-light: #f1f5f9; /* Slate-100 */
+  --text-main: #0f172a; /* Slate-900: High-contrast professional readable text */
+  --text-muted: #475569; /* Slate-600: Readable secondary text */
+  --text-muted-more: #64748b; /* Slate-500: Fainter details */
+  
+  /* Alert/Highlight Pastels */
+  --bg-alert-indigo: #f5f3ff; /* Indigo-50 */
+  --border-alert-indigo: #ddd6fe; /* Indigo-200 */
+  --text-alert-indigo: #4f46e5; /* Indigo-600 */
+  
+  --bg-alert-green: #f0fdf4; /* Green-50 */
+  --border-alert-green: #bbf7d0; /* Green-200 */
+  --text-alert-green: #16a34a; /* Green-600 */
+  
+  --bg-alert-purple: #faf5ff; /* Purple-50 */
+  --border-alert-purple: #f3e8ff; /* Purple-200 */
+  --text-alert-purple: #7c3aed; /* Purple-600 */
 }
 
+/* Base body background & text colors overrides */
 html.light body,
 html.light .bg-\[\#0a0a0a\],
 html.light .bg-\[\#0a0a0a\]\/80 {
@@ -25,6 +44,7 @@ html.light .bg-\[\#0a0a0a\]\/80 {
   color: var(--text-main) !important;
 }
 
+/* Sidebar and general layouts */
 html.light aside,
 html.light .bg-\[\#0d0d0d\] {
   background-color: var(--bg-sidebar) !important;
@@ -32,73 +52,200 @@ html.light .bg-\[\#0d0d0d\] {
 }
 
 html.light header {
-  background-color: rgba(244, 246, 248, 0.8) !important;
+  background-color: rgba(248, 250, 252, 0.8) !important;
   border-color: var(--border-color) !important;
 }
 
-html.light .bg-\[\#111111\] {
+/* Cards & general card containers */
+html.light .bg-\[\#111111\],
+html.light .bg-\[\#111111\]\/80,
+html.light .bg-\[\#111111\]\/85 {
   background-color: var(--bg-card) !important;
   border-color: var(--border-color) !important;
 }
 
-/* Pastels for Revenue overview alert cards */
-html.light .bg-\[\#151035\]\/30 {
-  background-color: #f5f3ff !important;
-  border-color: #ddd6fe !important;
+/* Card hover states */
+html.light .hover\:bg-\[\#141414\]:hover,
+html.light .hover\:bg-\[\#151515\]:hover,
+html.light .hover\:bg-gray-800\/20:hover,
+html.light .hover\:bg-gray-800\/50:hover,
+html.light .hover\:bg-gray-800\/60:hover,
+html.light table tbody tr:hover {
+  background-color: var(--bg-card-hover) !important;
 }
 
-html.light .bg-\[\#102518\]\/30 {
-  background-color: #f0fdf4 !important;
-  border-color: #bbf7d0 !important;
-}
-
-html.light .bg-\[\#251035\]\/30 {
-  background-color: #faf5ff !important;
-  border-color: #f3e8ff !important;
-}
-
-html.light .border-gray-800,
-html.light .border-gray-850,
-html.light .border-gray-800\/40,
-html.light .border-indigo-500\/25,
-html.light .border-green-500\/25,
-html.light .border-purple-500\/25 {
+/* Nested card containers & inner panels (like recent activity, table heads) */
+html.light .bg-\[\#161616\],
+html.light .bg-gray-855 {
+  background-color: var(--bg-card-nested) !important;
   border-color: var(--border-color) !important;
 }
 
+/* Background tracks (like progress bar tracks, chart tracks) */
+html.light .bg-gray-800\/20,
+html.light .bg-gray-800\/30,
+html.light .bg-gray-800\/40 {
+  background-color: var(--border-color-light) !important;
+}
+
+/* Border overrides */
+html.light .border-gray-800,
+html.light .border-gray-850,
+html.light .border-gray-800\/40,
+html.light .border-gray-800\/60,
+html.light .border-gray-700,
+html.light .divide-gray-850 > :not([hidden]) ~ :not([hidden]),
+html.light .divide-gray-850 {
+  border-color: var(--border-color) !important;
+}
+
+html.light .hover\:border-gray-700:hover {
+  border-color: #cbd5e1 !important; /* light gray hover border */
+}
+
+/* Metric / Revenue Alert pastels */
+html.light .bg-\[\#151035\]\/30 {
+  background-color: var(--bg-alert-indigo) !important;
+  border-color: var(--border-alert-indigo) !important;
+}
+
+html.light .bg-\[\#102518\]\/30 {
+  background-color: var(--bg-alert-green) !important;
+  border-color: var(--border-alert-green) !important;
+}
+
+html.light .bg-\[\#251035\]\/30 {
+  background-color: var(--bg-alert-purple) !important;
+  border-color: var(--border-alert-purple) !important;
+}
+
+/* Global Text Colors overrides */
+
+/* Primary Texts: override white & gray-100 only for non-interactive elements */
 html.light .text-white,
 html.light .text-gray-100 {
   color: var(--text-main) !important;
 }
 
+/* Muted/Secondary Texts */
+html.light .text-gray-300,
 html.light .text-gray-400,
 html.light .text-gray-500 {
   color: var(--text-muted) !important;
 }
 
+/* Colored status & labels */
 html.light .text-indigo-400 {
-  color: #4f46e5 !important;
+  color: var(--text-alert-indigo) !important;
 }
 
 html.light .text-green-400,
 html.light .text-emerald-400 {
-  color: #16a34a !important;
+  color: var(--text-alert-green) !important;
 }
 
-html.light .hover\:bg-gray-800\/20:hover,
-html.light .hover\:bg-gray-800\/50:hover,
-html.light table tbody tr:hover {
-  background-color: #f1f5f9 !important;
+html.light .text-purple-400 {
+  color: var(--text-alert-purple) !important;
 }
 
-html.light .bg-gray-800\/30 {
-  background-color: #ffffff !important;
+html.light .text-rose-400 {
+  color: #be123c !important; /* red-700 for high-contrast warnings in light mode */
 }
 
+html.light .text-red-500 {
+  color: #b91c1c !important; /* red-700 for errors */
+}
+
+/* Text hovers for non-interactive icons */
+html.light .hover\:text-white:hover {
+  color: var(--text-main) !important;
+}
+
+/* ========================================================================= */
+/* TEXT COLOR PRESERVATION FOR BUTTONS, BADGES, AND COLORED CONTAINERS        */
+/* Prevents white/light texts from becoming dark slate inside interactive    */
+/* components and elements that already have solid background colors.         */
+/* ========================================================================= */
+html.light button,
+html.light button *,
+html.light a,
+html.light a *,
+html.light [class*="bg-indigo"],
+html.light [class*="bg-indigo"] *,
+html.light [class*="bg-emerald"],
+html.light [class*="bg-emerald"] *,
+html.light [class*="bg-green"],
+html.light [class*="bg-green"] *,
+html.light [class*="bg-purple"],
+html.light [class*="bg-purple"] *,
+html.light [class*="bg-pink"],
+html.light [class*="bg-pink"] *,
+html.light [class*="bg-rose"],
+html.light [class*="bg-rose"] *,
+html.light [class*="bg-sky"],
+html.light [class*="bg-sky"] *,
+html.light [class*="bg-blue"],
+html.light [class*="bg-blue"] *,
+html.light [class*="bg-amber"],
+html.light [class*="bg-amber"] *,
+html.light .bg-indigo-600,
+html.light .bg-indigo-600 *,
+html.light .rounded-full,
+html.light .rounded-full * {
+  /* Restores default/specified colors for descendants inside solid layouts */
+  color: inherit;
+}
+
+/* Explicitly restore solid white/light text on primary widgets */
+html.light button.text-white,
+html.light button .text-white,
+html.light a.text-white,
+html.light a .text-white,
+html.light [class*="bg-indigo"] .text-white,
+html.light [class*="bg-indigo"] .text-gray-100,
+html.light [class*="bg-indigo"] .text-gray-300,
+html.light [class*="bg-emerald"] .text-white,
+html.light [class*="bg-green"] .text-white,
+html.light [class*="bg-purple"] .text-white,
+html.light [class*="bg-pink"] .text-white,
+html.light [class*="bg-rose"] .text-white,
+html.light [class*="bg-sky"] .text-white,
+html.light [class*="bg-blue"] .text-white,
+html.light [class*="bg-amber"] .text-white,
+html.light .rounded-full.text-white {
+  color: #ffffff !important;
+}
+
+/* ========================================================================= */
+/* SVG CHART OVERRIDES                                                      */
+/* Corrects SVG gridlines, tick text colors, and custom highlights           */
+/* ========================================================================= */
+html.light svg line[stroke="#374151"] {
+  stroke: var(--border-color) !important;
+}
+
+html.light svg text[fill="#9ca3af"] {
+  fill: var(--text-muted-more) !important;
+}
+
+/* Map data point outline circles to card background instead of dark background */
+html.light svg circle[stroke="#111111"] {
+  stroke: var(--bg-card) !important;
+}
+
+html.light svg circle[fill="white"] {
+  fill: var(--text-main) !important;
+}
+
+html.light svg line[stroke="#4b5563"] {
+  stroke: var(--border-color) !important;
+}
+
+/* Form inputs & interactive inputs custom styles */
 html.light input,
 html.light select,
 html.light textarea {
-  background-color: #ffffff !important;
+  background-color: var(--bg-card) !important;
   color: var(--text-main) !important;
   border-color: #cbd5e1 !important;
 }
