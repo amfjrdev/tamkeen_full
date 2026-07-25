@@ -23,10 +23,18 @@ public static class ApplyMigrations
                 logger.LogInformation("Attempt {Attempt}/{Max}: Checking database connection...", attempt, maxRetries);
                 await dbContext.Database.MigrateAsync();
                 logger.LogInformation("Database migrations applied successfully.");
-
-                // Seed test data after successful migration
-                await TestDataSeeder.SeedTestAccounts(dbContext, configuration);
-                logger.LogInformation("Test data seeded successfully.");
+                // Seed test data only if environment is Development or if explicitly enabled in configuration
+                var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production";
+                var seederEnabled = configuration.GetValue<bool>("Seeder:Enabled", false);
+                if (env.Equals("Development", StringComparison.OrdinalIgnoreCase) || seederEnabled)
+                {
+                    await TestDataSeeder.SeedTestAccounts(dbContext, configuration);
+                    logger.LogInformation("Test data seeded successfully.");
+                }
+                else
+                {
+                    logger.LogInformation("Skipping test data seeding in environment: {Environment}", env);
+                }
                 return;
             }
             catch (Exception ex) when (attempt < maxRetries)

@@ -38,14 +38,7 @@ try
     var app = builder.Build();
 
     // ── Migrations ────────────────────────────────────────────────────────
-    if (app.Environment.IsDevelopment())
-    {
-        await ApplyMigrations.ApplyMigrationsAsync(app.Services);
-    }
-    else
-    {
-        Log.Information("Skipping automatic database migrations in environment: {Environment}", app.Environment.EnvironmentName);
-    }
+    await ApplyMigrations.ApplyMigrationsAsync(app.Services);
 
     // ── Middleware pipeline ───────────────────────────────────────────────
     app.UseStaticFiles();
