@@ -1,0 +1,462 @@
+/* Modern Dark Mode for Swagger UI - Professional & Eye-Friendly */
+
+/* Only apply dark mode when body has dark-mode class */
+body.dark-mode {
+    background: #0d1117 !important;
+    color: #c9d1d9 !important;
+}
+
+body.dark-mode .swagger-ui {
+    background: #0d1117 !important;
+}
+
+/* Topbar */
+body.dark-mode .swagger-ui .topbar {
+    background: #161b22 !important;
+    border-bottom: 1px solid #30363d !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+}
+
+body.dark-mode .swagger-ui .topbar .download-url-wrapper input[type=text] {
+    background: #0d1117 !important;
+    border: 1px solid #30363d !important;
+    color: #c9d1d9 !important;
+}
+
+body.dark-mode .swagger-ui .topbar .download-url-wrapper .download-url-button {
+    background: #238636 !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+
+/* Info Section */
+body.dark-mode .swagger-ui .info {
+    background: #161b22 !important;
+    border: 1px solid #30363d !important;
+    border-radius: 8px !important;
+    padding: 20px !important;
+    margin: 20px 0 !important;
+}
+
+body.dark-mode .swagger-ui .info .title {
+    color: #58a6ff !important;
+}
+
+body.dark-mode .swagger-ui .info p,
+body.dark-mode .swagger-ui .info li,
+body.dark-mode .swagger-ui .info a {
+    color: #c9d1d9 !important;
+}
+
+body.dark-mode .swagger-ui .info a:hover {
+    color: #58a6ff !important;
+}
+
+/* Scheme Container */
+body.dark-mode .swagger-ui .scheme-container {
+    background: #161b22 !important;
+    border: 1px solid #30363d !important;
+    border-radius: 8px !important;
+    box-shadow: none !important;
+}
+
+/* Operations */
+body.dark-mode .swagger-ui .opblock-tag {
+    background: #161b22 !important;
+    border: 1px solid #30363d !important;
+    border-radius: 8px !important;
+    margin: 10px 0 !important;
+    color: #c9d1d9 !important;
+}
+
+body.dark-mode .swagger-ui .opblock-tag:hover {
+    background: #1c2128 !important;
+}
+
+body.dark-mode .swagger-ui .opblock {
+    background: #161b22 !important;
+    border: 1px solid #30363d !important;
+    border-radius: 8px !important;
+    margin: 10px 0 !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* HTTP Methods */
+body.dark-mode .swagger-ui .opblock.opblock-get {
+    background: rgba(97, 175, 254, 0.1) !important;
+    border-color: #58a6ff !important;
+}
+
+body.dark-mode .swagger-ui .opblock.opblock-get .opblock-summary-method {
+    background: #58a6ff !important;
+    color: #0d1117 !important;
+}
+
+body.dark-mode .swagger-ui .opblock.opblock-post {
+    background: rgba(63, 185, 80, 0.1) !important;
+    border-color: #3fb950 !important;
+}
+
+body.dark-mode .swagger-ui .opblock.opblock-post .opblock-summary-method {
+    background: #3fb950 !important;
+    color: #0d1117 !important;
+}
+
+body.dark-mode .swagger-ui .opblock.opblock-put {
+    background: rgba(219, 154, 4, 0.1) !important;
+    border-color: #d29922 !important;
+}
+
+body.dark-mode .swagger-ui .opblock.opblock-put .opblock-summary-method {
+    background: #d29922 !important;
+    color: #0d1117 !important;
+}
+
+body.dark-mode .swagger-ui .opblock.opblock-delete {
+    background: rgba(248, 81, 73, 0.1) !important;
+    border-color: #f85149 !important;
+}
+
+body.dark-mode .swagger-ui .opblock.opblock-delete .opblock-summary-method {
+    background: #f85149 !important;
+    color: #ffffff !important;
+}
+
+body.dark-mode .swagger-ui .opblock.opblock-patch {
+    background: rgba(163, 113, 247, 0.1) !important;
+    border-color: #a371f7 !important;
+}
+
+body.dark-mode .swagger-ui .opblock.opblock-patch .opblock-summary-method {
+    background: #a371f7 !important;
+    color: #0d1117 !important;
+}
+
+/* Summary */
+body.dark-mode .swagger-ui .opblock-summary {
+    background: transparent !important;
+    border: none !important;
+}
+
+body.dark-mode .swagger-ui .opblock-summary-path {
+    color: #c9d1d9 !important;
+    font-weight: 500 !important;
+}
+
+body.dark-mode .swagger-ui .opblock-summary-description {
+    color: #8b949e !important;
+}
+
+/* Body */
+body.dark-mode .swagger-ui .opblock-body {
+    background: #0d1117 !important;
+}
+
+body.dark-mode .swagger-ui .opblock-description-wrapper,
+body.dark-mode .swagger-ui .opblock-section {
+    background: #0d1117 !important;
+    color: #c9d1d9 !important;
+}
+
+/* Parameters */
+body.dark-mode .swagger-ui .parameters-col_description {
+    color: #c9d1d9 !important;
+}
+
+body.dark-mode .swagger-ui .parameter__name {
+    color: #79c0ff !important;
+    font-weight: 600 !important;
+}
+
+body.dark-mode .swagger-ui .parameter__type {
+    color: #a371f7 !important;
+}
+
+body.dark-mode .swagger-ui table thead tr th,
+body.dark-mode .swagger-ui table thead tr td {
+    background: #161b22 !important;
+    color: #c9d1d9 !important;
+    border-bottom: 1px solid #30363d !important;
+}
+
+body.dark-mode .swagger-ui table tbody tr td {
+    background: #0d1117 !important;
+    color: #c9d1d9 !important;
+    border-bottom: 1px solid #21262d !important;
+}
+
+/* Inputs */
+body.dark-mode .swagger-ui input[type=text],
+body.dark-mode .swagger-ui input[type=password],
+body.dark-mode .swagger-ui input[type=email],
+body.dark-mode .swagger-ui textarea,
+body.dark-mode .swagger-ui select {
+    background: #0d1117 !important;
+    border: 1px solid #30363d !important;
+    color: #c9d1d9 !important;
+    border-radius: 6px !important;
+}
+
+body.dark-mode .swagger-ui input[type=text]:focus,
+body.dark-mode .swagger-ui textarea:focus,
+body.dark-mode .swagger-ui select:focus {
+    border-color: #58a6ff !important;
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.3) !important;
+}
+
+/* Buttons */
+body.dark-mode .swagger-ui .btn {
+    background: #21262d !important;
+    color: #c9d1d9 !important;
+    border: 1px solid #30363d !important;
+    border-radius: 6px !important;
+    font-weight: 500 !important;
+    transition: all 0.2s ease !important;
+}
+
+body.dark-mode .swagger-ui .btn:hover {
+    background: #30363d !important;
+    border-color: #58a6ff !important;
+}
+
+body.dark-mode .swagger-ui .btn.execute {
+    background: #238636 !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+
+body.dark-mode .swagger-ui .btn.execute:hover {
+    background: #2ea043 !important;
+}
+
+body.dark-mode .swagger-ui .btn.cancel {
+    background: #da3633 !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+
+body.dark-mode .swagger-ui .btn.cancel:hover {
+    background: #f85149 !important;
+}
+
+body.dark-mode .swagger-ui .btn.authorize {
+    background: #58a6ff !important;
+    color: #0d1117 !important;
+    border: none !important;
+}
+
+body.dark-mode .swagger-ui .btn.authorize:hover {
+    background: #79c0ff !important;
+}
+
+/* Responses */
+body.dark-mode .swagger-ui .responses-inner {
+    background: #0d1117 !important;
+}
+
+body.dark-mode .swagger-ui .response {
+    background: #161b22 !important;
+    border: 1px solid #30363d !important;
+    border-radius: 6px !important;
+    margin: 10px 0 !important;
+}
+
+body.dark-mode .swagger-ui .response-col_status {
+    color: #c9d1d9 !important;
+}
+
+body.dark-mode .swagger-ui .response-col_description {
+    color: #8b949e !important;
+}
+
+/* Code Blocks */
+body.dark-mode .swagger-ui .highlight-code,
+body.dark-mode .swagger-ui .microlight {
+    background: #161b22 !important;
+    border: 1px solid #30363d !important;
+    border-radius: 6px !important;
+    color: #c9d1d9 !important;
+}
+
+body.dark-mode .swagger-ui pre {
+    background: #161b22 !important;
+    color: #c9d1d9 !important;
+    border: 1px solid #30363d !important;
+    border-radius: 6px !important;
+}
+
+body.dark-mode .swagger-ui code {
+    background: #161b22 !important;
+    color: #79c0ff !important;
+    padding: 2px 6px !important;
+    border-radius: 3px !important;
+}
+
+/* Models */
+body.dark-mode .swagger-ui .model-box {
+    background: #161b22 !important;
+    border: 1px solid #30363d !important;
+    border-radius: 6px !important;
+}
+
+body.dark-mode .swagger-ui .model {
+    color: #c9d1d9 !important;
+}
+
+body.dark-mode .swagger-ui .model-title {
+    color: #58a6ff !important;
+}
+
+body.dark-mode .swagger-ui .prop-type {
+    color: #a371f7 !important;
+}
+
+body.dark-mode .swagger-ui .prop-format {
+    color: #8b949e !important;
+}
+
+/* Authorization Modal */
+body.dark-mode .swagger-ui .dialog-ux {
+    background: #161b22 !important;
+    border: 1px solid #30363d !important;
+    border-radius: 8px !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+}
+
+body.dark-mode .swagger-ui .dialog-ux .modal-ux-header {
+    background: #0d1117 !important;
+    border-bottom: 1px solid #30363d !important;
+    color: #c9d1d9 !important;
+}
+
+body.dark-mode .swagger-ui .dialog-ux .modal-ux-content {
+    background: #161b22 !important;
+    color: #c9d1d9 !important;
+}
+
+/* Scrollbar */
+body.dark-mode .swagger-ui ::-webkit-scrollbar {
+    width: 12px !important;
+    height: 12px !important;
+}
+
+body.dark-mode .swagger-ui ::-webkit-scrollbar-track {
+    background: #0d1117 !important;
+}
+
+body.dark-mode .swagger-ui ::-webkit-scrollbar-thumb {
+    background: #30363d !important;
+    border-radius: 6px !important;
+}
+
+body.dark-mode .swagger-ui ::-webkit-scrollbar-thumb:hover {
+    background: #484f58 !important;
+}
+
+/* Links */
+body.dark-mode .swagger-ui a {
+    color: #58a6ff !important;
+    text-decoration: none !important;
+}
+
+body.dark-mode .swagger-ui a:hover {
+    color: #79c0ff !important;
+    text-decoration: underline !important;
+}
+
+/* Loading */
+body.dark-mode .swagger-ui .loading-container {
+    background: #0d1117 !important;
+}
+
+/* Try it out */
+body.dark-mode .swagger-ui .try-out {
+    background: #161b22 !important;
+    border: 1px solid #30363d !important;
+    border-radius: 6px !important;
+}
+
+/* Copy to clipboard */
+body.dark-mode .swagger-ui .copy-to-clipboard {
+    background: #21262d !important;
+    border: 1px solid #30363d !important;
+}
+
+body.dark-mode .swagger-ui .copy-to-clipboard:hover {
+    background: #30363d !important;
+}
+
+/* Markdown */
+body.dark-mode .swagger-ui .markdown p,
+body.dark-mode .swagger-ui .markdown h1,
+body.dark-mode .swagger-ui .markdown h2,
+body.dark-mode .swagger-ui .markdown h3,
+body.dark-mode .swagger-ui .markdown h4,
+body.dark-mode .swagger-ui .markdown h5 {
+    color: #c9d1d9 !important;
+}
+
+body.dark-mode .swagger-ui .markdown code {
+    background: #161b22 !important;
+    color: #79c0ff !important;
+}
+
+/* Errors */
+body.dark-mode .swagger-ui .errors-wrapper {
+    background: rgba(248, 81, 73, 0.1) !important;
+    border: 1px solid #f85149 !important;
+    border-radius: 6px !important;
+    color: #ffa198 !important;
+}
+
+/* Success */
+body.dark-mode .swagger-ui .response.success {
+    background: rgba(63, 185, 80, 0.1) !important;
+    border-color: #3fb950 !important;
+}
+
+/* Tabs */
+body.dark-mode .swagger-ui .tab li {
+    color: #8b949e !important;
+}
+
+body.dark-mode .swagger-ui .tab li.active {
+    color: #c9d1d9 !important;
+    border-bottom: 2px solid #58a6ff !important;
+}
+
+/* Version Badge */
+body.dark-mode .swagger-ui .version-stamp {
+    background: #21262d !important;
+    color: #8b949e !important;
+    border: 1px solid #30363d !important;
+}rors-wrapper {
+    background: rgba(248, 81, 73, 0.1) !important;
+    border: 1px solid #f85149 !important;
+    border-radius: 6px !important;
+    color: #ffa198 !important;
+}
+
+/* Success */
+.swagger-ui .response.success {
+    background: rgba(63, 185, 80, 0.1) !important;
+    border-color: #3fb950 !important;
+}
+
+/* Tabs */
+.swagger-ui .tab li {
+    color: #8b949e !important;
+}
+
+.swagger-ui .tab li.active {
+    color: #c9d1d9 !important;
+    border-bottom: 2px solid #58a6ff !important;
+}
+
+/* Version Badge */
+.swagger-ui .version-stamp {
+    background: #21262d !important;
+    color: #8b949e !important;
+    border: 1px solid #30363d !important;
+}

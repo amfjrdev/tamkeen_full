@@ -1,0 +1,315 @@
+2026-07-18 19:12:49.446 +01:00 [INF]  Attempt 1/10: Checking database connection...
+2026-07-18 19:12:50.594 +01:00 [INF]  Executed DbCommand (74ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+SELECT 1
+2026-07-18 19:12:50.675 +01:00 [INF]  Executed DbCommand (75ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-07-18 19:12:50.738 +01:00 [INF]  Executed DbCommand (61ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+SELECT 1
+2026-07-18 19:12:50.800 +01:00 [INF]  Executed DbCommand (62ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2026-07-18 19:12:50.878 +01:00 [INF]  Executed DbCommand (71ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2026-07-18 19:12:50.886 +01:00 [INF]  No migrations were applied. The database is already up to date.
+2026-07-18 19:12:50.886 +01:00 [INF]  Database migrations applied successfully.
+2026-07-18 19:12:51.045 +01:00 [INF]  Executed DbCommand (68ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [app_configurations] AS [a]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-07-18 19:12:51.181 +01:00 [INF]  Executed DbCommand (75ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (Size = 50), @p2='?' (DbType = Boolean), @p3='?' (Size = 100), @p4='?' (DbType = DateTime2), @p5='?' (Size = 1000), @p6='?' (DbType = Guid), @p7='?' (Size = 50), @p8='?' (DbType = Boolean), @p9='?' (Size = 100), @p10='?' (DbType = DateTime2), @p11='?' (Size = 1000), @p12='?' (DbType = Guid), @p13='?' (Size = 50), @p14='?' (DbType = Boolean), @p15='?' (Size = 100), @p16='?' (DbType = DateTime2), @p17='?' (Size = 1000), @p18='?' (DbType = Guid), @p19='?' (Size = 50), @p20='?' (DbType = Boolean), @p21='?' (Size = 100), @p22='?' (DbType = DateTime2), @p23='?' (Size = 1000), @p24='?' (DbType = Guid), @p25='?' (Size = 50), @p26='?' (DbType = Boolean), @p27='?' (Size = 100), @p28='?' (DbType = DateTime2), @p29='?' (Size = 1000), @p30='?' (DbType = Guid), @p31='?' (Size = 50), @p32='?' (DbType = Boolean), @p33='?' (Size = 100), @p34='?' (DbType = DateTime2), @p35='?' (Size = 1000), @p36='?' (DbType = Guid), @p37='?' (Size = 50), @p38='?' (DbType = Boolean), @p39='?' (Size = 100), @p40='?' (DbType = DateTime2), @p41='?' (Size = 1000), @p42='?' (DbType = Guid), @p43='?' (Size = 50), @p44='?' (DbType = Boolean), @p45='?' (Size = 100), @p46='?' (DbType = DateTime2), @p47='?' (Size = 1000), @p48='?' (DbType = Guid), @p49='?' (Size = 50), @p50='?' (DbType = Boolean), @p51='?' (Size = 100), @p52='?' (DbType = DateTime2), @p53='?' (Size = 1000), @p54='?' (DbType = Guid), @p55='?' (Size = 50), @p56='?' (DbType = Boolean), @p57='?' (Size = 100), @p58='?' (DbType = DateTime2), @p59='?' (Size = 1000), @p60='?' (DbType = Guid), @p61='?' (Size = 50), @p62='?' (DbType = Boolean), @p63='?' (Size = 100), @p64='?' (DbType = DateTime2), @p65='?' (Size = 1000), @p66='?' (DbType = Guid), @p67='?' (Size = 50), @p68='?' (DbType = Boolean), @p69='?' (Size = 100), @p70='?' (DbType = DateTime2), @p71='?' (Size = 1000), @p72='?' (DbType = Guid), @p73='?' (Size = 50), @p74='?' (DbType = Boolean), @p75='?' (Size = 100), @p76='?' (DbType = DateTime2), @p77='?' (Size = 1000), @p78='?' (DbType = Guid), @p79='?' (Size = 50), @p80='?' (DbType = Boolean), @p81='?' (Size = 100), @p82='?' (DbType = DateTime2), @p83='?' (Size = 1000), @p84='?' (DbType = Guid), @p85='?' (Size = 50), @p86='?' (DbType = Boolean), @p87='?' (Size = 100), @p88='?' (DbType = DateTime2), @p89='?' (Size = 1000), @p90='?' (DbType = Guid), @p91='?' (Size = 50), @p92='?' (DbType = Boolean), @p93='?' (Size = 100), @p94='?' (DbType = DateTime2), @p95='?' (Size = 1000), @p96='?' (DbType = Guid), @p97='?' (Size = 50), @p98='?' (DbType = Boolean), @p99='?' (Size = 100), @p100='?' (DbType = DateTime2), @p101='?' (Size = 1000), @p102='?' (DbType = Guid), @p103='?' (Size = 50), @p104='?' (DbType = Boolean), @p105='?' (Size = 100), @p106='?' (DbType = DateTime2), @p107='?' (Size = 1000), @p108='?' (DbType = Guid), @p109='?' (Size = 50), @p110='?' (DbType = Boolean), @p111='?' (Size = 100), @p112='?' (DbType = DateTime2), @p113='?' (Size = 1000), @p114='?' (DbType = Guid), @p115='?' (Size = 50), @p116='?' (DbType = Boolean), @p117='?' (Size = 100), @p118='?' (DbType = DateTime2), @p119='?' (Size = 1000)], CommandType='"Text"', CommandTimeout='60']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [app_configurations] ([Id], [Category], [IsPublic], [Key], [UpdatedAt], [Value])
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5),
+(@p6, @p7, @p8, @p9, @p10, @p11),
+(@p12, @p13, @p14, @p15, @p16, @p17),
+(@p18, @p19, @p20, @p21, @p22, @p23),
+(@p24, @p25, @p26, @p27, @p28, @p29),
+(@p30, @p31, @p32, @p33, @p34, @p35),
+(@p36, @p37, @p38, @p39, @p40, @p41),
+(@p42, @p43, @p44, @p45, @p46, @p47),
+(@p48, @p49, @p50, @p51, @p52, @p53),
+(@p54, @p55, @p56, @p57, @p58, @p59),
+(@p60, @p61, @p62, @p63, @p64, @p65),
+(@p66, @p67, @p68, @p69, @p70, @p71),
+(@p72, @p73, @p74, @p75, @p76, @p77),
+(@p78, @p79, @p80, @p81, @p82, @p83),
+(@p84, @p85, @p86, @p87, @p88, @p89),
+(@p90, @p91, @p92, @p93, @p94, @p95),
+(@p96, @p97, @p98, @p99, @p100, @p101),
+(@p102, @p103, @p104, @p105, @p106, @p107),
+(@p108, @p109, @p110, @p111, @p112, @p113),
+(@p114, @p115, @p116, @p117, @p118, @p119);
+2026-07-18 19:12:51.339 +01:00 [INF]  Executed DbCommand (146ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [ConnectPacks] AS [c]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-07-18 19:12:51.477 +01:00 [INF]  Executed DbCommand (103ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (Size = 50), @p2='?' (Size = 20), @p3='?' (DbType = DateTime2), @p4='?' (DbType = Int32), @p5='?' (Size = 500), @p6='?' (Size = 4000), @p7='?' (DbType = Boolean), @p8='?' (Size = 100), @p9='?' (DbType = Int32), @p10='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p11='?' (Size = 20), @p12='?' (DbType = DateTime2), @p13='?' (DbType = Guid), @p14='?' (Size = 50), @p15='?' (Size = 20), @p16='?' (DbType = DateTime2), @p17='?' (DbType = Int32), @p18='?' (Size = 500), @p19='?' (Size = 4000), @p20='?' (DbType = Boolean), @p21='?' (Size = 100), @p22='?' (DbType = Int32), @p23='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p24='?' (Size = 20), @p25='?' (DbType = DateTime2), @p26='?' (DbType = Guid), @p27='?' (Size = 50), @p28='?' (Size = 20), @p29='?' (DbType = DateTime2), @p30='?' (DbType = Int32), @p31='?' (Size = 500), @p32='?' (Size = 4000), @p33='?' (DbType = Boolean), @p34='?' (Size = 100), @p35='?' (DbType = Int32), @p36='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p37='?' (Size = 20), @p38='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='60']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+MERGE [ConnectPacks] USING (
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, 0),
+(@p13, @p14, @p15, @p16, @p17, @p18, @p19, @p20, @p21, @p22, @p23, @p24, @p25, 1),
+(@p26, @p27, @p28, @p29, @p30, @p31, @p32, @p33, @p34, @p35, @p36, @p37, @p38, 2)) AS i ([Id], [Code], [Color], [CreatedAt], [Credits], [Description], [Features], [IsPopular], [Name], [Popularity], [Price], [Status], [UpdatedAt], _Position) ON 1=0
+WHEN NOT MATCHED THEN
+INSERT ([Id], [Code], [Color], [CreatedAt], [Credits], [Description], [Features], [IsPopular], [Name], [Popularity], [Price], [Status], [UpdatedAt])
+VALUES (i.[Id], i.[Code], i.[Color], i.[CreatedAt], i.[Credits], i.[Description], i.[Features], i.[IsPopular], i.[Name], i.[Popularity], i.[Price], i.[Status], i.[UpdatedAt])
+OUTPUT INSERTED.[IntId], i._Position;
+2026-07-18 19:12:51.557 +01:00 [INF]  Executed DbCommand (62ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Bookings] AS [b]) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2026-07-18 19:12:51.644 +01:00 [INF]  Executed DbCommand (64ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+SELECT [c].[Id], [c].[ConversationId], [c].[IsRead], [c].[SenderId], [c].[SentAt], [c].[Text]
+FROM [ChatMessagesStandalone] AS [c]
+2026-07-18 19:12:51.710 +01:00 [INF]  Executed DbCommand (61ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+SELECT [c].[Id], [c].[CreatedAt], [c].[IsLocked], [c].[LastMessageSenderId], [c].[LastMessageSentAt], [c].[LastMessageText], [c].[Participant1Id], [c].[Participant2Id], [c].[UnlockCost], [c].[UpdatedAt]
+FROM [Conversations] AS [c]
+2026-07-18 19:12:51.775 +01:00 [INF]  Executed DbCommand (63ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+SELECT [n].[Id], [n].[CreatedAt], [n].[IsRead], [n].[Message], [n].[ReadAt], [n].[Title], [n].[UserId]
+FROM [Notifications] AS [n]
+2026-07-18 19:12:51.867 +01:00 [INF]  Executed DbCommand (88ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+SELECT [p].[Id], [p].[Amount], [p].[CheckoutId], [p].[CheckoutUrl], [p].[CompletedAt], [p].[CreatedAt], [p].[Currency], [p].[OrderId], [p].[PackId], [p].[Provider], [p].[Status], [p].[UserId], [p].[Version]
+FROM [Payments] AS [p]
+2026-07-18 19:12:51.991 +01:00 [INF]  Executed DbCommand (72ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+SELECT [b].[Id], [b].[ClientId], [b].[CompletedAt], [b].[CreatedAt], [b].[ProviderId], [b].[RequestedAt], [b].[ScheduledAt], [b].[ScheduledDate], [b].[ServiceId], [b].[Status], [b].[UpdatedAt], [c].[Id], [c].[BookingId], [c].[CreatedAt], [r].[Id], [r0].[Id], [c0].[Id], [c0].[ChatRoomId], [c0].[Content], [c0].[IsRead], [c0].[SenderId], [c0].[SentAt], [r].[BookingId], [r].[CreatedAt], [r].[Reason], [r].[ReporterId], [r].[Status], [r0].[BookingId], [r0].[ClientId], [r0].[Comment], [r0].[CreatedAt], [r0].[Rating], [r0].[ServiceId]
+FROM [Bookings] AS [b]
+LEFT JOIN [ChatRooms] AS [c] ON [b].[Id] = [c].[BookingId]
+LEFT JOIN [Reports] AS [r] ON [b].[Id] = [r].[BookingId]
+LEFT JOIN [Reviews] AS [r0] ON [b].[Id] = [r0].[BookingId]
+LEFT JOIN [ChatMessages] AS [c0] ON [c].[Id] = [c0].[ChatRoomId]
+ORDER BY [b].[Id], [c].[Id], [r].[Id], [r0].[Id]
+2026-07-18 19:12:52.002 +01:00 [WRN]  Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+2026-07-18 19:12:52.091 +01:00 [INF]  Executed DbCommand (87ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+SELECT [p].[Id], [p].[ProviderId], [t].[Id], [t].[Description], [t].[Name], [t].[PortfolioId], [t].[ImageId], [t].[IsMain], [t].[ProjectId], [t].[Url]
+FROM [Portfolios] AS [p]
+LEFT JOIN (
+    SELECT [p0].[Id], [p0].[Description], [p0].[Name], [p0].[PortfolioId], [p1].[ImageId], [p1].[IsMain], [p1].[ProjectId], [p1].[Url]
+    FROM [Projects] AS [p0]
+    LEFT JOIN [ProjectImages] AS [p1] ON [p0].[Id] = [p1].[ProjectId]
+) AS [t] ON [p].[Id] = [t].[PortfolioId]
+ORDER BY [p].[Id], [t].[Id]
+2026-07-18 19:12:52.238 +01:00 [INF]  Executed DbCommand (124ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+SELECT [p].[Id], [p].[AboutMe], [p].[CreatedAt], [p].[HourlyRate], [p].[IsAvailable], [p].[Latitude], [p].[Longitude], [p].[ProviderId], [p].[ResponseTimeMins], [p].[UpdatedAt]
+FROM [ProviderProfiles] AS [p]
+2026-07-18 19:12:52.313 +01:00 [INF]  Executed DbCommand (71ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+SELECT [c].[Id], [c].[Amount], [c].[CreatedAt], [c].[IdempotencyKey], [c].[ReferenceId], [c].[Type], [c].[UserId]
+FROM [ConnectTransactions] AS [c]
+2026-07-18 19:12:52.385 +01:00 [INF]  Executed DbCommand (69ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+SELECT [w].[Id], [w].[Balance], [w].[CreatedAt], [w].[UpdatedAt], [w].[UserId], [w].[Version]
+FROM [Wallets] AS [w]
+2026-07-18 19:12:52.453 +01:00 [INF]  Executed DbCommand (64ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+SELECT [s].[Id], [s].[CategoryId], [s].[CreatedAt], [s].[Description], [s].[DurationMinutes], [s].[IsActive], [s].[Name], [s].[Price], [s].[ProviderId], [s].[UpdatedAt]
+FROM [Services] AS [s]
+2026-07-18 19:12:52.553 +01:00 [INF]  Executed DbCommand (86ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+SELECT [u].[Id], [u].[BlockReason], [u].[BlockedAt], [u].[CreatedAt], [u].[DeletedAt], [u].[Email], [u].[FirstName], [u].[IsBlocked], [u].[IsDeleted], [u].[IsEmailVerified], [u].[IsSuspended], [u].[LastLocationUpdate], [u].[LastName], [u].[Latitude], [u].[Longitude], [u].[PhoneNumber], [u].[Role], [u].[SuspendReason], [u].[SuspendedAt], [u].[UpdatedAt], [u0].[Id], [u0].[CreatedAt], [u0].[PasswordHash], [u0].[UpdatedAt], [u0].[UserId], [r].[Id], [r].[CreatedAt], [r].[ExpiresAt], [r].[RevokedAt], [r].[Token], [r].[UserId], [u].[ProfilePictureIsMain], [u].[ProfilePictureUrl]
+FROM [Users] AS [u]
+LEFT JOIN [UserCredentials] AS [u0] ON [u].[Id] = [u0].[UserId]
+LEFT JOIN [RefreshTokens] AS [r] ON [u].[Id] = [r].[UserId]
+WHERE [u].[IsDeleted] = CAST(0 AS bit)
+ORDER BY [u].[Id], [u0].[Id]
+2026-07-18 19:12:52.662 +01:00 [INF]  Executed DbCommand (61ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+SELECT [c].[Id], [c].[CreatedAt], [c].[Description], [c].[Name], [c].[UpdatedAt]
+FROM [Categories] AS [c]
+2026-07-18 19:12:52.822 +01:00 [INF]  Executed DbCommand (82ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = Guid), @p2='?' (DbType = Guid), @p3='?' (DbType = Guid), @p4='?' (DbType = Guid), @p5='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='60']
+SET NOCOUNT ON;
+DELETE FROM [UserCredentials]
+OUTPUT 1
+WHERE [Id] = @p0;
+DELETE FROM [UserCredentials]
+OUTPUT 1
+WHERE [Id] = @p1;
+DELETE FROM [UserCredentials]
+OUTPUT 1
+WHERE [Id] = @p2;
+DELETE FROM [Users]
+OUTPUT 1
+WHERE [Id] = @p3;
+DELETE FROM [Users]
+OUTPUT 1
+WHERE [Id] = @p4;
+DELETE FROM [Users]
+OUTPUT 1
+WHERE [Id] = @p5;
+2026-07-18 19:12:52.973 +01:00 [INF]  Executed DbCommand (64ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = DateTime2), @p2='?' (Size = 500), @p3='?' (Size = 100), @p4='?' (DbType = DateTime2), @p5='?' (DbType = Guid), @p6='?' (DbType = DateTime2), @p7='?' (Size = 500), @p8='?' (Size = 100), @p9='?' (DbType = DateTime2), @p10='?' (DbType = Guid), @p11='?' (DbType = DateTime2), @p12='?' (Size = 500), @p13='?' (Size = 100), @p14='?' (DbType = DateTime2), @p15='?' (DbType = Guid), @p16='?' (DbType = DateTime2), @p17='?' (Size = 500), @p18='?' (Size = 100), @p19='?' (DbType = DateTime2), @p20='?' (DbType = Guid), @p21='?' (DbType = DateTime2), @p22='?' (Size = 500), @p23='?' (Size = 100), @p24='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='60']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Categories] ([Id], [CreatedAt], [Description], [Name], [UpdatedAt])
+VALUES (@p0, @p1, @p2, @p3, @p4),
+(@p5, @p6, @p7, @p8, @p9),
+(@p10, @p11, @p12, @p13, @p14),
+(@p15, @p16, @p17, @p18, @p19),
+(@p20, @p21, @p22, @p23, @p24);
+2026-07-18 19:12:55.408 +01:00 [INF]  Executed DbCommand (426ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (Size = 500), @p2='?' (DbType = DateTime2), @p3='?' (DbType = DateTime2), @p4='?' (DbType = DateTime2), @p5='?' (Size = 255), @p6='?' (Size = 50), @p7='?' (DbType = Boolean), @p8='?' (DbType = Boolean), @p9='?' (DbType = Boolean), @p10='?' (DbType = Boolean), @p11='?' (DbType = DateTime2), @p12='?' (Size = 50), @p13='?' (DbType = Double), @p14='?' (DbType = Double), @p15='?' (Size = 20), @p16='?' (Size = 20), @p17='?' (Size = 500), @p18='?' (DbType = DateTime2), @p19='?' (DbType = DateTime2), @p20='?' (Size = 1000), @p21='?' (DbType = Guid), @p22='?' (Size = 500), @p23='?' (DbType = DateTime2), @p24='?' (DbType = DateTime2), @p25='?' (DbType = DateTime2), @p26='?' (Size = 255), @p27='?' (Size = 50), @p28='?' (DbType = Boolean), @p29='?' (DbType = Boolean), @p30='?' (DbType = Boolean), @p31='?' (DbType = Boolean), @p32='?' (DbType = DateTime2), @p33='?' (Size = 50), @p34='?' (DbType = Double), @p35='?' (DbType = Double), @p36='?' (Size = 20), @p37='?' (Size = 20), @p38='?' (Size = 500), @p39='?' (DbType = DateTime2), @p40='?' (DbType = DateTime2), @p41='?' (Size = 1000), @p42='?' (DbType = Guid), @p43='?' (Size = 500), @p44='?' (DbType = DateTime2), @p45='?' (DbType = DateTime2), @p46='?' (DbType = DateTime2), @p47='?' (Size = 255), @p48='?' (Size = 50), @p49='?' (DbType = Boolean), @p50='?' (DbType = Boolean), @p51='?' (DbType = Boolean), @p52='?' (DbType = Boolean), @p53='?' (DbType = DateTime2), @p54='?' (Size = 50), @p55='?' (DbType = Double), @p56='?' (DbType = Double), @p57='?' (Size = 20), @p58='?' (Size = 20), @p59='?' (Size = 500), @p60='?' (DbType = DateTime2), @p61='?' (DbType = DateTime2), @p62='?' (Size = 1000), @p63='?' (DbType = Guid), @p64='?' (Size = 500), @p65='?' (DbType = DateTime2), @p66='?' (DbType = DateTime2), @p67='?' (DbType = DateTime2), @p68='?' (Size = 255), @p69='?' (Size = 50), @p70='?' (DbType = Boolean), @p71='?' (DbType = Boolean), @p72='?' (DbType = Boolean), @p73='?' (DbType = Boolean), @p74='?' (DbType = DateTime2), @p75='?' (Size = 50), @p76='?' (DbType = Double), @p77='?' (DbType = Double), @p78='?' (Size = 20), @p79='?' (Size = 20), @p80='?' (Size = 500), @p81='?' (DbType = DateTime2), @p82='?' (DbType = DateTime2), @p83='?' (Size = 1000), @p84='?' (DbType = Guid), @p85='?' (Size = 500), @p86='?' (DbType = DateTime2), @p87='?' (DbType = DateTime2), @p88='?' (DbType = DateTime2), @p89='?' (Size = 255), @p90='?' (Size = 50), @p91='?' (DbType = Boolean), @p92='?' (DbType = Boolean), @p93='?' (DbType = Boolean), @p94='?' (DbType = Boolean), @p95='?' (DbType = DateTime2), @p96='?' (Size = 50), @p97='?' (DbType = Double), @p98='?' (DbType = Double), @p99='?' (Size = 20), @p100='?' (Size = 20), @p101='?' (Size = 500), @p102='?' (DbType = DateTime2), @p103='?' (DbType = DateTime2), @p104='?' (Size = 1000), @p105='?' (DbType = Guid), @p106='?' (Size = 500), @p107='?' (DbType = DateTime2), @p108='?' (DbType = DateTime2), @p109='?' (DbType = DateTime2), @p110='?' (Size = 255), @p111='?' (Size = 50), @p112='?' (DbType = Boolean), @p113='?' (DbType = Boolean), @p114='?' (DbType = Boolean), @p115='?' (DbType = Boolean), @p116='?' (DbType = DateTime2), @p117='?' (Size = 50), @p118='?' (DbType = Double), @p119='?' (DbType = Double), @p120='?' (Size = 20), @p121='?' (Size = 20), @p122='?' (Size = 500), @p123='?' (DbType = DateTime2), @p124='?' (DbType = DateTime2), @p125='?' (Size = 1000), @p126='?' (DbType = Guid), @p127='?' (Size = 500), @p128='?' (DbType = DateTime2), @p129='?' (DbType = DateTime2), @p130='?' (DbType = DateTime2), @p131='?' (Size = 255), @p132='?' (Size = 50), @p133='?' (DbType = Boolean), @p134='?' (DbType = Boolean), @p135='?' (DbType = Boolean), @p136='?' (DbType = Boolean), @p137='?' (DbType = DateTime2), @p138='?' (Size = 50), @p139='?' (DbType = Double), @p140='?' (DbType = Double), @p141='?' (Size = 20), @p142='?' (Size = 20), @p143='?' (Size = 500), @p144='?' (DbType = DateTime2), @p145='?' (DbType = DateTime2), @p146='?' (Size = 1000), @p147='?' (DbType = Guid), @p148='?' (Size = 500), @p149='?' (DbType = DateTime2), @p150='?' (DbType = DateTime2), @p151='?' (DbType = DateTime2), @p152='?' (Size = 255), @p153='?' (Size = 50), @p154='?' (DbType = Boolean), @p155='?' (DbType = Boolean), @p156='?' (DbType = Boolean), @p157='?' (DbType = Boolean), @p158='?' (DbType = DateTime2), @p159='?' (Size = 50), @p160='?' (DbType = Double), @p161='?' (DbType = Double), @p162='?' (Size = 20), @p163='?' (Size = 20), @p164='?' (Size = 500), @p165='?' (DbType = DateTime2), @p166='?' (DbType = DateTime2), @p167='?' (Size = 1000), @p168='?' (DbType = Guid), @p169='?' (Size = 500), @p170='?' (DbType = DateTime2), @p171='?' (DbType = DateTime2), @p172='?' (DbType = DateTime2), @p173='?' (Size = 255), @p174='?' (Size = 50), @p175='?' (DbType = Boolean), @p176='?' (DbType = Boolean), @p177='?' (DbType = Boolean), @p178='?' (DbType = Boolean), @p179='?' (DbType = DateTime2), @p180='?' (Size = 50), @p181='?' (DbType = Double), @p182='?' (DbType = Double), @p183='?' (Size = 20), @p184='?' (Size = 20), @p185='?' (Size = 500), @p186='?' (DbType = DateTime2), @p187='?' (DbType = DateTime2), @p188='?' (Size = 1000), @p189='?' (DbType = Guid), @p190='?' (Size = 500), @p191='?' (DbType = DateTime2), @p192='?' (DbType = DateTime2), @p193='?' (DbType = DateTime2), @p194='?' (Size = 255), @p195='?' (Size = 50), @p196='?' (DbType = Boolean), @p197='?' (DbType = Boolean), @p198='?' (DbType = Boolean), @p199='?' (DbType = Boolean), @p200='?' (DbType = DateTime2), @p201='?' (Size = 50), @p202='?' (DbType = Double), @p203='?' (DbType = Double), @p204='?' (Size = 20), @p205='?' (Size = 20), @p206='?' (Size = 500), @p207='?' (DbType = DateTime2), @p208='?' (DbType = DateTime2), @p209='?' (Size = 1000), @p210='?' (DbType = Guid), @p211='?' (Size = 500), @p212='?' (DbType = DateTime2), @p213='?' (DbType = DateTime2), @p214='?' (DbType = DateTime2), @p215='?' (Size = 255), @p216='?' (Size = 50), @p217='?' (DbType = Boolean), @p218='?' (DbType = Boolean), @p219='?' (DbType = Boolean), @p220='?' (DbType = Boolean), @p221='?' (DbType = DateTime2), @p222='?' (Size = 50), @p223='?' (DbType = Double), @p224='?' (DbType = Double), @p225='?' (Size = 20), @p226='?' (Size = 20), @p227='?' (Size = 500), @p228='?' (DbType = DateTime2), @p229='?' (DbType = DateTime2), @p230='?' (Size = 1000), @p231='?' (DbType = Guid), @p232='?' (Size = 500), @p233='?' (DbType = DateTime2), @p234='?' (DbType = DateTime2), @p235='?' (DbType = DateTime2), @p236='?' (Size = 255), @p237='?' (Size = 50), @p238='?' (DbType = Boolean), @p239='?' (DbType = Boolean), @p240='?' (DbType = Boolean), @p241='?' (DbType = Boolean), @p242='?' (DbType = DateTime2), @p243='?' (Size = 50), @p244='?' (DbType = Double), @p245='?' (DbType = Double), @p246='?' (Size = 20), @p247='?' (Size = 20), @p248='?' (Size = 500), @p249='?' (DbType = DateTime2), @p250='?' (DbType = DateTime2), @p251='?' (Size = 1000), @p252='?' (DbType = Guid), @p253='?' (DbType = DateTime2), @p254='?' (Size = 500), @p255='?' (DbType = DateTime2), @p256='?' (DbType = Guid), @p257='?' (DbType = Guid), @p258='?' (DbType = DateTime2), @p259='?' (Size = 500), @p260='?' (DbType = DateTime2), @p261='?' (DbType = Guid), @p262='?' (DbType = Guid), @p263='?' (DbType = DateTime2), @p264='?' (Size = 500), @p265='?' (DbType = DateTime2), @p266='?' (DbType = Guid), @p267='?' (DbType = Guid), @p268='?' (DbType = DateTime2), @p269='?' (Size = 500), @p270='?' (DbType = DateTime2), @p271='?' (DbType = Guid), @p272='?' (DbType = Guid), @p273='?' (DbType = DateTime2), @p274='?' (Size = 500), @p275='?' (DbType = DateTime2), @p276='?' (DbType = Guid), @p277='?' (DbType = Guid), @p278='?' (DbType = DateTime2), @p279='?' (Size = 500), @p280='?' (DbType = DateTime2), @p281='?' (DbType = Guid), @p282='?' (DbType = Guid), @p283='?' (DbType = DateTime2), @p284='?' (Size = 500), @p285='?' (DbType = DateTime2), @p286='?' (DbType = Guid), @p287='?' (DbType = Guid), @p288='?' (DbType = DateTime2), @p289='?' (Size = 500), @p290='?' (DbType = DateTime2), @p291='?' (DbType = Guid), @p292='?' (DbType = Guid), @p293='?' (DbType = DateTime2), @p294='?' (Size = 500), @p295='?' (DbType = DateTime2), @p296='?' (DbType = Guid), @p297='?' (DbType = Guid), @p298='?' (DbType = DateTime2), @p299='?' (Size = 500), @p300='?' (DbType = DateTime2), @p301='?' (DbType = Guid), @p302='?' (DbType = Guid), @p303='?' (DbType = DateTime2), @p304='?' (Size = 500), @p305='?' (DbType = DateTime2), @p306='?' (DbType = Guid), @p307='?' (DbType = Guid), @p308='?' (DbType = DateTime2), @p309='?' (Size = 500), @p310='?' (DbType = DateTime2), @p311='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='60']
+SET NOCOUNT ON;
+MERGE [Users] USING (
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18, @p19, @p20, 0),
+(@p21, @p22, @p23, @p24, @p25, @p26, @p27, @p28, @p29, @p30, @p31, @p32, @p33, @p34, @p35, @p36, @p37, @p38, @p39, @p40, @p41, 1),
+(@p42, @p43, @p44, @p45, @p46, @p47, @p48, @p49, @p50, @p51, @p52, @p53, @p54, @p55, @p56, @p57, @p58, @p59, @p60, @p61, @p62, 2),
+(@p63, @p64, @p65, @p66, @p67, @p68, @p69, @p70, @p71, @p72, @p73, @p74, @p75, @p76, @p77, @p78, @p79, @p80, @p81, @p82, @p83, 3),
+(@p84, @p85, @p86, @p87, @p88, @p89, @p90, @p91, @p92, @p93, @p94, @p95, @p96, @p97, @p98, @p99, @p100, @p101, @p102, @p103, @p104, 4),
+(@p105, @p106, @p107, @p108, @p109, @p110, @p111, @p112, @p113, @p114, @p115, @p116, @p117, @p118, @p119, @p120, @p121, @p122, @p123, @p124, @p125, 5),
+(@p126, @p127, @p128, @p129, @p130, @p131, @p132, @p133, @p134, @p135, @p136, @p137, @p138, @p139, @p140, @p141, @p142, @p143, @p144, @p145, @p146, 6),
+(@p147, @p148, @p149, @p150, @p151, @p152, @p153, @p154, @p155, @p156, @p157, @p158, @p159, @p160, @p161, @p162, @p163, @p164, @p165, @p166, @p167, 7),
+(@p168, @p169, @p170, @p171, @p172, @p173, @p174, @p175, @p176, @p177, @p178, @p179, @p180, @p181, @p182, @p183, @p184, @p185, @p186, @p187, @p188, 8),
+(@p189, @p190, @p191, @p192, @p193, @p194, @p195, @p196, @p197, @p198, @p199, @p200, @p201, @p202, @p203, @p204, @p205, @p206, @p207, @p208, @p209, 9),
+(@p210, @p211, @p212, @p213, @p214, @p215, @p216, @p217, @p218, @p219, @p220, @p221, @p222, @p223, @p224, @p225, @p226, @p227, @p228, @p229, @p230, 10),
+(@p231, @p232, @p233, @p234, @p235, @p236, @p237, @p238, @p239, @p240, @p241, @p242, @p243, @p244, @p245, @p246, @p247, @p248, @p249, @p250, @p251, 11)) AS i ([Id], [BlockReason], [BlockedAt], [CreatedAt], [DeletedAt], [Email], [FirstName], [IsBlocked], [IsDeleted], [IsEmailVerified], [IsSuspended], [LastLocationUpdate], [LastName], [Latitude], [Longitude], [PhoneNumber], [Role], [SuspendReason], [SuspendedAt], [UpdatedAt], [ProfilePictureUrl], _Position) ON 1=0
+WHEN NOT MATCHED THEN
+INSERT ([Id], [BlockReason], [BlockedAt], [CreatedAt], [DeletedAt], [Email], [FirstName], [IsBlocked], [IsDeleted], [IsEmailVerified], [IsSuspended], [LastLocationUpdate], [LastName], [Latitude], [Longitude], [PhoneNumber], [Role], [SuspendReason], [SuspendedAt], [UpdatedAt], [ProfilePictureUrl])
+VALUES (i.[Id], i.[BlockReason], i.[BlockedAt], i.[CreatedAt], i.[DeletedAt], i.[Email], i.[FirstName], i.[IsBlocked], i.[IsDeleted], i.[IsEmailVerified], i.[IsSuspended], i.[LastLocationUpdate], i.[LastName], i.[Latitude], i.[Longitude], i.[PhoneNumber], i.[Role], i.[SuspendReason], i.[SuspendedAt], i.[UpdatedAt], i.[ProfilePictureUrl])
+OUTPUT INSERTED.[ProfilePictureIsMain], i._Position;
+INSERT INTO [UserCredentials] ([Id], [CreatedAt], [PasswordHash], [UpdatedAt], [UserId])
+VALUES (@p252, @p253, @p254, @p255, @p256),
+(@p257, @p258, @p259, @p260, @p261),
+(@p262, @p263, @p264, @p265, @p266),
+(@p267, @p268, @p269, @p270, @p271),
+(@p272, @p273, @p274, @p275, @p276),
+(@p277, @p278, @p279, @p280, @p281),
+(@p282, @p283, @p284, @p285, @p286),
+(@p287, @p288, @p289, @p290, @p291),
+(@p292, @p293, @p294, @p295, @p296),
+(@p297, @p298, @p299, @p300, @p301),
+(@p302, @p303, @p304, @p305, @p306),
+(@p307, @p308, @p309, @p310, @p311);
+2026-07-18 19:12:55.853 +01:00 [INF]  Executed DbCommand (266ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = Int32), @p2='?' (DbType = DateTime2), @p3='?' (Size = 255), @p4='?' (DbType = Guid), @p5='?' (Size = 50), @p6='?' (DbType = Guid), @p7='?' (DbType = Guid), @p8='?' (DbType = Int32), @p9='?' (DbType = DateTime2), @p10='?' (Size = 255), @p11='?' (DbType = Guid), @p12='?' (Size = 50), @p13='?' (DbType = Guid), @p14='?' (DbType = Guid), @p15='?' (DbType = Int32), @p16='?' (DbType = DateTime2), @p17='?' (Size = 255), @p18='?' (DbType = Guid), @p19='?' (Size = 50), @p20='?' (DbType = Guid), @p21='?' (DbType = Guid), @p22='?' (DbType = Int32), @p23='?' (DbType = DateTime2), @p24='?' (Size = 255), @p25='?' (DbType = Guid), @p26='?' (Size = 50), @p27='?' (DbType = Guid), @p28='?' (DbType = Guid), @p29='?' (DbType = Int32), @p30='?' (DbType = DateTime2), @p31='?' (Size = 255), @p32='?' (DbType = Guid), @p33='?' (Size = 50), @p34='?' (DbType = Guid), @p35='?' (DbType = Guid), @p36='?' (DbType = Int32), @p37='?' (DbType = DateTime2), @p38='?' (Size = 255), @p39='?' (DbType = Guid), @p40='?' (Size = 50), @p41='?' (DbType = Guid), @p42='?' (DbType = Guid), @p43='?' (DbType = Guid), @p44='?' (DbType = Guid), @p45='?' (DbType = Guid), @p46='?' (DbType = Guid), @p47='?' (DbType = Guid), @p48='?' (DbType = Guid), @p49='?' (DbType = Guid), @p50='?' (DbType = Guid), @p51='?' (DbType = Guid), @p52='?' (DbType = Guid), @p53='?' (DbType = Guid), @p54='?' (DbType = Guid), @p55='?' (Size = 1000), @p56='?' (DbType = DateTime2), @p57='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p58='?' (DbType = Boolean), @p59='?' (DbType = Double), @p60='?' (DbType = Double), @p61='?' (DbType = Guid), @p62='?' (DbType = Int32), @p63='?' (DbType = DateTime2), @p64='?' (DbType = Guid), @p65='?' (Size = 1000), @p66='?' (DbType = DateTime2), @p67='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p68='?' (DbType = Boolean), @p69='?' (DbType = Double), @p70='?' (DbType = Double), @p71='?' (DbType = Guid), @p72='?' (DbType = Int32), @p73='?' (DbType = DateTime2), @p74='?' (DbType = Guid), @p75='?' (Size = 1000), @p76='?' (DbType = DateTime2), @p77='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p78='?' (DbType = Boolean), @p79='?' (DbType = Double), @p80='?' (DbType = Double), @p81='?' (DbType = Guid), @p82='?' (DbType = Int32), @p83='?' (DbType = DateTime2), @p84='?' (DbType = Guid), @p85='?' (Size = 1000), @p86='?' (DbType = DateTime2), @p87='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p88='?' (DbType = Boolean), @p89='?' (DbType = Double), @p90='?' (DbType = Double), @p91='?' (DbType = Guid), @p92='?' (DbType = Int32), @p93='?' (DbType = DateTime2), @p94='?' (DbType = Guid), @p95='?' (Size = 1000), @p96='?' (DbType = DateTime2), @p97='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p98='?' (DbType = Boolean), @p99='?' (DbType = Double), @p100='?' (DbType = Double), @p101='?' (DbType = Guid), @p102='?' (DbType = Int32), @p103='?' (DbType = DateTime2), @p104='?' (DbType = Guid), @p105='?' (Size = 1000), @p106='?' (DbType = DateTime2), @p107='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p108='?' (DbType = Boolean), @p109='?' (DbType = Double), @p110='?' (DbType = Double), @p111='?' (DbType = Guid), @p112='?' (DbType = Int32), @p113='?' (DbType = DateTime2), @p114='?' (DbType = Guid), @p115='?' (DbType = Int32), @p116='?' (DbType = DateTime2), @p117='?' (DbType = DateTime2), @p118='?' (DbType = Guid), @p119='?' (DbType = Int32), @p120='?' (DbType = Guid), @p121='?' (DbType = Int32), @p122='?' (DbType = DateTime2), @p123='?' (DbType = DateTime2), @p124='?' (DbType = Guid), @p125='?' (DbType = Int32), @p126='?' (DbType = Guid), @p127='?' (DbType = Int32), @p128='?' (DbType = DateTime2), @p129='?' (DbType = DateTime2), @p130='?' (DbType = Guid), @p131='?' (DbType = Int32), @p132='?' (DbType = Guid), @p133='?' (DbType = Int32), @p134='?' (DbType = DateTime2), @p135='?' (DbType = DateTime2), @p136='?' (DbType = Guid), @p137='?' (DbType = Int32), @p138='?' (DbType = Guid), @p139='?' (DbType = Int32), @p140='?' (DbType = DateTime2), @p141='?' (DbType = DateTime2), @p142='?' (DbType = Guid), @p143='?' (DbType = Int32), @p144='?' (DbType = Guid), @p145='?' (DbType = Int32), @p146='?' (DbType = DateTime2), @p147='?' (DbType = DateTime2), @p148='?' (DbType = Guid), @p149='?' (DbType = Int32), @p150='?' (DbType = Guid), @p151='?' (Size = 1000), @p152='?' (Size = 100), @p153='?' (DbType = Guid), @p154='?' (DbType = Guid), @p155='?' (Size = 1000), @p156='?' (Size = 100), @p157='?' (DbType = Guid), @p158='?' (DbType = Guid), @p159='?' (Size = 1000), @p160='?' (Size = 100), @p161='?' (DbType = Guid), @p162='?' (DbType = Guid), @p163='?' (Size = 1000), @p164='?' (Size = 100), @p165='?' (DbType = Guid), @p166='?' (DbType = Guid), @p167='?' (Size = 1000), @p168='?' (Size = 100), @p169='?' (DbType = Guid), @p170='?' (DbType = Guid), @p171='?' (Size = 1000), @p172='?' (Size = 100), @p173='?' (DbType = Guid), @p174='?' (DbType = Guid), @p175='?' (DbType = Boolean), @p176='?' (DbType = Guid), @p177='?' (Size = 1000), @p178='?' (DbType = Guid), @p179='?' (DbType = Boolean), @p180='?' (DbType = Guid), @p181='?' (Size = 1000), @p182='?' (DbType = Guid), @p183='?' (DbType = Boolean), @p184='?' (DbType = Guid), @p185='?' (Size = 1000), @p186='?' (DbType = Guid), @p187='?' (DbType = Boolean), @p188='?' (DbType = Guid), @p189='?' (Size = 1000), @p190='?' (DbType = Guid), @p191='?' (DbType = Boolean), @p192='?' (DbType = Guid), @p193='?' (Size = 1000), @p194='?' (DbType = Guid), @p195='?' (DbType = Boolean), @p196='?' (DbType = Guid), @p197='?' (Size = 1000)], CommandType='"Text"', CommandTimeout='60']
+SET NOCOUNT ON;
+INSERT INTO [ConnectTransactions] ([Id], [Amount], [CreatedAt], [IdempotencyKey], [ReferenceId], [Type], [UserId])
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6),
+(@p7, @p8, @p9, @p10, @p11, @p12, @p13),
+(@p14, @p15, @p16, @p17, @p18, @p19, @p20),
+(@p21, @p22, @p23, @p24, @p25, @p26, @p27),
+(@p28, @p29, @p30, @p31, @p32, @p33, @p34),
+(@p35, @p36, @p37, @p38, @p39, @p40, @p41);
+INSERT INTO [Portfolios] ([Id], [ProviderId])
+VALUES (@p42, @p43),
+(@p44, @p45),
+(@p46, @p47),
+(@p48, @p49),
+(@p50, @p51),
+(@p52, @p53);
+INSERT INTO [ProviderProfiles] ([Id], [AboutMe], [CreatedAt], [HourlyRate], [IsAvailable], [Latitude], [Longitude], [ProviderId], [ResponseTimeMins], [UpdatedAt])
+VALUES (@p54, @p55, @p56, @p57, @p58, @p59, @p60, @p61, @p62, @p63),
+(@p64, @p65, @p66, @p67, @p68, @p69, @p70, @p71, @p72, @p73),
+(@p74, @p75, @p76, @p77, @p78, @p79, @p80, @p81, @p82, @p83),
+(@p84, @p85, @p86, @p87, @p88, @p89, @p90, @p91, @p92, @p93),
+(@p94, @p95, @p96, @p97, @p98, @p99, @p100, @p101, @p102, @p103),
+(@p104, @p105, @p106, @p107, @p108, @p109, @p110, @p111, @p112, @p113);
+INSERT INTO [Wallets] ([Id], [Balance], [CreatedAt], [UpdatedAt], [UserId], [Version])
+VALUES (@p114, @p115, @p116, @p117, @p118, @p119),
+(@p120, @p121, @p122, @p123, @p124, @p125),
+(@p126, @p127, @p128, @p129, @p130, @p131),
+(@p132, @p133, @p134, @p135, @p136, @p137),
+(@p138, @p139, @p140, @p141, @p142, @p143),
+(@p144, @p145, @p146, @p147, @p148, @p149);
+INSERT INTO [Projects] ([Id], [Description], [Name], [PortfolioId])
+VALUES (@p150, @p151, @p152, @p153),
+(@p154, @p155, @p156, @p157),
+(@p158, @p159, @p160, @p161),
+(@p162, @p163, @p164, @p165),
+(@p166, @p167, @p168, @p169),
+(@p170, @p171, @p172, @p173);
+INSERT INTO [ProjectImages] ([ImageId], [IsMain], [ProjectId], [Url])
+VALUES (@p174, @p175, @p176, @p177),
+(@p178, @p179, @p180, @p181),
+(@p182, @p183, @p184, @p185),
+(@p186, @p187, @p188, @p189),
+(@p190, @p191, @p192, @p193),
+(@p194, @p195, @p196, @p197);
+2026-07-18 19:12:56.063 +01:00 [INF]  Executed DbCommand (127ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = Guid), @p2='?' (DbType = DateTime2), @p3='?' (Size = 500), @p4='?' (DbType = Int32), @p5='?' (DbType = Boolean), @p6='?' (Size = 100), @p7='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p8='?' (DbType = Guid), @p9='?' (DbType = DateTime2), @p10='?' (DbType = Guid), @p11='?' (DbType = Guid), @p12='?' (DbType = DateTime2), @p13='?' (Size = 500), @p14='?' (DbType = Int32), @p15='?' (DbType = Boolean), @p16='?' (Size = 100), @p17='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p18='?' (DbType = Guid), @p19='?' (DbType = DateTime2), @p20='?' (DbType = Guid), @p21='?' (DbType = Guid), @p22='?' (DbType = DateTime2), @p23='?' (Size = 500), @p24='?' (DbType = Int32), @p25='?' (DbType = Boolean), @p26='?' (Size = 100), @p27='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p28='?' (DbType = Guid), @p29='?' (DbType = DateTime2), @p30='?' (DbType = Guid), @p31='?' (DbType = Guid), @p32='?' (DbType = DateTime2), @p33='?' (Size = 500), @p34='?' (DbType = Int32), @p35='?' (DbType = Boolean), @p36='?' (Size = 100), @p37='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p38='?' (DbType = Guid), @p39='?' (DbType = DateTime2), @p40='?' (DbType = Guid), @p41='?' (DbType = Guid), @p42='?' (DbType = DateTime2), @p43='?' (Size = 500), @p44='?' (DbType = Int32), @p45='?' (DbType = Boolean), @p46='?' (Size = 100), @p47='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p48='?' (DbType = Guid), @p49='?' (DbType = DateTime2), @p50='?' (DbType = Guid), @p51='?' (DbType = Guid), @p52='?' (DbType = DateTime2), @p53='?' (Size = 500), @p54='?' (DbType = Int32), @p55='?' (DbType = Boolean), @p56='?' (Size = 100), @p57='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p58='?' (DbType = Guid), @p59='?' (DbType = DateTime2), @p60='?' (DbType = Guid), @p61='?' (DbType = Guid), @p62='?' (DbType = DateTime2), @p63='?' (Size = 500), @p64='?' (DbType = Int32), @p65='?' (DbType = Boolean), @p66='?' (Size = 100), @p67='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p68='?' (DbType = Guid), @p69='?' (DbType = DateTime2), @p70='?' (DbType = Guid), @p71='?' (DbType = Guid), @p72='?' (DbType = DateTime2), @p73='?' (Size = 500), @p74='?' (DbType = Int32), @p75='?' (DbType = Boolean), @p76='?' (Size = 100), @p77='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p78='?' (DbType = Guid), @p79='?' (DbType = DateTime2), @p80='?' (DbType = Guid), @p81='?' (DbType = Guid), @p82='?' (DbType = DateTime2), @p83='?' (Size = 500), @p84='?' (DbType = Int32), @p85='?' (DbType = Boolean), @p86='?' (Size = 100), @p87='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p88='?' (DbType = Guid), @p89='?' (DbType = DateTime2), @p90='?' (DbType = Guid), @p91='?' (DbType = Guid), @p92='?' (DbType = DateTime2), @p93='?' (Size = 500), @p94='?' (DbType = Int32), @p95='?' (DbType = Boolean), @p96='?' (Size = 100), @p97='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p98='?' (DbType = Guid), @p99='?' (DbType = DateTime2), @p100='?' (DbType = Guid), @p101='?' (DbType = Guid), @p102='?' (DbType = DateTime2), @p103='?' (Size = 500), @p104='?' (DbType = Int32), @p105='?' (DbType = Boolean), @p106='?' (Size = 100), @p107='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p108='?' (DbType = Guid), @p109='?' (DbType = DateTime2), @p110='?' (DbType = Guid), @p111='?' (DbType = Guid), @p112='?' (DbType = DateTime2), @p113='?' (Size = 500), @p114='?' (DbType = Int32), @p115='?' (DbType = Boolean), @p116='?' (Size = 100), @p117='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p118='?' (DbType = Guid), @p119='?' (DbType = DateTime2), @p120='?' (DbType = Guid), @p121='?' (DbType = Guid), @p122='?' (DbType = DateTime2), @p123='?' (Size = 500), @p124='?' (DbType = Int32), @p125='?' (DbType = Boolean), @p126='?' (Size = 100), @p127='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p128='?' (DbType = Guid), @p129='?' (DbType = DateTime2), @p130='?' (DbType = Guid), @p131='?' (DbType = Guid), @p132='?' (DbType = DateTime2), @p133='?' (Size = 500), @p134='?' (DbType = Int32), @p135='?' (DbType = Boolean), @p136='?' (Size = 100), @p137='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p138='?' (DbType = Guid), @p139='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='60']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Services] ([Id], [CategoryId], [CreatedAt], [Description], [DurationMinutes], [IsActive], [Name], [Price], [ProviderId], [UpdatedAt])
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9),
+(@p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18, @p19),
+(@p20, @p21, @p22, @p23, @p24, @p25, @p26, @p27, @p28, @p29),
+(@p30, @p31, @p32, @p33, @p34, @p35, @p36, @p37, @p38, @p39),
+(@p40, @p41, @p42, @p43, @p44, @p45, @p46, @p47, @p48, @p49),
+(@p50, @p51, @p52, @p53, @p54, @p55, @p56, @p57, @p58, @p59),
+(@p60, @p61, @p62, @p63, @p64, @p65, @p66, @p67, @p68, @p69),
+(@p70, @p71, @p72, @p73, @p74, @p75, @p76, @p77, @p78, @p79),
+(@p80, @p81, @p82, @p83, @p84, @p85, @p86, @p87, @p88, @p89),
+(@p90, @p91, @p92, @p93, @p94, @p95, @p96, @p97, @p98, @p99),
+(@p100, @p101, @p102, @p103, @p104, @p105, @p106, @p107, @p108, @p109),
+(@p110, @p111, @p112, @p113, @p114, @p115, @p116, @p117, @p118, @p119),
+(@p120, @p121, @p122, @p123, @p124, @p125, @p126, @p127, @p128, @p129),
+(@p130, @p131, @p132, @p133, @p134, @p135, @p136, @p137, @p138, @p139);
+2026-07-18 19:12:56.223 +01:00 [INF]  Executed DbCommand (68ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = Guid), @p2='?' (DbType = Boolean), @p3='?' (DbType = Guid), @p4='?' (DbType = DateTime2), @p5='?' (Size = 4000), @p6='?' (DbType = Guid), @p7='?' (DbType = Guid), @p8='?' (DbType = Boolean), @p9='?' (DbType = Guid), @p10='?' (DbType = DateTime2), @p11='?' (Size = 4000), @p12='?' (DbType = Guid), @p13='?' (DbType = Guid), @p14='?' (DbType = Boolean), @p15='?' (DbType = Guid), @p16='?' (DbType = DateTime2), @p17='?' (Size = 4000), @p18='?' (DbType = Guid), @p19='?' (DbType = Guid), @p20='?' (DbType = Boolean), @p21='?' (DbType = Guid), @p22='?' (DbType = DateTime2), @p23='?' (Size = 4000), @p24='?' (DbType = Guid), @p25='?' (DbType = Guid), @p26='?' (DbType = Boolean), @p27='?' (DbType = Guid), @p28='?' (DbType = DateTime2), @p29='?' (Size = 4000), @p30='?' (DbType = Guid), @p31='?' (DbType = Guid), @p32='?' (DbType = Boolean), @p33='?' (DbType = Guid), @p34='?' (DbType = DateTime2), @p35='?' (Size = 4000), @p36='?' (DbType = Guid), @p37='?' (DbType = Guid), @p38='?' (DbType = Boolean), @p39='?' (DbType = Guid), @p40='?' (DbType = DateTime2), @p41='?' (Size = 4000), @p42='?' (DbType = Guid), @p43='?' (DbType = Guid), @p44='?' (DbType = Boolean), @p45='?' (DbType = Guid), @p46='?' (DbType = DateTime2), @p47='?' (Size = 4000), @p48='?' (DbType = Guid), @p49='?' (DbType = DateTime2), @p50='?' (DbType = Boolean), @p51='?' (DbType = Guid), @p52='?' (DbType = DateTime2), @p53='?' (Size = 4000), @p54='?' (DbType = Guid), @p55='?' (DbType = Guid), @p56='?' (DbType = Int32), @p57='?' (DbType = DateTime2), @p58='?' (DbType = Guid), @p59='?' (DbType = DateTime2), @p60='?' (DbType = Boolean), @p61='?' (DbType = Guid), @p62='?' (DbType = DateTime2), @p63='?' (Size = 4000), @p64='?' (DbType = Guid), @p65='?' (DbType = Guid), @p66='?' (DbType = Int32), @p67='?' (DbType = DateTime2), @p68='?' (DbType = Guid), @p69='?' (DbType = DateTime2), @p70='?' (DbType = Boolean), @p71='?' (DbType = Guid), @p72='?' (DbType = DateTime2), @p73='?' (Size = 4000), @p74='?' (DbType = Guid), @p75='?' (DbType = Guid), @p76='?' (DbType = Int32), @p77='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='60']
+SET NOCOUNT ON;
+INSERT INTO [ChatMessagesStandalone] ([Id], [ConversationId], [IsRead], [SenderId], [SentAt], [Text])
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5),
+(@p6, @p7, @p8, @p9, @p10, @p11),
+(@p12, @p13, @p14, @p15, @p16, @p17),
+(@p18, @p19, @p20, @p21, @p22, @p23),
+(@p24, @p25, @p26, @p27, @p28, @p29),
+(@p30, @p31, @p32, @p33, @p34, @p35),
+(@p36, @p37, @p38, @p39, @p40, @p41),
+(@p42, @p43, @p44, @p45, @p46, @p47);
+INSERT INTO [Conversations] ([Id], [CreatedAt], [IsLocked], [LastMessageSenderId], [LastMessageSentAt], [LastMessageText], [Participant1Id], [Participant2Id], [UnlockCost], [UpdatedAt])
+VALUES (@p48, @p49, @p50, @p51, @p52, @p53, @p54, @p55, @p56, @p57),
+(@p58, @p59, @p60, @p61, @p62, @p63, @p64, @p65, @p66, @p67),
+(@p68, @p69, @p70, @p71, @p72, @p73, @p74, @p75, @p76, @p77);
+2026-07-18 19:12:56.587 +01:00 [INF]  Executed DbCommand (171ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = Guid), @p2='?' (DbType = DateTime2), @p3='?' (DbType = DateTime2), @p4='?' (DbType = Guid), @p5='?' (DbType = DateTime2), @p6='?' (DbType = DateTime2), @p7='?' (DbType = DateTime2), @p8='?' (DbType = Guid), @p9='?' (Size = 20), @p10='?' (DbType = DateTime2), @p11='?' (DbType = Guid), @p12='?' (DbType = Guid), @p13='?' (DbType = DateTime2), @p14='?' (DbType = DateTime2), @p15='?' (DbType = Guid), @p16='?' (DbType = DateTime2), @p17='?' (DbType = DateTime2), @p18='?' (DbType = DateTime2), @p19='?' (DbType = Guid), @p20='?' (Size = 20), @p21='?' (DbType = DateTime2), @p22='?' (DbType = Guid), @p23='?' (DbType = Guid), @p24='?' (DbType = DateTime2), @p25='?' (DbType = DateTime2), @p26='?' (DbType = Guid), @p27='?' (DbType = DateTime2), @p28='?' (DbType = DateTime2), @p29='?' (DbType = DateTime2), @p30='?' (DbType = Guid), @p31='?' (Size = 20), @p32='?' (DbType = DateTime2), @p33='?' (DbType = Guid), @p34='?' (DbType = Guid), @p35='?' (DbType = DateTime2), @p36='?' (DbType = DateTime2), @p37='?' (DbType = Guid), @p38='?' (DbType = DateTime2), @p39='?' (DbType = DateTime2), @p40='?' (DbType = DateTime2), @p41='?' (DbType = Guid), @p42='?' (Size = 20), @p43='?' (DbType = DateTime2), @p44='?' (DbType = Guid), @p45='?' (DbType = Guid), @p46='?' (DbType = DateTime2), @p47='?' (DbType = DateTime2), @p48='?' (DbType = Guid), @p49='?' (DbType = DateTime2), @p50='?' (DbType = DateTime2), @p51='?' (DbType = DateTime2), @p52='?' (DbType = Guid), @p53='?' (Size = 20), @p54='?' (DbType = DateTime2), @p55='?' (DbType = Guid), @p56='?' (DbType = Guid), @p57='?' (DbType = DateTime2), @p58='?' (DbType = DateTime2), @p59='?' (DbType = Guid), @p60='?' (DbType = DateTime2), @p61='?' (DbType = DateTime2), @p62='?' (DbType = DateTime2), @p63='?' (DbType = Guid), @p64='?' (Size = 20), @p65='?' (DbType = DateTime2), @p66='?' (DbType = Guid), @p67='?' (DbType = Guid), @p68='?' (DbType = DateTime2), @p69='?' (DbType = DateTime2), @p70='?' (DbType = Guid), @p71='?' (DbType = DateTime2), @p72='?' (DbType = DateTime2), @p73='?' (DbType = DateTime2), @p74='?' (DbType = Guid), @p75='?' (Size = 20), @p76='?' (DbType = DateTime2), @p77='?' (DbType = Guid), @p78='?' (DbType = DateTime2), @p79='?' (DbType = Boolean), @p80='?' (Size = 1000), @p81='?' (DbType = DateTime2), @p82='?' (Size = 200), @p83='?' (DbType = Guid), @p84='?' (DbType = Guid), @p85='?' (DbType = DateTime2), @p86='?' (DbType = Boolean), @p87='?' (Size = 1000), @p88='?' (DbType = DateTime2), @p89='?' (Size = 200), @p90='?' (DbType = Guid), @p91='?' (DbType = Guid), @p92='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p93='?' (Size = 100), @p94='?' (Size = 4000), @p95='?' (DbType = DateTime2), @p96='?' (DbType = DateTime2), @p97='?' (Size = 10), @p98='?' (DbType = Guid), @p99='?' (Size = 50), @p100='?' (Size = 50), @p101='?' (Size = 50), @p102='?' (DbType = Guid), @p103='?' (DbType = Int32), @p104='?' (DbType = Guid), @p105='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p106='?' (Size = 100), @p107='?' (Size = 4000), @p108='?' (DbType = DateTime2), @p109='?' (DbType = DateTime2), @p110='?' (Size = 10), @p111='?' (DbType = Guid), @p112='?' (Size = 50), @p113='?' (Size = 50), @p114='?' (Size = 50), @p115='?' (DbType = Guid), @p116='?' (DbType = Int32), @p117='?' (DbType = Guid), @p118='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p119='?' (Size = 100), @p120='?' (Size = 4000), @p121='?' (DbType = DateTime2), @p122='?' (DbType = DateTime2), @p123='?' (Size = 10), @p124='?' (DbType = Guid), @p125='?' (Size = 50), @p126='?' (Size = 50), @p127='?' (Size = 50), @p128='?' (DbType = Guid), @p129='?' (DbType = Int32), @p130='?' (DbType = Guid), @p131='?' (DbType = Guid), @p132='?' (DbType = DateTime2), @p133='?' (DbType = Guid), @p134='?' (DbType = Guid), @p135='?' (DbType = DateTime2), @p136='?' (DbType = Guid), @p137='?' (DbType = Guid), @p138='?' (DbType = DateTime2), @p139='?' (DbType = Guid), @p140='?' (DbType = Guid), @p141='?' (DbType = DateTime2), @p142='?' (DbType = Guid), @p143='?' (DbType = Guid), @p144='?' (DbType = Guid), @p145='?' (Size = 1000), @p146='?' (DbType = DateTime2), @p147='?' (DbType = Int32), @p148='?' (DbType = Guid), @p149='?' (DbType = Guid), @p150='?' (DbType = Guid), @p151='?' (DbType = Guid), @p152='?' (Size = 1000), @p153='?' (DbType = DateTime2), @p154='?' (DbType = Int32), @p155='?' (DbType = Guid), @p156='?' (DbType = Guid), @p157='?' (DbType = Guid), @p158='?' (DbType = Guid), @p159='?' (Size = 1000), @p160='?' (DbType = DateTime2), @p161='?' (DbType = Int32), @p162='?' (DbType = Guid), @p163='?' (DbType = Guid), @p164='?' (DbType = Guid), @p165='?' (Size = 4000), @p166='?' (DbType = Boolean), @p167='?' (DbType = Guid), @p168='?' (DbType = DateTime2), @p169='?' (DbType = Guid), @p170='?' (DbType = Guid), @p171='?' (Size = 4000), @p172='?' (DbType = Boolean), @p173='?' (DbType = Guid), @p174='?' (DbType = DateTime2), @p175='?' (DbType = Guid), @p176='?' (DbType = Guid), @p177='?' (Size = 4000), @p178='?' (DbType = Boolean), @p179='?' (DbType = Guid), @p180='?' (DbType = DateTime2), @p181='?' (DbType = Guid), @p182='?' (DbType = Guid), @p183='?' (Size = 4000), @p184='?' (DbType = Boolean), @p185='?' (DbType = Guid), @p186='?' (DbType = DateTime2), @p187='?' (DbType = Guid), @p188='?' (DbType = Guid), @p189='?' (Size = 4000), @p190='?' (DbType = Boolean), @p191='?' (DbType = Guid), @p192='?' (DbType = DateTime2), @p193='?' (DbType = Guid), @p194='?' (DbType = Guid), @p195='?' (Size = 4000), @p196='?' (DbType = Boolean), @p197='?' (DbType = Guid), @p198='?' (DbType = DateTime2), @p199='?' (DbType = Guid), @p200='?' (DbType = Guid), @p201='?' (Size = 4000), @p202='?' (DbType = Boolean), @p203='?' (DbType = Guid), @p204='?' (DbType = DateTime2), @p205='?' (DbType = Guid), @p206='?' (DbType = Guid), @p207='?' (Size = 4000), @p208='?' (DbType = Boolean), @p209='?' (DbType = Guid), @p210='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='60']
+SET NOCOUNT ON;
+INSERT INTO [Bookings] ([Id], [ClientId], [CompletedAt], [CreatedAt], [ProviderId], [RequestedAt], [ScheduledAt], [ScheduledDate], [ServiceId], [Status], [UpdatedAt])
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10),
+(@p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18, @p19, @p20, @p21),
+(@p22, @p23, @p24, @p25, @p26, @p27, @p28, @p29, @p30, @p31, @p32),
+(@p33, @p34, @p35, @p36, @p37, @p38, @p39, @p40, @p41, @p42, @p43),
+(@p44, @p45, @p46, @p47, @p48, @p49, @p50, @p51, @p52, @p53, @p54),
+(@p55, @p56, @p57, @p58, @p59, @p60, @p61, @p62, @p63, @p64, @p65),
+(@p66, @p67, @p68, @p69, @p70, @p71, @p72, @p73, @p74, @p75, @p76);
+INSERT INTO [Notifications] ([Id], [CreatedAt], [IsRead], [Message], [ReadAt], [Title], [UserId])
+VALUES (@p77, @p78, @p79, @p80, @p81, @p82, @p83),
+(@p84, @p85, @p86, @p87, @p88, @p89, @p90);
+INSERT INTO [Payments] ([Id], [Amount], [CheckoutId], [CheckoutUrl], [CompletedAt], [CreatedAt], [Currency], [OrderId], [PackId], [Provider], [Status], [UserId], [Version])
+VALUES (@p91, @p92, @p93, @p94, @p95, @p96, @p97, @p98, @p99, @p100, @p101, @p102, @p103),
+(@p104, @p105, @p106, @p107, @p108, @p109, @p110, @p111, @p112, @p113, @p114, @p115, @p116),
+(@p117, @p118, @p119, @p120, @p121, @p122, @p123, @p124, @p125, @p126, @p127, @p128, @p129);
+INSERT INTO [ChatRooms] ([Id], [BookingId], [CreatedAt])
+VALUES (@p130, @p131, @p132),
+(@p133, @p134, @p135),
+(@p136, @p137, @p138),
+(@p139, @p140, @p141);
+INSERT INTO [Reviews] ([Id], [BookingId], [ClientId], [Comment], [CreatedAt], [Rating], [ServiceId])
+VALUES (@p142, @p143, @p144, @p145, @p146, @p147, @p148),
+(@p149, @p150, @p151, @p152, @p153, @p154, @p155),
+(@p156, @p157, @p158, @p159, @p160, @p161, @p162);
+INSERT INTO [ChatMessages] ([Id], [ChatRoomId], [Content], [IsRead], [SenderId], [SentAt])
+VALUES (@p163, @p164, @p165, @p166, @p167, @p168),
+(@p169, @p170, @p171, @p172, @p173, @p174),
+(@p175, @p176, @p177, @p178, @p179, @p180),
+(@p181, @p182, @p183, @p184, @p185, @p186),
+(@p187, @p188, @p189, @p190, @p191, @p192),
+(@p193, @p194, @p195, @p196, @p197, @p198),
+(@p199, @p200, @p201, @p202, @p203, @p204),
+(@p205, @p206, @p207, @p208, @p209, @p210);
+2026-07-18 19:12:56.651 +01:00 [INF]  Test data seeded successfully.
+2026-07-18 19:12:56.678 +01:00 [INF]  Connecting to Redis endpoints: localhost:6379. Using Server Name: amines-MacBook-Air_5fc362404a7a4538b88577548e55af9e
+2026-07-18 19:12:56.725 +01:00 [INF]  Connected to Redis.
+2026-07-18 19:12:56.726 +01:00 [INF]  User profile is available. Using '/Users/amine/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2026-07-18 19:12:56.840 +01:00 [INF]  Executed DbCommand (80ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+SELECT [b].[Id], [b].[ClientId], [b].[CompletedAt], [b].[CreatedAt], [b].[ProviderId], [b].[RequestedAt], [b].[ScheduledAt], [b].[ScheduledDate], [b].[ServiceId], [b].[Status], [b].[UpdatedAt], [c].[Id], [c].[BookingId], [c].[CreatedAt], [r].[Id], [r0].[Id], [c0].[Id], [c0].[ChatRoomId], [c0].[Content], [c0].[IsRead], [c0].[SenderId], [c0].[SentAt], [r].[BookingId], [r].[CreatedAt], [r].[Reason], [r].[ReporterId], [r].[Status], [r0].[BookingId], [r0].[ClientId], [r0].[Comment], [r0].[CreatedAt], [r0].[Rating], [r0].[ServiceId]
+FROM [Bookings] AS [b]
+LEFT JOIN [ChatRooms] AS [c] ON [b].[Id] = [c].[BookingId]
+LEFT JOIN [Reports] AS [r] ON [b].[Id] = [r].[BookingId]
+LEFT JOIN [Reviews] AS [r0] ON [b].[Id] = [r0].[BookingId]
+LEFT JOIN [ChatMessages] AS [c0] ON [c].[Id] = [c0].[ChatRoomId]
+WHERE [b].[Status] = N'Pending'
+ORDER BY [b].[Id], [c].[Id], [r].[Id], [r0].[Id]
+2026-07-18 19:12:56.922 +01:00 [INF]  Now listening on: http://localhost:5293
+2026-07-18 19:12:56.922 +01:00 [INF]  Application started. Press Ctrl+C to shut down.
+2026-07-18 19:12:56.922 +01:00 [INF]  Hosting environment: Development
+2026-07-18 19:12:56.922 +01:00 [INF]  Content root path: /Users/amine/Desktop/SP/src/SP.API
+2026-07-18 19:12:57.362 +01:00 [INF]  Executed DbCommand (62ms) [Parameters=[@p0='?' (DbType = DateTime2)], CommandType='"Text"', CommandTimeout='60']
+DELETE FROM RefreshTokens WHERE ExpiresAt < @p0 AND RevokedAt IS NOT NULL

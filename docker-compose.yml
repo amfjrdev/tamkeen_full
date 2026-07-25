@@ -1,0 +1,157 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Tamkeen Platform — Master docker-compose.yml
+# Usage: 
+#   1. Configure backend/dashboard environment files (.env)
+#   2. Build and launch: docker compose up --build -d
+# ─────────────────────────────────────────────────────────────────────────────
+
+services:
+
+  # ── SQL Server Database ────────────────────────────────────────────────────
+  database:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: tamkeen-database
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "${MSSQL_SA_PASSWORD:-Admin123!}"
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql_data:/var/opt/mssql
+    networks:
+      - tamkeen-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "/opt/mssql-tools18/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", "${MSSQL_SA_PASSWORD:-Admin123!}", "-Q", "SELECT 1", "-No"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+
+  # ── Redis Cache ────────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: tamkeen-redis
+    command: redis-server --save 60 1 --loglevel warning
+    volumes:
+      - redis_data:/data
+    networks:
+      - tamkeen-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  # ── Backend Web API (ASP.NET Core) ──────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: tamkeen-backend
+    ports:
+      - "${API_PORT:-5000}:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "${ASPNETCORE_ENVIRONMENT:-Production}"
+      ASPNETCORE_URLS: "http://+:8080"
+      DOTNET_RUNNING_IN_CONTAINER: "true"
+      
+      # Database connection (container host name is "database")
+      ConnectionStrings__DefaultConnection: "${DB_CONNECTION_STRING:-Server=database,1433;Database=SP;User Id=sa;Password=Admin123!;Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True;}"
+      
+      # Redis connection (container host name is "redis")
+      ConnectionStrings__Redis: "redis:6379"
+
+      # Authentication & Security
+      Jwt__Secret: "${JWT_SECRET}"
+      Jwt__Issuer: "SP.API"
+      Jwt__Audience: "SP.Client"
+      Jwt__ExpirationMinutes: "${JWT_EXPIRY_MINUTES:-60}"
+      Jwt__RefreshTokenExpirationDays: "${JWT_REFRESH_DAYS:-7}"
+
+      # SMTP Server Configuration
+      Smtp__Enabled: "${SMTP_ENABLED:-false}"
+      Smtp__Host: "${SMTP_HOST:-}"
+      Smtp__Port: "${SMTP_PORT:-587}"
+      Smtp__EnableSsl: "${SMTP_SSL:-true}"
+      Smtp__Username: "${SMTP_USERNAME:-}"
+      Smtp__Password: "${SMTP_PASSWORD:-}"
+      Smtp__FromAddress: "${SMTP_FROM:-}"
+      Smtp__FromName: "${SMTP_FROM_NAME:-}"
+
+      # App URLs & CORS
+      FileStorage__BasePath: "/app/wwwroot/uploads"
+      FileStorage__BaseUrl: "/uploads"
+      Cors__AllowedOrigins__0: "${CORS_ORIGIN_0:-http://localhost:3000}"
+      App__BaseUrl: "${APP_BASE_URL:-http://localhost:5000}"
+      App__DefaultAvatarUrl: "${APP_DEFAULT_AVATAR_URL:-https://ui-avatars.com/api/?background=random}"
+
+      # Database Seeder settings
+      Seeder__AdminEmail: "${SEEDER_ADMIN_EMAIL:-}"
+      Seeder__AdminPassword: "${SEEDER_ADMIN_PASSWORD:-}"
+      Seeder__ProviderEmail: "${SEEDER_PROVIDER_EMAIL:-}"
+      Seeder__ProviderPassword: "${SEEDER_PROVIDER_PASSWORD:-}"
+      Seeder__ClientEmail: "${SEEDER_CLIENT_EMAIL:-}"
+      Seeder__ClientPassword: "${SEEDER_CLIENT_PASSWORD:-}"
+
+      # Logging & Integration APIs
+      Serilog__MinimumLevel__Default: "${LOG_LEVEL:-Information}"
+      Logging__FilePath: "${LOG_FILE_PATH:-logs/sp-.log}"
+      Chargily__SecretKey: "${CHARGILY_SECRET_KEY:-}"
+      Chargily__BaseUrl: "${CHARGILY_BASE_URL:-https://pay.chargily.net/test/api/v2}"
+      Chargily__WebhookSecret: "${CHARGILY_WEBHOOK_SECRET:-}"
+      Chargily__SuccessUrl: "${CHARGILY_SUCCESS_URL:-}"
+      Chargily__FailureUrl: "${CHARGILY_FAILURE_URL:-}"
+      Chargily__AllowTestMode: "${CHARGILY_ALLOW_TEST_MODE:-true}"
+    volumes:
+      - backend_uploads:/app/wwwroot/uploads
+      - backend_logs:/app/logs
+    networks:
+      - tamkeen-network
+    depends_on:
+      database:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 20s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # ── Dashboard Frontend (Vite + React) ──────────────────────────────────────
+  dashboard:
+    build:
+      context: ./dashboard
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=${VITE_API_URL:-http://localhost:5000/api}
+    container_name: tamkeen-dashboard
+    ports:
+      - "3000:80"
+    networks:
+      - tamkeen-network
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+# ── Networks ───────────────────────────────────────────────────────────────────
+networks:
+  tamkeen-network:
+    driver: bridge
+    name: tamkeen-network
+
+# ── Volumes ────────────────────────────────────────────────────────────────────
+volumes:
+  mssql_data:
+    name: tamkeen-mssql-data
+  redis_data:
+    name: tamkeen-redis-data
+  backend_uploads:
+    name: tamkeen-backend-uploads
+  backend_logs:
+    name: tamkeen-backend-logs

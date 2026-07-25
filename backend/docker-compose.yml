@@ -1,0 +1,151 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# SP Platform — docker-compose.yml
+# Usage:  cp .env.example .env  →  edit .env  →  docker-compose up --build
+# ─────────────────────────────────────────────────────────────────────────────
+
+services:
+
+  # ── SQL Server ─────────────────────────────────────────────────────────────
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sp-sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "${MSSQL_SA_PASSWORD:-Admin123!}"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqldata:/var/opt/mssql
+    networks:
+      - sp-internal
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "/opt/mssql-tools18/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", "${MSSQL_SA_PASSWORD:-Admin123!}", "-Q", "SELECT 1", "-No"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+
+  # ── Redis ──────────────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: sp-redis
+    command: redis-server --save 60 1 --loglevel warning
+    volumes:
+      - redisdata:/data
+    networks:
+      - sp-internal
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  # ── SP API ─────────────────────────────────────────────────────────────────
+  sp-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sp-api
+    image: sp-api:latest
+    ports:
+      - "${API_PORT:-5000}:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "${ASPNETCORE_ENVIRONMENT:-Production}"
+      ASPNETCORE_URLS: "http://+:8080"
+      DOTNET_RUNNING_IN_CONTAINER: "true"
+
+      # Database — external hosted SQL Server
+      ConnectionStrings__DefaultConnection: "${DB_CONNECTION_STRING}"
+
+      # Redis — use container name as host
+      ConnectionStrings__Redis: "sp-redis:6379"
+
+      # JWT
+      Jwt__Secret: "${JWT_SECRET}"
+      Jwt__Issuer: "SP.API"
+      Jwt__Audience: "SP.Client"
+      Jwt__ExpirationMinutes: "${JWT_EXPIRY_MINUTES:-60}"
+      Jwt__RefreshTokenExpirationDays: "${JWT_REFRESH_DAYS:-7}"
+
+      # SMTP
+      Smtp__Enabled: "${SMTP_ENABLED:-false}"
+      Smtp__Host: "${SMTP_HOST:-}"
+      Smtp__Port: "${SMTP_PORT:-587}"
+      Smtp__EnableSsl: "${SMTP_SSL:-true}"
+      Smtp__Username: "${SMTP_USERNAME:-}"
+      Smtp__Password: "${SMTP_PASSWORD:-}"
+      Smtp__FromAddress: "${SMTP_FROM:-}"
+      Smtp__FromName: "${SMTP_FROM_NAME:-}"
+
+      # File storage
+      FileStorage__BasePath: "/app/wwwroot/uploads"
+      FileStorage__BaseUrl: "/uploads"
+
+      # CORS
+      Cors__AllowedOrigins__0: "${CORS_ORIGIN_0:-}"
+
+      # App
+      App__BaseUrl: "${APP_BASE_URL}"
+      App__DefaultAvatarUrl: "${APP_DEFAULT_AVATAR_URL:-https://ui-avatars.com/api/?background=random}"
+
+      # Seeder
+      Seeder__AdminEmail: "${SEEDER_ADMIN_EMAIL:-}"
+      Seeder__AdminPassword: "${SEEDER_ADMIN_PASSWORD:-}"
+      Seeder__ProviderEmail: "${SEEDER_PROVIDER_EMAIL:-}"
+      Seeder__ProviderPassword: "${SEEDER_PROVIDER_PASSWORD:-}"
+      Seeder__ClientEmail: "${SEEDER_CLIENT_EMAIL:-}"
+      Seeder__ClientPassword: "${SEEDER_CLIENT_PASSWORD:-}"
+
+      # Logging
+      Serilog__MinimumLevel__Default: "${LOG_LEVEL:-Information}"
+      Logging__FilePath: "${LOG_FILE_PATH:-logs/sp-.log}"
+
+      # Chargily
+      Chargily__SecretKey: "${CHARGILY_SECRET_KEY:-}"
+      Chargily__BaseUrl: "${CHARGILY_BASE_URL:-https://pay.chargily.net/test/api/v2}"
+      Chargily__WebhookSecret: "${CHARGILY_WEBHOOK_SECRET:-}"
+      Chargily__SuccessUrl: "${CHARGILY_SUCCESS_URL:-}"
+      Chargily__FailureUrl: "${CHARGILY_FAILURE_URL:-}"
+      Chargily__AllowTestMode: "${CHARGILY_ALLOW_TEST_MODE:-true}"
+
+    volumes:
+      - uploads:/app/wwwroot/uploads
+      - logs:/app/logs
+
+    networks:
+      - sp-internal
+
+    depends_on:
+      redis:
+        condition: service_healthy
+      sqlserver:
+        condition: service_healthy
+
+    restart: unless-stopped
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 20s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+# ── Networks ───────────────────────────────────────────────────────────────────
+networks:
+  sp-internal:
+    driver: bridge
+    name: sp-internal
+
+# ── Volumes ────────────────────────────────────────────────────────────────────
+volumes:
+  redisdata:
+    name: sp-redisdata
+  uploads:
+    name: sp-uploads
+  logs:
+    name: sp-logs
+  sqldata:
+    name: sp-sqldata
