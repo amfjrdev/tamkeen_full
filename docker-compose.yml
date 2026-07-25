@@ -89,6 +89,7 @@ services:
       App__DefaultAvatarUrl: "${APP_DEFAULT_AVATAR_URL:-https://ui-avatars.com/api/?background=random}"
 
       # Database Seeder settings
+      Seeder__Enabled: "${SEEDER_ENABLED:-false}"
       Seeder__AdminEmail: "${SEEDER_ADMIN_EMAIL:-}"
       Seeder__AdminPassword: "${SEEDER_ADMIN_PASSWORD:-}"
       Seeder__ProviderEmail: "${SEEDER_PROVIDER_EMAIL:-}"
