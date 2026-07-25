@@ -39,13 +39,14 @@ Ensure you have the following tools installed:
 
 Before starting the containers, copy the template `.env.example` files to `.env` in both folders and configure them.
 
-**Backend Configuration:**
+**Backend & Database Configuration (Root .env):**
+Docker Compose reads environment variables from a `.env` file at the root directory to interpolate them in `docker-compose.yml`.
 ```bash
-cp backend/.env.example backend/.env
+cp backend/.env.example .env
 ```
-Open `backend/.env` and configure your settings:
+Open the root `.env` file and configure your settings:
 - Set your `MSSQL_SA_PASSWORD` (minimum 8 characters, containing uppercase, lowercase, digit, and special char).
-- The default connection string uses the hostname `database` which resolves automatically inside the Docker network.
+- The default connection string (`DB_CONNECTION_STRING`) uses the hostname `database` which resolves automatically inside the Docker network. Make sure the password inside the connection string matches your `MSSQL_SA_PASSWORD`.
 - Configure other services like `JWT_SECRET`, `SMTP` settings, and `Chargily` payment credentials if needed.
 
 **Dashboard Configuration:**
