@@ -31,13 +31,23 @@ public sealed class GetNearbyProvidersQueryHandler
             query.RadiusKm,
             cancellationToken);
 
+        var providerIds = providers.Select(p => p.ProviderId).ToList();
+
+        var activeServices = await _serviceRepository.GetActiveServicesByProviderIdsAsync(
+            providerIds,
+            cancellationToken);
+
+        var servicesMap = activeServices
+            .GroupBy(s => s.ProviderId)
+            .ToDictionary(g => g.Key, g => g.ToList());
+
         var response = new List<NearbyProviderDto>();
 
         foreach (var provider in providers)
         {
-            var services = await _serviceRepository.GetActiveServicesByProviderIdAsync(
-                provider.ProviderId,
-                cancellationToken);
+            var services = servicesMap.TryGetValue(provider.ProviderId, out var sList)
+                ? sList
+                : [];
 
             var minPrice = services.Any() ? services.Min(s => s.Price) : 0;
 

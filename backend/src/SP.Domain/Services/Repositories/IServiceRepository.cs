@@ -9,6 +9,7 @@ namespace SP.Domain.Services.Repositories;
 public interface IServiceRepository : IRepository<Service>
 {
     Task<IEnumerable<Service>> GetActiveServicesByProviderIdAsync(Guid providerId, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<Service>> GetActiveServicesByProviderIdsAsync(IEnumerable<Guid> providerIds, CancellationToken cancellationToken = default);
     Task<IEnumerable<Service>> GetAllActiveServicesAsync(CancellationToken cancellationToken = default);
     Task<IEnumerable<Service>> SearchServicesAsync(string searchTerm, CancellationToken cancellationToken = default);
     Task<bool> ExistsForProviderAsync(Guid providerId, string serviceName, CancellationToken cancellationToken = default);

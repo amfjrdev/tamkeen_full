@@ -17,6 +17,13 @@ internal sealed class ServiceRepository : Repository<Service>, IServiceRepositor
             .OrderBy(s => s.Name)
             .ToListAsync(cancellationToken);
 
+    public async Task<IReadOnlyList<Service>> GetActiveServicesByProviderIdsAsync(
+        IEnumerable<Guid> providerIds, CancellationToken cancellationToken = default)
+        => await Context.Services
+            .AsNoTracking()
+            .Where(s => providerIds.Contains(s.ProviderId) && s.IsActive)
+            .ToListAsync(cancellationToken);
+
     public async Task<IEnumerable<Service>> GetAllActiveServicesAsync(
         CancellationToken cancellationToken = default)
         => await Context.Services
