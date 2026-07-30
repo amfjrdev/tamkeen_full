@@ -34,5 +34,15 @@ internal sealed class ServiceConfiguration : IEntityTypeConfiguration<Service>
         builder.HasIndex(s => s.ProviderId);
         builder.HasIndex(s => s.CategoryId);
         builder.HasIndex(s => new { s.ProviderId, s.IsActive });
+
+        builder.HasOne<SP.Domain.Users.User>()
+            .WithMany()
+            .HasForeignKey(s => s.ProviderId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne<SP.Domain.Categories.Category>()
+            .WithMany()
+            .HasForeignKey(s => s.CategoryId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

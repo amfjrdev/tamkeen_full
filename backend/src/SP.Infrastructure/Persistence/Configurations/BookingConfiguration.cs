@@ -94,5 +94,20 @@ internal sealed class BookingConfiguration : IEntityTypeConfiguration<Booking>
         builder.HasIndex(b => b.ProviderId);
         builder.HasIndex(b => b.ServiceId);
         builder.HasIndex(b => b.Status);
+
+        builder.HasOne<SP.Domain.Users.User>()
+            .WithMany()
+            .HasForeignKey(b => b.ClientId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne<SP.Domain.Users.User>()
+            .WithMany()
+            .HasForeignKey(b => b.ProviderId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne<SP.Domain.Services.Service>()
+            .WithMany()
+            .HasForeignKey(b => b.ServiceId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
