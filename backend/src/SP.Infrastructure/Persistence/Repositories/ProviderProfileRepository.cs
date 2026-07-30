@@ -112,56 +112,75 @@ internal sealed class ProviderProfileRepository
                                      x.Longitude.HasValue && x.Longitude.Value >= minLng && x.Longitude.Value <= maxLng);
         }
 
-        var candidates = await query.ToListAsync(cancellationToken);
-
-        var results = candidates.Select(x =>
+        double R = 6371.0;
+        var resultsQuery = query.Select(x => new
         {
-            double? distanceKm = null;
-            if (lat.HasValue && lng.HasValue && x.Latitude.HasValue && x.Longitude.HasValue)
-            {
-                distanceKm = CalculateHaversineKm(lat.Value, lng.Value, x.Latitude.Value, x.Longitude.Value);
-            }
-
-            return new
-            {
-                x.Id,
-                x.ProviderId,
-                x.FirstName,
-                x.LastName,
-                x.AvatarUrl,
-                Rating = Math.Round(x.Rating, 1),
-                x.ReviewCount,
-                DistanceKm = distanceKm,
-                Availability = x.IsAvailable,
-                x.HourlyRate
-            };
-        }).ToList();
+            x.Id,
+            x.ProviderId,
+            x.FirstName,
+            x.LastName,
+            x.AvatarUrl,
+            Rating = Math.Round(x.Rating, 1),
+            x.ReviewCount,
+            DistanceKm = (lat.HasValue && lng.HasValue && x.Latitude.HasValue && x.Longitude.HasValue)
+                ? (double?)(R * 2 * Math.Atan2(
+                    Math.Sqrt(
+                        Math.Sin(((x.Latitude.Value - lat.Value) * Math.PI / 180.0) / 2) * Math.Sin(((x.Latitude.Value - lat.Value) * Math.PI / 180.0) / 2) +
+                        Math.Cos(lat.Value * Math.PI / 180.0) * Math.Cos(x.Latitude.Value * Math.PI / 180.0) *
+                        Math.Sin(((x.Longitude.Value - lng.Value) * Math.PI / 180.0) / 2) * Math.Sin(((x.Longitude.Value - lng.Value) * Math.PI / 180.0) / 2)
+                    ),
+                    Math.Sqrt(1.0 - (
+                        Math.Sin(((x.Latitude.Value - lat.Value) * Math.PI / 180.0) / 2) * Math.Sin(((x.Latitude.Value - lat.Value) * Math.PI / 180.0) / 2) +
+                        Math.Cos(lat.Value * Math.PI / 180.0) * Math.Cos(x.Latitude.Value * Math.PI / 180.0) *
+                        Math.Sin(((x.Longitude.Value - lng.Value) * Math.PI / 180.0) / 2) * Math.Sin(((x.Longitude.Value - lng.Value) * Math.PI / 180.0) / 2)
+                    ))
+                ))
+                : null,
+            Availability = x.IsAvailable,
+            x.HourlyRate
+        });
 
         if (distanceMaxKm.HasValue && lat.HasValue && lng.HasValue)
         {
-            results = results.Where(r => r.DistanceKm.HasValue && r.DistanceKm.Value <= distanceMaxKm.Value).ToList();
+            resultsQuery = resultsQuery.Where(r => r.DistanceKm.HasValue && r.DistanceKm.Value <= distanceMaxKm.Value);
         }
 
         if (!string.IsNullOrWhiteSpace(sortBy))
         {
-            results = sortBy.ToLower() switch
+            resultsQuery = sortBy.ToLower() switch
             {
-                "nearest" when lat.HasValue && lng.HasValue => results.OrderBy(r => r.DistanceKm ?? double.MaxValue).ToList(),
-                "rating" => results.OrderByDescending(r => r.Rating).ToList(),
-                "price" => results.OrderBy(r => r.HourlyRate).ToList(),
-                _ => results.OrderByDescending(r => r.Rating).ToList()
+                "nearest" when lat.HasValue && lng.HasValue => resultsQuery.OrderBy(r => r.DistanceKm ?? double.MaxValue),
+                "rating" => resultsQuery.OrderByDescending(r => r.Rating),
+                "price" => resultsQuery.OrderBy(r => r.HourlyRate),
+                _ => resultsQuery.OrderByDescending(r => r.Rating)
             };
         }
         else
         {
-            results = results.OrderByDescending(r => r.Rating).ToList();
+            resultsQuery = resultsQuery.OrderByDescending(r => r.Rating);
         }
 
-        var totalCount = results.Count;
+        var totalCount = await resultsQuery.CountAsync(cancellationToken);
 
-        var pagedResults = results
+        var pagedResultsData = await resultsQuery
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
+            .Select(r => new
+            {
+                r.Id,
+                r.ProviderId,
+                r.FirstName,
+                r.LastName,
+                r.AvatarUrl,
+                r.Rating,
+                r.ReviewCount,
+                r.DistanceKm,
+                r.Availability,
+                r.HourlyRate
+            })
+            .ToListAsync(cancellationToken);
+
+        var pagedResults = pagedResultsData
             .Select(r => (
                 r.Id,
                 r.ProviderId,
