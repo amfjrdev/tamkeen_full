@@ -100,6 +100,9 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.HasIndex(u => u.Email).IsUnique();
 
+        builder.HasIndex(u => u.Role)
+            .HasFilter("[IsDeleted] = 0");
+
         builder.Property(u => u.Latitude);
         builder.Property(u => u.Longitude);
         builder.Property(u => u.LastLocationUpdate);
