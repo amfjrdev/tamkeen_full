@@ -39,15 +39,32 @@ internal sealed class FileService : IFileService
 
     public Task DeleteFilesAsync(List<string> fileUrls, CancellationToken cancellationToken = default)
     {
+        var resolvedBasePath = Path.GetFullPath(_basePath);
+        if (!resolvedBasePath.EndsWith(Path.DirectorySeparatorChar))
+        {
+            resolvedBasePath += Path.DirectorySeparatorChar;
+        }
+
         foreach (var url in fileUrls)
         {
             try
             {
                 // Convert URL back to physical path
                 var relativePath = url.Replace(_baseUrl, string.Empty).TrimStart('/');
-                var fullPath = Path.Combine(_basePath, relativePath);
-                if (File.Exists(fullPath))
-                    File.Delete(fullPath);
+                var fullPath = Path.GetFullPath(Path.Combine(_basePath, relativePath));
+
+                // Verify the path remains inside the base directory
+                if (fullPath.StartsWith(resolvedBasePath, StringComparison.OrdinalIgnoreCase))
+                {
+                    if (File.Exists(fullPath))
+                    {
+                        File.Delete(fullPath);
+                    }
+                }
+                else
+                {
+                    _logger.LogWarning("Blocked potential path traversal attempt when deleting file URL: {Url}", url);
+                }
             }
             catch (Exception ex)
             {
