@@ -14,9 +14,8 @@ public sealed class GetProvidersQueryHandler(IUserRepository repository)
         GetProvidersQuery query,
         CancellationToken cancellationToken)
     {
-        var users = await repository.GetAllAsync(cancellationToken);
+        var users = await repository.GetByRoleAsync(UserRole.Provider, cancellationToken);
         var providers = users
-            .Where(u => u.Role == UserRole.Provider)
             .Select(u => u.ToResponse())
             .ToList();
 

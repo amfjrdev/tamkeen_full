@@ -10,6 +10,7 @@ public interface IUserRepository : IRepository<User>
 {
     Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default);
     Task<bool> ExistsByEmailAsync(string email, CancellationToken cancellationToken = default);
-    Task<User?> GetByRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default); // ← add
+    Task<User?> GetByRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default);
     Task<IReadOnlyList<User>> GetByIdsAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<User>> GetByRoleAsync(UserRole role, CancellationToken cancellationToken = default);
 }

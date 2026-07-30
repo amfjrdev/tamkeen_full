@@ -33,4 +33,10 @@ internal sealed class UserRepository : Repository<User>, IUserRepository
         => await Context.Users
             .Where(u => ids.Contains(u.Id))
             .ToListAsync(cancellationToken);
+
+    public async Task<IReadOnlyList<User>> GetByRoleAsync(UserRole role, CancellationToken cancellationToken = default)
+        => await Context.Users
+            .AsNoTracking()
+            .Where(u => u.Role == role)
+            .ToListAsync(cancellationToken);
 }
