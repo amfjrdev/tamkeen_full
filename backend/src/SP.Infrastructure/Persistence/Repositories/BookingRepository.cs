@@ -13,6 +13,7 @@ internal sealed class BookingRepository : Repository<Booking>, IBookingRepositor
     public async Task<IEnumerable<Booking>> GetByClientIdAsync(
         Guid clientId, CancellationToken cancellationToken = default)
         => await Context.Bookings
+            .AsNoTracking()
             .Where(b => b.ClientId == clientId)
             .OrderByDescending(b => b.CreatedAt)
             .ToListAsync(cancellationToken);
@@ -20,6 +21,7 @@ internal sealed class BookingRepository : Repository<Booking>, IBookingRepositor
     public async Task<IEnumerable<Booking>> GetByProviderIdAsync(
         Guid providerId, CancellationToken cancellationToken = default)
         => await Context.Bookings
+            .AsNoTracking()
             .Where(b => b.ProviderId == providerId)
             .OrderByDescending(b => b.CreatedAt)
             .ToListAsync(cancellationToken);
@@ -27,6 +29,7 @@ internal sealed class BookingRepository : Repository<Booking>, IBookingRepositor
     public async Task<IEnumerable<Booking>> GetByServiceIdAsync(
         Guid serviceId, CancellationToken cancellationToken = default)
         => await Context.Bookings
+            .AsNoTracking()
             .Where(b => b.ServiceId == serviceId)
             .ToListAsync(cancellationToken);
 
@@ -65,6 +68,7 @@ internal sealed class BookingRepository : Repository<Booking>, IBookingRepositor
         var totalCount = await query.CountAsync(cancellationToken);
 
         var bookings = await query
+            .AsNoTracking()
             .OrderByDescending(b => b.CreatedAt)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)

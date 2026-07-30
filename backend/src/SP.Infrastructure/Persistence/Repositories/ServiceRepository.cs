@@ -13,6 +13,7 @@ internal sealed class ServiceRepository : Repository<Service>, IServiceRepositor
     public async Task<IEnumerable<Service>> GetActiveServicesByProviderIdAsync(
         Guid providerId, CancellationToken cancellationToken = default)
         => await Context.Services
+            .AsNoTracking()
             .Where(s => s.ProviderId == providerId && s.IsActive)
             .OrderBy(s => s.Name)
             .ToListAsync(cancellationToken);
@@ -27,6 +28,7 @@ internal sealed class ServiceRepository : Repository<Service>, IServiceRepositor
     public async Task<IEnumerable<Service>> GetAllActiveServicesAsync(
         CancellationToken cancellationToken = default)
         => await Context.Services
+            .AsNoTracking()
             .Where(s => s.IsActive)
             .OrderBy(s => s.Name)
             .ToListAsync(cancellationToken);
@@ -37,6 +39,7 @@ internal sealed class ServiceRepository : Repository<Service>, IServiceRepositor
         // EF.Functions.Contains translates to a parameterized LIKE — no injection risk
         var term = searchTerm.Trim();
         return await Context.Services
+            .AsNoTracking()
             .Where(s => s.IsActive &&
                 (s.Name.Contains(term) || s.Description.Contains(term)))
             .OrderBy(s => s.Name)
@@ -105,6 +108,7 @@ internal sealed class ServiceRepository : Repository<Service>, IServiceRepositor
         var totalCount = await query.CountAsync(cancellationToken);
 
         var pagedItems = await query
+            .AsNoTracking()
             .OrderBy(x => x.Service.Name)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
@@ -120,6 +124,7 @@ internal sealed class ServiceRepository : Repository<Service>, IServiceRepositor
     public async Task<IReadOnlyList<Service>> GetByIdsAsync(
         IEnumerable<Guid> ids, CancellationToken cancellationToken = default)
         => await Context.Services
+            .AsNoTracking()
             .Where(s => ids.Contains(s.Id))
             .ToListAsync(cancellationToken);
 }

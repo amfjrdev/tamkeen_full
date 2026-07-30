@@ -61,6 +61,7 @@ public static class ServiceCollectionExtensions
         services.AddCorsPolicy(configuration);
         services.AddRateLimiting(configuration);
         services.AddHealthChecks(configuration);
+        services.AddMemoryCache();
 
         services.AddAuthorizationBuilder()
             .AddPolicy(AuthorizationPolicies.AdminOnly, p => p.RequireRole(AuthorizationPolicies.AdminRole))

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Globalization;
+using Microsoft.Extensions.Logging;
 using SP.Application.Abstractions.Messaging;
 using SP.Domain.Abstractions;
 using SP.Domain.Shared;
@@ -11,10 +12,14 @@ public sealed class GetAppConfigQueryHandler
     : IQueryHandler<GetAppConfigQuery, AppConfigResponse>
 {
     private readonly IAppConfigurationRepository _configRepository;
+    private readonly ILogger<GetAppConfigQueryHandler> _logger;
 
-    public GetAppConfigQueryHandler(IAppConfigurationRepository configRepository)
+    public GetAppConfigQueryHandler(
+        IAppConfigurationRepository configRepository,
+        ILogger<GetAppConfigQueryHandler> _logger)
     {
         _configRepository = configRepository;
+        this._logger = _logger;
     }
 
     public async Task<Result<AppConfigResponse>> HandleAsync(
@@ -80,7 +85,7 @@ public sealed class GetAppConfigQueryHandler
         return dict.TryGetValue(key, out var value) && double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out var result) ? result : 0.0;
     }
 
-    private static List<double>? GetDoubleListConfigValue(Dictionary<string, string> dict, string key)
+    private List<double>? GetDoubleListConfigValue(Dictionary<string, string> dict, string key)
     {
         if (dict.TryGetValue(key, out var value) && !string.IsNullOrWhiteSpace(value))
         {
@@ -90,9 +95,9 @@ public sealed class GetAppConfigQueryHandler
                     .Select(s => double.Parse(s.Trim(), NumberStyles.Any, CultureInfo.InvariantCulture))
                     .ToList();
             }
-            catch
+            catch (Exception ex)
             {
-                // Fallback
+                _logger.LogWarning(ex, "Failed to parse configuration key '{Key}' with value '{Value}'. Falling back to default list.", key, value);
             }
         }
         return null;

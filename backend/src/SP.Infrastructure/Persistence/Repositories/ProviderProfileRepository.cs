@@ -221,7 +221,8 @@ internal sealed class ProviderProfileRepository
         double minLng = lng - Math.Abs(lngRange);
         double maxLng = lng + Math.Abs(lngRange);
 
-        var query = from p in Context.ProviderProfiles
+        double R = 6371.0;
+        var resultsQuery = from p in Context.ProviderProfiles
                     join u in Context.Users on p.ProviderId equals u.Id
                     join stats in bookingsStats on p.ProviderId equals stats.ProviderId into statsJoined
                     from s in statsJoined.DefaultIfEmpty()
@@ -234,38 +235,47 @@ internal sealed class ProviderProfileRepository
                         u.FirstName,
                         u.LastName,
                         AvatarUrl = u.UserProfilePicture.Url,
-                        Rating = s.AverageRating ?? 0.0,
+                        Rating = Math.Round(s.AverageRating ?? 0.0, 1),
                         ReviewCount = s.ReviewCount ?? 0,
                         p.IsAvailable,
                         p.HourlyRate,
-                        Latitude = p.Latitude ?? 0.0,
-                        Longitude = p.Longitude ?? 0.0
+                        Latitude = p.Latitude!.Value,
+                        Longitude = p.Longitude!.Value,
+                        DistanceKm = R * 2 * Math.Atan2(
+                            Math.Sqrt(
+                                Math.Sin(((p.Latitude.Value - lat) * Math.PI / 180.0) / 2) * Math.Sin(((p.Latitude.Value - lat) * Math.PI / 180.0) / 2) +
+                                Math.Cos(lat * Math.PI / 180.0) * Math.Cos(p.Latitude.Value * Math.PI / 180.0) *
+                                Math.Sin(((p.Longitude.Value - lng) * Math.PI / 180.0) / 2) * Math.Sin(((p.Longitude.Value - lng) * Math.PI / 180.0) / 2)
+                            ),
+                            Math.Sqrt(1.0 - (
+                                Math.Sin(((p.Latitude.Value - lat) * Math.PI / 180.0) / 2) * Math.Sin(((p.Latitude.Value - lat) * Math.PI / 180.0) / 2) +
+                                Math.Cos(lat * Math.PI / 180.0) * Math.Cos(p.Latitude.Value * Math.PI / 180.0) *
+                                Math.Sin(((p.Longitude.Value - lng) * Math.PI / 180.0) / 2) * Math.Sin(((p.Longitude.Value - lng) * Math.PI / 180.0) / 2)
+                            ))
+                        )
                     };
 
-        var candidates = await query.ToListAsync(cancellationToken);
-
-        var results = candidates.Select(x =>
-        {
-            var distance = CalculateHaversineKm(lat, lng, x.Latitude, x.Longitude);
-            return new
+        var results = await resultsQuery
+            .Where(r => r.DistanceKm <= radiusKm)
+            .OrderBy(r => r.DistanceKm)
+            .Select(r => new
             {
-                x.Id,
-                x.ProviderId,
-                x.FirstName,
-                x.LastName,
-                x.AvatarUrl,
-                Rating = Math.Round(x.Rating, 1),
-                x.ReviewCount,
-                x.Latitude,
-                x.Longitude,
-                DistanceKm = distance,
-                x.IsAvailable,
-                x.HourlyRate
-            };
-        })
-        .Where(r => r.DistanceKm <= radiusKm)
-        .OrderBy(r => r.DistanceKm)
-        .Select(r => (
+                r.Id,
+                r.ProviderId,
+                r.FirstName,
+                r.LastName,
+                r.AvatarUrl,
+                r.Rating,
+                r.ReviewCount,
+                r.Latitude,
+                r.Longitude,
+                r.DistanceKm,
+                r.IsAvailable,
+                r.HourlyRate
+            })
+            .ToListAsync(cancellationToken);
+
+        var finalResults = results.Select(r => (
             r.Id,
             r.ProviderId,
             r.FirstName,
@@ -278,10 +288,9 @@ internal sealed class ProviderProfileRepository
             r.DistanceKm,
             r.IsAvailable,
             r.HourlyRate
-        ))
-        .ToList();
+        )).ToList();
 
-        return results;
+        return finalResults;
     }
 
     private static double CalculateHaversineKm(double lat1, double lon1, double lat2, double lon2)

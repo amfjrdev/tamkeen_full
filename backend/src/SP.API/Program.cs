@@ -88,8 +88,8 @@ try
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "SP API v1");
-        c.InjectStylesheet("/swagger-dark.css");
-        c.InjectJavascript("/swagger-theme-toggle.js");
+        c.InjectStylesheet("../swagger-dark.css");
+        c.InjectJavascript("../swagger-theme-toggle.js");
         c.ConfigObject.AdditionalItems["syntaxHighlight"] = new Dictionary<string, object>
         {
             ["theme"] = "monokai"

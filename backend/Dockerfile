@@ -28,12 +28,15 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends curl \
     && rm -rf /var/lib/apt/lists/*
 
-COPY --from=publish /app/publish .
+COPY --from=publish --chown=app:app /app/publish .
 
 ENV ASPNETCORE_URLS=http://+:8080
 ENV ASPNETCORE_ENVIRONMENT=Production
 
 EXPOSE 8080
+
+# Switch to the low-privileged 'app' user
+USER app
 
 HEALTHCHECK --interval=20s --timeout=10s --start-period=60s --retries=5 \
     CMD curl -f http://localhost:8080/health || exit 1
