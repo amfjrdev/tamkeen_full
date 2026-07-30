@@ -60,8 +60,8 @@ try
                 ? LogEventLevel.Verbose
                 : LogEventLevel.Information;
     });
-    app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
     app.UseMiddleware<CorrelationIdMiddleware>();
+    app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
     // Only redirect to HTTPS when running outside a container / reverse proxy.
     // In Docker the TLS termination happens at the load-balancer level.
     if (!app.Environment.IsEnvironment("Production") ||
