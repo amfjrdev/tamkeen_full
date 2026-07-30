@@ -86,15 +86,19 @@ internal sealed class BookingRepository : Repository<Booking>, IBookingRepositor
             .CountAsync(b => b.ProviderId == providerId && b.Status == BookingStatus.Completed,
                 cancellationToken);
 
-        var reviews = await Context.Bookings
+        var reviewStats = await Context.Bookings
             .AsNoTracking()
-            .Where(b => b.ProviderId == providerId)
-            .Select(b => b.Review)
-            .Where(r => r != null)
-            .ToListAsync(cancellationToken);
+            .Where(b => b.ProviderId == providerId && b.Review != null)
+            .GroupBy(b => 1)
+            .Select(g => new
+            {
+                Count = g.Count(),
+                Average = g.Average(b => (double)b.Review!.Rating)
+            })
+            .FirstOrDefaultAsync(cancellationToken);
 
-        var reviewCount = reviews.Count;
-        var averageRating = reviewCount > 0 ? reviews.Average(r => r!.Rating) : 0.0;
+        var reviewCount = reviewStats?.Count ?? 0;
+        var averageRating = reviewStats?.Average ?? 0.0;
 
         return (jobsDone, reviewCount, Math.Round(averageRating, 1));
     }
