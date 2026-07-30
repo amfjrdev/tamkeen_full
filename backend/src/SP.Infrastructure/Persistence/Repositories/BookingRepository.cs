@@ -142,4 +142,48 @@ internal sealed class BookingRepository : Repository<Booking>, IBookingRepositor
 
         return (itemsTuple, totalCount, Math.Round(averageRating, 1));
     }
+
+    public async Task<(IReadOnlyList<(Guid Id, Guid BookingId, Guid ReporterId, string Reason, string Status, DateTime CreatedAt)> Items, int TotalCount)> GetReportsPaginatedAsync(
+        ReportStatus? status,
+        int page,
+        int pageSize,
+        CancellationToken cancellationToken = default)
+    {
+        var query = Context.Bookings
+            .AsNoTracking()
+            .Where(b => b.Report != null);
+
+        if (status.HasValue)
+        {
+            query = query.Where(b => b.Report!.Status == status.Value);
+        }
+
+        var totalCount = await query.CountAsync(cancellationToken);
+
+        var itemsData = await query
+            .OrderByDescending(b => b.Report!.CreatedAt)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .Select(b => new
+            {
+                b.Report!.Id,
+                BookingId = b.Id,
+                b.Report.ReporterId,
+                b.Report.Reason,
+                Status = b.Report.Status.ToString(),
+                b.Report.CreatedAt
+            })
+            .ToListAsync(cancellationToken);
+
+        var items = itemsData.Select(i => (
+            i.Id,
+            i.BookingId,
+            i.ReporterId,
+            i.Reason,
+            i.Status,
+            i.CreatedAt
+        )).ToList();
+
+        return (items, totalCount);
+    }
 }

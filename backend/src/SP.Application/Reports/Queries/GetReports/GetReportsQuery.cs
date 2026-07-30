@@ -27,26 +27,22 @@ public sealed class GetReportsQueryHandler : IQueryHandler<GetReportsQuery, Page
         GetReportsQuery query,
         CancellationToken cancellationToken = default)
     {
-        var allBookings = await _bookingRepository.GetAllAsync(cancellationToken);
+        var (items, totalCount) = await _bookingRepository.GetReportsPaginatedAsync(
+            query.Status,
+            query.Page,
+            query.PageSize,
+            cancellationToken);
 
-        var reports = allBookings
-            .Where(b => b.Report is not null)
-            .Where(b => query.Status is null || b.Report!.Status == query.Status)
-            .Select(b => new ReportSummaryResponse(
-                b.Report!.Id,
-                b.Id,
-                b.Report.ReporterId,
-                b.Report.Reason,
-                b.Report.Status.ToString(),
-                b.Report.CreatedAt))
+        var mappedItems = items
+            .Select(i => new ReportSummaryResponse(
+                i.Id,
+                i.BookingId,
+                i.ReporterId,
+                i.Reason,
+                i.Status,
+                i.CreatedAt))
             .ToList();
 
-        var totalCount = reports.Count;
-        var items = reports
-            .Skip((query.Page - 1) * query.PageSize)
-            .Take(query.PageSize)
-            .ToList();
-
-        return Result.Success(new PagedList<ReportSummaryResponse>(items, query.Page, query.PageSize, totalCount));
+        return Result.Success(new PagedList<ReportSummaryResponse>(mappedItems, query.Page, query.PageSize, totalCount));
     }
 }

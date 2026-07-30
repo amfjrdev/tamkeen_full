@@ -26,4 +26,9 @@ public interface IBookingRepository : IRepository<Booking>
         GetReviewsByProviderAsync(
             Guid providerId, int page, int pageSize,
             CancellationToken cancellationToken = default);
+    Task<(IReadOnlyList<(Guid Id, Guid BookingId, Guid ReporterId, string Reason, string Status, DateTime CreatedAt)> Items, int TotalCount)> GetReportsPaginatedAsync(
+        ReportStatus? status,
+        int page,
+        int pageSize,
+        CancellationToken cancellationToken = default);
 }
