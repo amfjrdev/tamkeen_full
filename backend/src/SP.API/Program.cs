@@ -41,6 +41,14 @@ try
     await ApplyMigrations.ApplyMigrationsAsync(app.Services);
 
     // ── Middleware pipeline ───────────────────────────────────────────────
+    var forwardedOptions = new Microsoft.AspNetCore.Builder.ForwardedHeadersOptions
+    {
+        ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedFor | Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedProto
+    };
+    forwardedOptions.KnownNetworks.Clear();
+    forwardedOptions.KnownProxies.Clear();
+    app.UseForwardedHeaders(forwardedOptions);
+
     app.UseStaticFiles();
     app.UseSerilogRequestLogging(opts =>
     {
