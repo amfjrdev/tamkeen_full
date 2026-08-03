@@ -29,7 +29,7 @@ public sealed class GetConnectPacksQueryHandler
         
         var activePacks = packs
             .Where(p => p.Status == "active")
-            .Select(p => new ConnectPackDto(p.Code, p.Name, p.Credits, p.Price, "DZD"))
+            .Select(p => new ConnectPackDto(p.Code, p.Name, p.Credits, p.Price, "DZD", p.IsPopular))
             .ToList();
 
         return Result.Success<IReadOnlyList<ConnectPackDto>>(activePacks);

@@ -5,4 +5,5 @@ public sealed record ConnectPackDto(
     string Name,
     int Connects,
     decimal Price,
-    string Currency);
+    string Currency,
+    bool IsPopular);
