@@ -23,6 +23,7 @@ public sealed class CompletePaymentCommandHandler : ICommandHandler<CompletePaym
     private readonly IPaymentRepository _paymentRepository;
     private readonly IWalletRepository _walletRepository;
     private readonly IConnectTransactionRepository _transactionRepository;
+    private readonly IConnectPackRepository _connectPackRepository;
     private readonly IUnitOfWork _unitOfWork;
 
     private static readonly Dictionary<string, int> ConnectsMap = new()
@@ -36,11 +37,13 @@ public sealed class CompletePaymentCommandHandler : ICommandHandler<CompletePaym
         IPaymentRepository paymentRepository,
         IWalletRepository walletRepository,
         IConnectTransactionRepository transactionRepository,
+        IConnectPackRepository connectPackRepository,
         IUnitOfWork unitOfWork)
     {
         _paymentRepository = paymentRepository;
         _walletRepository = walletRepository;
         _transactionRepository = transactionRepository;
+        _connectPackRepository = connectPackRepository;
         _unitOfWork = unitOfWork;
     }
 
@@ -75,9 +78,20 @@ public sealed class CompletePaymentCommandHandler : ICommandHandler<CompletePaym
         if (targetStatus == PaymentStatus.Paid)
         {
             var packId = payment.PackId?.ToLowerInvariant().Trim() ?? string.Empty;
-            if (!ConnectsMap.TryGetValue(packId, out var connectsAmount))
+            int connectsAmount = 0;
+
+            var pack = await _connectPackRepository.GetByCodeAsync(packId, cancellationToken);
+            if (pack is not null)
             {
-                return Result.Failure(new Error("Payment.InvalidPack", "Payment references an invalid package."));
+                connectsAmount = pack.Credits;
+            }
+            else if (ConnectsMap.TryGetValue(packId, out var mappedAmount))
+            {
+                connectsAmount = mappedAmount;
+            }
+            else
+            {
+                return Result.Failure(new Error("Payment.InvalidPack", $"Payment references an invalid package: '{packId}'."));
             }
 
             // Get or create wallet
