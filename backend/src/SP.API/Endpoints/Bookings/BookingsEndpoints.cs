@@ -25,7 +25,7 @@ public static class BookingsEndpoints
         group.MapPost("/{id:guid}/cancel", Cancel).RequireAuthorization();
         group.MapPost("/{id:guid}/complete", Complete).RequireAuthorization(AuthorizationPolicies.ProviderOnly);
         group.MapPost("/{id:guid}/review", Review).RequireAuthorization(AuthorizationPolicies.ClientOnly);
-        group.MapPost("/{id:guid}/report", Report).RequireAuthorization(AuthorizationPolicies.ClientOnly);
+        group.MapPost("/{id:guid}/report", Report).RequireAuthorization();
         group.MapGet("/{id:guid}", GetById).RequireAuthorization();
         group.MapGet("/", GetAll).RequireAuthorization();
 

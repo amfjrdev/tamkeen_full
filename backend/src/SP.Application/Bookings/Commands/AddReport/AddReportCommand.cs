@@ -29,7 +29,7 @@ public sealed class AddReportCommandHandler : ICommandHandler<AddReportCommand>
         if (booking is null)
             return Result.Failure(BookingErrors.NotFound);
 
-        if (booking.ClientId != command.ReporterId)
+        if (booking.ClientId != command.ReporterId && booking.ProviderId != command.ReporterId)
             return Result.Failure(BookingErrors.UnauthorizedAction);
 
         var result = booking.AddReport(command.ReporterId, command.Reason);

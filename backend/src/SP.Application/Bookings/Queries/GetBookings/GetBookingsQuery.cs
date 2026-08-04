@@ -91,7 +91,8 @@ public sealed class GetBookingsQueryHandler : IQueryHandler<GetBookingsQuery, Pa
                 providerAvatarUrl,
                 price,
                 duration,
-                b.Review != null);
+                b.Review != null,
+                b.Report != null);
         }).ToList();
 
         return Result.Success(new PagedList<BookingSummaryResponse>(items, query.Page, query.PageSize, totalCount));
