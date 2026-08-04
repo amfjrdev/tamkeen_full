@@ -13,6 +13,8 @@ public sealed record BookingSummaryResponse(
     DateTime CreatedAt,
     string ProviderName,
     string ProviderAvatarUrl,
+    string ClientName,
+    string ClientAvatarUrl,
     decimal ServicePrice,
     int ServiceDurationMinutes,
     bool IsReviewed,

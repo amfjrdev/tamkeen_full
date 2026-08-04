@@ -58,6 +58,10 @@ public sealed class GetBookingsQueryHandler : IQueryHandler<GetBookingsQuery, Pa
         var providersList = await _userRepository.GetByIdsAsync(providerIds, cancellationToken);
         var providersDict = providersList.ToDictionary(u => u.Id);
 
+        var clientIds = bookings.Select(b => b.ClientId).Distinct().ToList();
+        var clientsList = await _userRepository.GetByIdsAsync(clientIds, cancellationToken);
+        var clientsDict = clientsList.ToDictionary(u => u.Id);
+
         var items = bookings.Select(b =>
         {
             var serviceName = "Unknown Service";
@@ -78,6 +82,14 @@ public sealed class GetBookingsQueryHandler : IQueryHandler<GetBookingsQuery, Pa
                 providerAvatarUrl = p.UserProfilePicture.Url;
             }
 
+            var clientName = "Unknown Client";
+            var clientAvatarUrl = "https://ui-avatars.com/api/?background=random";
+            if (clientsDict.TryGetValue(b.ClientId, out var cl))
+            {
+                clientName = cl.FirstName + " " + cl.LastName;
+                clientAvatarUrl = cl.UserProfilePicture.Url;
+            }
+
             return new BookingSummaryResponse(
                 b.Id,
                 b.ClientId,
@@ -89,6 +101,8 @@ public sealed class GetBookingsQueryHandler : IQueryHandler<GetBookingsQuery, Pa
                 b.CreatedAt,
                 providerName,
                 providerAvatarUrl,
+                clientName,
+                clientAvatarUrl,
                 price,
                 duration,
                 b.Review != null,
