@@ -1,5 +1,11 @@
+using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using SP.Application.Abstractions.Messaging;
 using SP.Domain.Abstractions;
+using SP.Domain.Bookings;
+using SP.Domain.Bookings.Repositories;
 using SP.Domain.Chat.Errors;
 using SP.Domain.Chat.Repositories;
 using SP.Domain.Connects;
@@ -17,17 +23,20 @@ public sealed class UnlockConversationCommandHandler
     private readonly IConversationRepository _conversationRepository;
     private readonly IWalletRepository _walletRepository;
     private readonly IConnectTransactionRepository _transactionRepository;
+    private readonly IBookingRepository _bookingRepository;
     private readonly IUnitOfWork _unitOfWork;
 
     public UnlockConversationCommandHandler(
         IConversationRepository conversationRepository,
         IWalletRepository walletRepository,
         IConnectTransactionRepository transactionRepository,
+        IBookingRepository bookingRepository,
         IUnitOfWork unitOfWork)
     {
         _conversationRepository = conversationRepository;
         _walletRepository = walletRepository;
         _transactionRepository = transactionRepository;
+        _bookingRepository = bookingRepository;
         _unitOfWork = unitOfWork;
     }
 
@@ -76,6 +85,22 @@ public sealed class UnlockConversationCommandHandler
         await _transactionRepository.AddAsync(transaction, cancellationToken);
 
         conversation.Unlock();
+
+        // Automatically accept the pending booking request when unlocking the conversation
+        var clientUserId = conversation.Participant1Id == command.UserId
+            ? conversation.Participant2Id
+            : conversation.Participant1Id;
+
+        var clientBookings = await _bookingRepository.GetByClientIdAsync(clientUserId, cancellationToken);
+        var pendingBooking = clientBookings.FirstOrDefault(b => b.ProviderId == command.UserId && b.Status == BookingStatus.Pending);
+        if (pendingBooking != null)
+        {
+            var acceptResult = pendingBooking.Accept();
+            if (acceptResult.IsSuccess)
+            {
+                _bookingRepository.Update(pendingBooking);
+            }
+        }
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
