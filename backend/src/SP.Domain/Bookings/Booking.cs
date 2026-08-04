@@ -149,9 +149,6 @@ public sealed class Booking : AggregateRoot
 
     public Result AddReport(Guid reporterId, string reason)
     {
-        if (Status != BookingStatus.Completed)
-            return Result.Failure(BookingErrors.NotCompleted);
-
         if (_report is not null)
             return Result.Failure(BookingErrors.AlreadyReported);
 
