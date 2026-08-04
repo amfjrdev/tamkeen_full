@@ -132,8 +132,8 @@ public sealed class Booking : AggregateRoot
 
     public Result AddReview(Guid clientId, int rating, string comment)
     {
-        if (Status != BookingStatus.Completed)
-            return Result.Failure(BookingErrors.NotCompleted);
+        if (Status == BookingStatus.Pending)
+            return Result.Failure(new Error("Booking.NotResponded", "You cannot review a booking that has not been responded to yet."));
 
         if (_review is not null)
             return Result.Failure(BookingErrors.AlreadyReviewed);

@@ -14,7 +14,8 @@ public sealed record BookingSummaryResponse(
     string ProviderName,
     string ProviderAvatarUrl,
     decimal ServicePrice,
-    int ServiceDurationMinutes);
+    int ServiceDurationMinutes,
+    bool IsReviewed);
 
 public sealed record BookingDetailResponse(
     Guid Id,

@@ -44,8 +44,8 @@ public class GlobalExceptionHandlingMiddleware
                 new ErrorResponse("BadRequest", exception.Message)
             ),
             UnauthorizedAccessException => (
-                HttpStatusCode.Unauthorized,
-                new ErrorResponse("Unauthorized", "You are not authorized to access this resource")
+                HttpStatusCode.InternalServerError,
+                new ErrorResponse("InternalServerError", "Access to the resource or filesystem path is denied.")
             ),
             KeyNotFoundException => (
                 HttpStatusCode.NotFound,
