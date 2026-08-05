@@ -86,6 +86,7 @@ services:
 
       # CORS
       Cors__AllowedOrigins__0: "${CORS_ORIGIN_0:-}"
+      Cors__AllowedOrigins__1: "${CORS_ORIGIN_1:-}"
 
       # App
       App__BaseUrl: "${APP_BASE_URL}"
