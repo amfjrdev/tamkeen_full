@@ -20,7 +20,7 @@ public static class ConnectsEndpoints
     {
         group.MapGet("/balance", GetBalance).RequireAuthorization();
         group.MapGet("/packs", GetPacks).RequireAuthorization();
-        group.MapPost("/purchase", Purchase).RequireAuthorization();
+        group.MapPost("/purchase", Purchase).RequireAuthorization(AuthorizationPolicies.AdminOnly);
         group.MapPost("/checkout", Checkout).RequireAuthorization();
 
         return group;

@@ -16,6 +16,7 @@ using SP.Domain.Payments;
 using SP.Domain.Payments.Enums;
 using SP.Domain.Payments.Errors;
 using SP.Domain.Payments.Repositories;
+using Microsoft.Extensions.Logging;
 using Xunit;
 
 namespace SP.UnitTests.Application.Payments;
@@ -28,6 +29,7 @@ public sealed class PaymentCommandHandlerTests
     private readonly IConnectTransactionRepository _transactionRepo = Substitute.For<IConnectTransactionRepository>();
     private readonly IConnectPackRepository _connectPackRepo = Substitute.For<IConnectPackRepository>();
     private readonly IUnitOfWork _uow = Substitute.For<IUnitOfWork>();
+    private readonly ILogger<CompletePaymentCommandHandler> _logger = Substitute.For<ILogger<CompletePaymentCommandHandler>>();
 
     private static readonly Guid UserId = Guid.NewGuid();
     private static readonly string CheckoutId = "checkout-123";
@@ -90,7 +92,7 @@ public sealed class PaymentCommandHandlerTests
         var wallet = Wallet.Create(UserId, 0);
         _walletRepo.GetByUserIdAsync(UserId, Arg.Any<CancellationToken>()).Returns(wallet);
 
-        var handler = new CompletePaymentCommandHandler(_paymentRepo, _walletRepo, _transactionRepo, _connectPackRepo, _uow);
+        var handler = new CompletePaymentCommandHandler(_paymentRepo, _walletRepo, _transactionRepo, _connectPackRepo, _uow, _logger);
         var command = new CompletePaymentCommand(CheckoutId, "paid", Amount);
 
         // Act
@@ -112,7 +114,7 @@ public sealed class PaymentCommandHandlerTests
         payment.Complete(PaymentStatus.Paid);
         _paymentRepo.GetByCheckoutIdAsync(CheckoutId, Arg.Any<CancellationToken>()).Returns(payment);
 
-        var handler = new CompletePaymentCommandHandler(_paymentRepo, _walletRepo, _transactionRepo, _connectPackRepo, _uow);
+        var handler = new CompletePaymentCommandHandler(_paymentRepo, _walletRepo, _transactionRepo, _connectPackRepo, _uow, _logger);
         var command = new CompletePaymentCommand(CheckoutId, "paid", Amount);
 
         // Act
@@ -130,7 +132,7 @@ public sealed class PaymentCommandHandlerTests
         // Arrange
         _paymentRepo.GetByCheckoutIdAsync(CheckoutId, Arg.Any<CancellationToken>()).Returns((Payment?)null);
 
-        var handler = new CompletePaymentCommandHandler(_paymentRepo, _walletRepo, _transactionRepo, _connectPackRepo, _uow);
+        var handler = new CompletePaymentCommandHandler(_paymentRepo, _walletRepo, _transactionRepo, _connectPackRepo, _uow, _logger);
         var command = new CompletePaymentCommand(CheckoutId, "paid", Amount);
 
         // Act
@@ -148,7 +150,7 @@ public sealed class PaymentCommandHandlerTests
         var payment = Payment.Create(UserId, CheckoutId, CheckoutUrl, PackId, Amount);
         _paymentRepo.GetByCheckoutIdAsync(CheckoutId, Arg.Any<CancellationToken>()).Returns(payment);
 
-        var handler = new CompletePaymentCommandHandler(_paymentRepo, _walletRepo, _transactionRepo, _connectPackRepo, _uow);
+        var handler = new CompletePaymentCommandHandler(_paymentRepo, _walletRepo, _transactionRepo, _connectPackRepo, _uow, _logger);
         var command = new CompletePaymentCommand(CheckoutId, "failed", Amount);
 
         // Act
@@ -168,7 +170,7 @@ public sealed class PaymentCommandHandlerTests
         var payment = Payment.Create(UserId, CheckoutId, CheckoutUrl, PackId, Amount);
         _paymentRepo.GetByCheckoutIdAsync(CheckoutId, Arg.Any<CancellationToken>()).Returns(payment);
 
-        var handler = new CompletePaymentCommandHandler(_paymentRepo, _walletRepo, _transactionRepo, _connectPackRepo, _uow);
+        var handler = new CompletePaymentCommandHandler(_paymentRepo, _walletRepo, _transactionRepo, _connectPackRepo, _uow, _logger);
         var command = new CompletePaymentCommand(CheckoutId, "expired", Amount);
 
         // Act
@@ -204,5 +206,26 @@ public sealed class PaymentCommandHandlerTests
         dto.Amount.Should().Be(Amount);
         dto.Status.Should().Be(PaymentStatus.Pending.ToString());
         dto.PackId.Should().Be(PackId);
+    }
+
+    [Fact]
+    public async Task CompletePayment_WhenAmountMismatch_ReturnsFailureAndDoesNotCredit()
+    {
+        // Arrange
+        var payment = Payment.Create(UserId, CheckoutId, CheckoutUrl, PackId, Amount);
+        _paymentRepo.GetByCheckoutIdAsync(CheckoutId, Arg.Any<CancellationToken>()).Returns(payment);
+
+        var handler = new CompletePaymentCommandHandler(_paymentRepo, _walletRepo, _transactionRepo, _connectPackRepo, _uow, _logger);
+        var command = new CompletePaymentCommand(CheckoutId, "paid", Amount + 10.00m);
+
+        // Act
+        var result = await handler.HandleAsync(command, CancellationToken.None);
+
+        // Assert
+        result.IsFailure.Should().BeTrue();
+        result.Error.Code.Should().Be("Payment.AmountMismatch");
+        payment.Status.Should().Be(PaymentStatus.Pending);
+        await _walletRepo.DidNotReceive().GetByUserIdAsync(Arg.Any<Guid>(), Arg.Any<CancellationToken>());
+        await _uow.DidNotReceive().SaveChangesAsync(Arg.Any<CancellationToken>());
     }
 }

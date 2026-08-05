@@ -480,7 +480,7 @@ public static class AdminDashboardEndpoints
             var startOfM = new DateTime(m.Year, m.Month, 1, 0, 0, 0, DateTimeKind.Utc);
             var endOfM = startOfM.AddMonths(1);
             var starter = await dbContext.Payments.CountAsync(p => p.Status == PaymentStatus.Paid && p.PackId != null && p.PackId.ToLower().Contains("starter") && p.CreatedAt >= startOfM && p.CreatedAt < endOfM, ct);
-            var professional = await dbContext.Payments.CountAsync(p => p.Status == PaymentStatus.Paid && p.PackId != null && p.PackId.ToLower().Contains("professional") && p.CreatedAt >= startOfM && p.CreatedAt < endOfM, ct);
+            var professional = await dbContext.Payments.CountAsync(p => p.Status == PaymentStatus.Paid && p.PackId != null && (p.PackId.ToLower().Contains("professional") || p.PackId.ToLower().Contains("medium")) && p.CreatedAt >= startOfM && p.CreatedAt < endOfM, ct);
             var premium = await dbContext.Payments.CountAsync(p => p.Status == PaymentStatus.Paid && p.PackId != null && p.PackId.ToLower().Contains("premium") && p.CreatedAt >= startOfM && p.CreatedAt < endOfM, ct);
             var enterprise = await dbContext.Payments.CountAsync(p => p.Status == PaymentStatus.Paid && p.PackId != null && p.PackId.ToLower().Contains("enterprise") && p.CreatedAt >= startOfM && p.CreatedAt < endOfM, ct);
 
@@ -517,7 +517,7 @@ public static class AdminDashboardEndpoints
 
         // Breakdown categories sum
         var breakdownStarter = await dbContext.Payments.Where(p => p.Status == PaymentStatus.Paid && p.PackId != null && p.PackId.ToLower().Contains("starter")).SumAsync(p => p.Amount, ct);
-        var breakdownProfessional = await dbContext.Payments.Where(p => p.Status == PaymentStatus.Paid && p.PackId != null && p.PackId.ToLower().Contains("professional")).SumAsync(p => p.Amount, ct);
+        var breakdownProfessional = await dbContext.Payments.Where(p => p.Status == PaymentStatus.Paid && p.PackId != null && (p.PackId.ToLower().Contains("professional") || p.PackId.ToLower().Contains("medium"))).SumAsync(p => p.Amount, ct);
         var breakdownPremium = await dbContext.Payments.Where(p => p.Status == PaymentStatus.Paid && p.PackId != null && p.PackId.ToLower().Contains("premium")).SumAsync(p => p.Amount, ct);
         var breakdownEnterprise = await dbContext.Payments.Where(p => p.Status == PaymentStatus.Paid && p.PackId != null && p.PackId.ToLower().Contains("enterprise")).SumAsync(p => p.Amount, ct);
 
@@ -606,12 +606,31 @@ public static class AdminDashboardEndpoints
             .Where(u => userIds.Contains(u.Id))
             .ToDictionaryAsync(u => u.Id, u => $"{u.FirstName} {u.LastName}", ct);
 
+        var packsMap = await dbContext.ConnectPacks
+            .ToDictionaryAsync(cp => cp.Code.ToLowerInvariant(), cp => cp.Credits, ct);
+
+        var connectsMapFallback = new Dictionary<string, int>
+        {
+            { "starter", 5 },
+            { "medium", 15 },
+            { "premium", 50 }
+        };
+
+        var getCredits = (string? packId) =>
+        {
+            if (string.IsNullOrWhiteSpace(packId)) return 0;
+            var normalized = packId.ToLowerInvariant().Trim();
+            if (packsMap.TryGetValue(normalized, out var dbCredits)) return dbCredits;
+            if (connectsMapFallback.TryGetValue(normalized, out var mapCredits)) return mapCredits;
+            return 0;
+        };
+
         var transactions = dbPayments.Select(p => new
         {
             id = p.CheckoutId,
             provider = usersMap.TryGetValue(p.UserId, out var name) ? name : "Seeded Provider",
             @package = p.PackId ?? "Starter Package",
-            credits = p.PackId == "starter" ? 30 : p.PackId == "medium" ? 100 : p.PackId == "premium" ? 250 : 0,
+            credits = getCredits(p.PackId),
             amount = (int)p.Amount,
             method = p.Provider == "Chargily" ? "Credit Card" : "PayPal",
             status = p.Status.ToString().ToLower(),
@@ -625,7 +644,7 @@ public static class AdminDashboardEndpoints
             id = idx + 1,
             user = usersMap.TryGetValue(p.UserId, out var name) ? name : "Seeded Provider",
             @package = p.PackId ?? "Starter Package",
-            credits = p.PackId == "starter" ? 30 : p.PackId == "medium" ? 100 : p.PackId == "premium" ? 250 : 0,
+            credits = getCredits(p.PackId),
             amount = (int)p.Amount,
             status = p.Status.ToString().ToLower(),
             time = GetTimeAgo(p.CreatedAt, now)

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using SP.Application.Abstractions.Messaging;
 using SP.Domain.Abstractions;
 using SP.Domain.Connects;
@@ -25,6 +26,7 @@ public sealed class CompletePaymentCommandHandler : ICommandHandler<CompletePaym
     private readonly IConnectTransactionRepository _transactionRepository;
     private readonly IConnectPackRepository _connectPackRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<CompletePaymentCommandHandler> _logger;
 
     private static readonly Dictionary<string, int> ConnectsMap = new()
     {
@@ -38,13 +40,15 @@ public sealed class CompletePaymentCommandHandler : ICommandHandler<CompletePaym
         IWalletRepository walletRepository,
         IConnectTransactionRepository transactionRepository,
         IConnectPackRepository connectPackRepository,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<CompletePaymentCommandHandler> logger)
     {
         _paymentRepository = paymentRepository;
         _walletRepository = walletRepository;
         _transactionRepository = transactionRepository;
         _connectPackRepository = connectPackRepository;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
     public async Task<Result> HandleAsync(
@@ -62,6 +66,13 @@ public sealed class CompletePaymentCommandHandler : ICommandHandler<CompletePaym
         if (payment.Status != PaymentStatus.Pending)
         {
             return Result.Success();
+        }
+
+        // 2.5. Verify Payment Amount Integrity
+        if (payment.Amount != command.Amount)
+        {
+            _logger.LogWarning("Security Violation: Payment amount mismatch for checkout {CheckoutId}. Expected: {Expected}, Paid: {Paid}", command.CheckoutId, payment.Amount, command.Amount);
+            return Result.Failure(new Error("Payment.AmountMismatch", "The paid amount does not match the package price."));
         }
 
         // 3. Resolve status transition
@@ -126,8 +137,13 @@ public sealed class CompletePaymentCommandHandler : ICommandHandler<CompletePaym
         return Result.Success();
     }
 
-    private static PaymentStatus ResolvePaymentStatus(string rawStatus)
+    private static PaymentStatus ResolvePaymentStatus(string? rawStatus)
     {
+        if (string.IsNullOrWhiteSpace(rawStatus))
+        {
+            return PaymentStatus.Failed;
+        }
+
         return rawStatus.ToLowerInvariant().Trim() switch
         {
             "paid" => PaymentStatus.Paid,
@@ -137,4 +153,5 @@ public sealed class CompletePaymentCommandHandler : ICommandHandler<CompletePaym
             _ => PaymentStatus.Failed
         };
     }
+
 }

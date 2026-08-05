@@ -26,6 +26,8 @@ public static class PaymentsEndpoints
     {
         group.MapPost("/webhook/chargily", ReceiveWebhook);
         group.MapGet("/history", GetHistory).RequireAuthorization();
+        group.MapGet("/success", ServeSuccessPage);
+        group.MapGet("/failure", ServeFailurePage);
 
         return group;
     }
@@ -179,4 +181,169 @@ public static class PaymentsEndpoints
         string Id,
         decimal Amount,
         string Status);
+
+    private static IResult ServeSuccessPage()
+    {
+        return Results.Content(SuccessHtml, "text/html", Encoding.UTF8);
+    }
+
+    private static IResult ServeFailurePage()
+    {
+        return Results.Content(FailureHtml, "text/html", Encoding.UTF8);
+    }
+
+    private static readonly string SuccessHtml = """
+        <!DOCTYPE html>
+        <html lang="fr">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Paiement Réussi - Tamkeen</title>
+            <style>
+                body {
+                    background-color: #0f172a;
+                    color: #ffffff;
+                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    height: 100vh;
+                    margin: 0;
+                }
+                .card {
+                    background: rgba(30, 41, 59, 0.7);
+                    backdrop-filter: blur(10px);
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    padding: 40px;
+                    border-radius: 24px;
+                    text-align: center;
+                    max-width: 400px;
+                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+                    animation: fadeIn 0.6s ease-out;
+                }
+                .icon-circle {
+                    width: 80px;
+                    height: 80px;
+                    background: rgba(16, 185, 129, 0.1);
+                    border: 2px solid #10b981;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin: 0 auto 24px;
+                }
+                .icon-circle svg {
+                    color: #10b981;
+                    width: 40px;
+                    height: 40px;
+                }
+                h1 {
+                    font-size: 24px;
+                    margin: 0 0 12px;
+                    font-weight: 700;
+                }
+                p {
+                    color: #94a3b8;
+                    font-size: 15px;
+                    line-height: 1.5;
+                    margin: 0 0 24px;
+                }
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: translateY(20px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="card">
+                <div class="icon-circle">
+                    <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"></path>
+                    </svg>
+                </div>
+                <h1>Paiement Réussi !</h1>
+                <p>Votre transaction a été validée avec succès. Vos crédits ont été ajoutés à votre portefeuille.</p>
+                <p>Vous pouvez maintenant fermer cette fenêtre en toute sécurité et retourner sur l'application Tamkeen.</p>
+            </div>
+        </body>
+        </html>
+        """;
+
+    private static readonly string FailureHtml = """
+        <!DOCTYPE html>
+        <html lang="fr">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Échec du Paiement - Tamkeen</title>
+            <style>
+                body {
+                    background-color: #0f172a;
+                    color: #ffffff;
+                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    height: 100vh;
+                    margin: 0;
+                }
+                .card {
+                    background: rgba(30, 41, 59, 0.7);
+                    backdrop-filter: blur(10px);
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    padding: 40px;
+                    border-radius: 24px;
+                    text-align: center;
+                    max-width: 400px;
+                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+                    animation: fadeIn 0.6s ease-out;
+                }
+                .icon-circle {
+                    width: 80px;
+                    height: 80px;
+                    background: rgba(239, 68, 68, 0.1);
+                    border: 2px solid #ef4444;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin: 0 auto 24px;
+                }
+                .icon-circle svg {
+                    color: #ef4444;
+                    width: 40px;
+                    height: 40px;
+                }
+                h1 {
+                    font-size: 24px;
+                    margin: 0 0 12px;
+                    font-weight: 700;
+                }
+                p {
+                    color: #94a3b8;
+                    font-size: 15px;
+                    line-height: 1.5;
+                    margin: 0 0 24px;
+                }
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: translateY(20px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="card">
+                <div class="icon-circle">
+                    <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </div>
+                <h1>Échec du Paiement</h1>
+                <p>Votre transaction n'a pas pu être validée ou a été annulée. Aucun montant n'a été débité.</p>
+                <p>Vous pouvez fermer cette fenêtre en toute sécurité et retourner sur l'application Tamkeen pour réessayer.</p>
+            </div>
+        </body>
+        </html>
+        """;
 }
+
