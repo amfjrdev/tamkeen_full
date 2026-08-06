@@ -23,7 +23,7 @@ internal abstract class Repository<T> : IRepository<T> where T : Entity
     public void Remove(T entity)
         => Context.Set<T>().Remove(entity);
 
-    public async Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public virtual async Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         => await Context.Set<T>().FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
 
     public async Task<IReadOnlyList<T>> GetAllAsync(CancellationToken cancellationToken = default)

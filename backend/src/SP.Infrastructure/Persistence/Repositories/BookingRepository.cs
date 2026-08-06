@@ -68,6 +68,8 @@ internal sealed class BookingRepository : Repository<Booking>, IBookingRepositor
         var totalCount = await query.CountAsync(cancellationToken);
 
         var bookings = await query
+            .Include(b => b.Review)
+            .Include(b => b.Report)
             .AsNoTracking()
             .OrderByDescending(b => b.CreatedAt)
             .Skip((page - 1) * pageSize)
@@ -75,6 +77,14 @@ internal sealed class BookingRepository : Repository<Booking>, IBookingRepositor
             .ToListAsync(cancellationToken);
 
         return (bookings, totalCount);
+    }
+
+    public override async Task<Booking?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        return await Context.Bookings
+            .Include(b => b.Review)
+            .Include(b => b.Report)
+            .FirstOrDefaultAsync(b => b.Id == id, cancellationToken);
     }
 
     public async Task<IEnumerable<Booking>> GetPendingBookingsAsync(
