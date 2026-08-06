@@ -33,7 +33,8 @@ public sealed record UserResponseDto(
     int BookingsCount,
     int ReviewsCount,
     int FavoritesCount,
-    IReadOnlyList<RecentBookingDto>? RecentBookings
+    IReadOnlyList<RecentBookingDto>? RecentBookings,
+    decimal HourlyRate = 0
 );
 
 public static class UserMapper

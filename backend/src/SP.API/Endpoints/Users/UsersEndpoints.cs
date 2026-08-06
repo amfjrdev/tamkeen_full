@@ -29,6 +29,7 @@ public static class UsersEndpoints
         group.MapGet("/", GetAll).RequireAuthorization(AuthorizationPolicies.AdminOnly);
         group.MapPut("/profile", UpdateProfile).RequireAuthorization();
         group.MapPost("/profile-picture", UpdateProfilePicture).RequireAuthorization().DisableAntiforgery();
+        group.MapPost("/upload", UploadMedia).RequireAuthorization().DisableAntiforgery();
         group.MapPatch("/phone", UpdatePhone).RequireAuthorization();
         group.MapPatch("/location", UpdateLocation).RequireAuthorization();
         group.MapDelete("/", DeleteAccount).RequireAuthorization();
@@ -123,6 +124,25 @@ public static class UsersEndpoints
         return result.IsFailure
             ? result.Error.ToProblem()
             : Results.Ok(new { url = pictureUrl });
+    }
+
+    private static async Task<IResult> UploadMedia(
+        IFormFile file,
+        IFileService fileService,
+        CancellationToken ct)
+    {
+        if (file is null || file.Length == 0)
+        {
+            return Results.BadRequest("No file uploaded.");
+        }
+
+        var urls = await fileService.UploadFilesAsync(new List<IFormFile> { file }, "chat-media", ct);
+        if (urls.Count == 0)
+        {
+            return Results.BadRequest("Failed to upload file.");
+        }
+
+        return Results.Ok(new { url = urls[0] });
     }
 
     private static async Task<IResult> UpdatePhone(

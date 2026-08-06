@@ -19,6 +19,12 @@ internal sealed class ProviderProfileRepository
         => await Context.ProviderProfiles
             .AnyAsync(p => p.ProviderId == providerId, cancellationToken);
 
+    public async Task<IReadOnlyList<ProviderProfile>> GetByProviderIdsAsync(
+        IEnumerable<Guid> providerIds, CancellationToken cancellationToken = default)
+        => await Context.ProviderProfiles
+            .Where(p => providerIds.Contains(p.ProviderId))
+            .ToListAsync(cancellationToken);
+
     public async Task<(IReadOnlyList<(Guid Id, Guid ProviderId, string FirstName, string LastName, string AvatarUrl, double Rating, int ReviewCount, double? DistanceKm, bool IsAvailable, decimal HourlyRate)> Items, int TotalCount)> SearchProvidersAsync(
         Guid? categoryId,
         string? search,

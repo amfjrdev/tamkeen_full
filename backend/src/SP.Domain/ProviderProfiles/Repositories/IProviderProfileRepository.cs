@@ -6,6 +6,7 @@ public interface IProviderProfileRepository : IRepository<ProviderProfile>
 {
     Task<ProviderProfile?> GetByProviderIdAsync(Guid providerId, CancellationToken cancellationToken = default);
     Task<bool> ExistsByProviderIdAsync(Guid providerId, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<ProviderProfile>> GetByProviderIdsAsync(IEnumerable<Guid> providerIds, CancellationToken cancellationToken = default);
 
     Task<(IReadOnlyList<(Guid Id, Guid ProviderId, string FirstName, string LastName, string AvatarUrl, double Rating, int ReviewCount, double? DistanceKm, bool IsAvailable, decimal HourlyRate)> Items, int TotalCount)> SearchProvidersAsync(
         Guid? categoryId,
