@@ -86,8 +86,8 @@ internal sealed class BookingRepository : Repository<Booking>, IBookingRepositor
     public async Task<(int JobsDone, int ReviewCount, double AverageRating)> GetProviderStatsAsync(
         Guid providerId, CancellationToken cancellationToken = default)
     {
-        var jobsDone = await Context.Bookings
-            .CountAsync(b => b.ProviderId == providerId && b.Status == BookingStatus.Completed,
+        var jobsDone = await Context.Conversations
+            .CountAsync(c => !c.IsLocked && (c.Participant1Id == providerId || c.Participant2Id == providerId),
                 cancellationToken);
 
         var reviewStats = await Context.Bookings
