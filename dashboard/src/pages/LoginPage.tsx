@@ -67,7 +67,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin, onNavigate }) => 
             <div className="relative">
               <input
                 type="email"
-                placeholder="admin@tamkeendz.com"
+                placeholder="Saisissez votre adresse e-mail"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={loading}
