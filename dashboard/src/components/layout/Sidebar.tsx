@@ -55,16 +55,25 @@ export const Sidebar: React.FC<SidebarProps> = ({ navItems, isOpen, onClose, onN
           ))}
         </nav>
 
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-800 bg-[#0d0d0d]">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-indigo-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
+        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-800 bg-[#0d0d0d] flex items-center justify-between">
+          <div className="flex items-center gap-3 overflow-hidden">
+            <div className="w-9 h-9 bg-indigo-600 rounded-full flex items-center justify-center text-white text-xs font-semibold flex-shrink-0">
               AD
             </div>
             <div className="overflow-hidden">
-              <p className="text-white text-sm font-medium truncate">Admin User</p>
-              <p className="text-gray-500 text-xs truncate">admin@platform.com</p>
+              <p className="text-white text-xs font-medium truncate">Admin User</p>
+              <p className="text-gray-500 text-[10px] truncate">admin@platform.com</p>
             </div>
           </div>
+          <button 
+            onClick={() => onNavigate && onNavigate('Logout')}
+            className="text-gray-400 hover:text-red-400 p-1.5 rounded-lg hover:bg-gray-800/50 transition-colors cursor-pointer"
+            title="Se déconnecter"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
+          </button>
         </div>
       </aside>
     </>

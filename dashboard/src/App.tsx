@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { LandingPage } from './pages/LandingPage';
+import { LoginPage } from './pages/LoginPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { UsersPage } from './pages/UsersPage';
 import { ProvidersPage } from './pages/ProvidersPage';
@@ -9,16 +11,65 @@ import { TransactionsPage } from './pages/TransactionsPage';
 import { PackagesPage } from './pages/PackagesPage';
 import { AnalyticsPage } from './pages/AnalyticsPage';
 
-type ActivePage = 'Dashboard' | 'Users' | 'Providers' | 'Messaging' | 'Categories' | 'Revenue' | 'Transactions' | 'Packages' | 'Analytics' | string;
+type ActivePage = 
+  | 'Landing'
+  | 'Login'
+  | 'Dashboard'
+  | 'Users'
+  | 'Providers'
+  | 'Messaging'
+  | 'Categories'
+  | 'Revenue'
+  | 'Transactions'
+  | 'Packages'
+  | 'Analytics'
+  | string;
 
 const App: React.FC = () => {
-  const [activePage, setActivePage] = useState<ActivePage>('Dashboard');
+  const [activePage, setActivePage] = useState<ActivePage>('Landing');
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    return localStorage.getItem('admin_token') === 'true';
+  });
 
-  const handleNavigate = (pageLabel: string) => {
-    setActivePage(pageLabel);
+  const handleLogin = async (email: string, password: string): Promise<boolean> => {
+    // Validate credentials (supports both production and testing credentials)
+    if (
+      (email === 'admin@tamkeendz.com' || email === 'admin@test.com') && 
+      password === 'Admin123!'
+    ) {
+      localStorage.setItem('admin_token', 'true');
+      setIsAuthenticated(true);
+      setActivePage('Dashboard');
+      return true;
+    }
+    return false;
   };
 
-  // Render active page dynamically
+  const handleNavigate = (pageLabel: string) => {
+    if (pageLabel === 'Logout') {
+      localStorage.removeItem('admin_token');
+      setIsAuthenticated(false);
+      setActivePage('Landing');
+    } else {
+      setActivePage(pageLabel);
+    }
+  };
+
+  // 1. Unprotected Public Pages
+  if (activePage === 'Landing') {
+    return <LandingPage onNavigate={handleNavigate} />;
+  }
+
+  if (activePage === 'Login') {
+    return <LoginPage onLogin={handleLogin} onNavigate={handleNavigate} />;
+  }
+
+  // 2. Auth Guard for Administrative Pages
+  if (!isAuthenticated) {
+    return <LoginPage onLogin={handleLogin} onNavigate={handleNavigate} />;
+  }
+
+  // Render active admin page dynamically
   switch (activePage) {
     case 'Dashboard':
       return <DashboardPage onNavigate={handleNavigate} />;
@@ -39,12 +90,11 @@ const App: React.FC = () => {
     case 'Analytics':
       return <AnalyticsPage onNavigate={handleNavigate} />;
     default:
-      // Fallback placeholder for other pages that are not yet built
       return (
         <div className="min-h-screen bg-[#0a0a0a] text-white flex flex-col items-center justify-center p-6 text-center">
           <h1 className="text-3xl font-bold mb-4">{activePage} Page</h1>
           <p className="text-gray-400 max-w-md mb-8">
-            This module is currently under construction as part of the step-by-step layout integration.
+            This module is currently under construction.
           </p>
           <button
             onClick={() => setActivePage('Dashboard')}
