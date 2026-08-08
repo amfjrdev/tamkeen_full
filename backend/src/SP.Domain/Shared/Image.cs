@@ -1,4 +1,4 @@
-﻿namespace SP.Domain.Shared;
+namespace SP.Domain.Shared;
 
 public sealed record Image(string Url, bool IsMain = false)
 {
@@ -9,7 +9,7 @@ public sealed record Image(string Url, bool IsMain = false)
         if (string.IsNullOrWhiteSpace(url))
             throw new ArgumentException("Image URL cannot be null or empty.");
 
-        if (!Uri.IsWellFormedUriString(url, UriKind.Absolute))
+        if (!Uri.IsWellFormedUriString(url, UriKind.Absolute) && !url.StartsWith("/"))
             throw new ArgumentException("Invalid image URL.");
 
         return new Image(url, isMain);
