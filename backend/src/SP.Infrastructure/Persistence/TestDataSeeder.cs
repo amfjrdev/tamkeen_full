@@ -23,6 +23,44 @@ public static class TestDataSeeder
 {
     public static async Task SeedTestAccounts(ApplicationDbContext context, IConfiguration configuration)
     {
+        // Unconditionally delete all extra client/provider accounts except defaults to clean the DB manually
+        var defaultEmails = new[] { "admin@test.com", "client@test.com", "provider@test.com" };
+        var extraUsers = await context.Users
+            .Where(u => !defaultEmails.Contains(u.Email))
+            .ToListAsync();
+
+        if (extraUsers.Any())
+        {
+            var extraUserGuids = extraUsers.Select(u => u.Id).ToList();
+
+            var relatedBookings = await context.Bookings.Where(b => extraUserGuids.Contains(b.ClientId) || extraUserGuids.Contains(b.ProviderId)).ToListAsync();
+            context.Bookings.RemoveRange(relatedBookings);
+
+            var relatedPayments = await context.Payments.Where(p => extraUserGuids.Contains(p.UserId)).ToListAsync();
+            context.Payments.RemoveRange(relatedPayments);
+
+            var relatedChats = await context.ChatMessagesStandalone.Where(m => extraUserGuids.Contains(m.SenderId)).ToListAsync();
+            context.ChatMessagesStandalone.RemoveRange(relatedChats);
+
+            var relatedConversations = await context.Conversations.Where(c => extraUserGuids.Contains(c.ClientId) || extraUserGuids.Contains(c.ProviderId)).ToListAsync();
+            context.Conversations.RemoveRange(relatedConversations);
+
+            var relatedNotifications = await context.Notifications.Where(n => extraUserGuids.Contains(n.UserId)).ToListAsync();
+            context.Notifications.RemoveRange(relatedNotifications);
+
+            var relatedPortfolios = await context.Portfolios.Where(p => extraUserGuids.Contains(p.ProviderId)).ToListAsync();
+            context.Portfolios.RemoveRange(relatedPortfolios);
+
+            var relatedProfiles = await context.ProviderProfiles.Where(p => extraUserGuids.Contains(p.ProviderId)).ToListAsync();
+            context.ProviderProfiles.RemoveRange(relatedProfiles);
+
+            var relatedWallets = await context.Wallets.Where(w => extraUserGuids.Contains(w.ProviderId)).ToListAsync();
+            context.Wallets.RemoveRange(relatedWallets);
+
+            context.Users.RemoveRange(extraUsers);
+            await context.SaveChangesAsync();
+        }
+
         // Seed configurations first
         await ConfigurationSeeder.SeedConfigurationsAsync(context);
 
