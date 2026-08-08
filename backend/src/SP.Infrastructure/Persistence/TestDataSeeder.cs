@@ -24,9 +24,10 @@ public static class TestDataSeeder
     public static async Task SeedTestAccounts(ApplicationDbContext context, IConfiguration configuration)
     {
         // Unconditionally delete all extra client/provider accounts except defaults to clean the DB manually
-        var defaultEmails = new[] { "admin@test.com", "client@test.com", "provider@test.com" };
+        // We protect all Admin accounts and the default test accounts
+        var defaultEmails = new[] { "client@test.com", "provider@test.com" };
         var extraUsers = await context.Users
-            .Where(u => !defaultEmails.Contains(u.Email))
+            .Where(u => u.Role != UserRole.Admin && !defaultEmails.Contains(u.Email))
             .ToListAsync();
 
         if (extraUsers.Any())
