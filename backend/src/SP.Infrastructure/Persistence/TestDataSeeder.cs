@@ -42,7 +42,7 @@ public static class TestDataSeeder
             var relatedChats = await context.ChatMessagesStandalone.Where(m => extraUserGuids.Contains(m.SenderId)).ToListAsync();
             context.ChatMessagesStandalone.RemoveRange(relatedChats);
 
-            var relatedConversations = await context.Conversations.Where(c => extraUserGuids.Contains(c.ClientId) || extraUserGuids.Contains(c.ProviderId)).ToListAsync();
+            var relatedConversations = await context.Conversations.Where(c => extraUserGuids.Contains(c.Participant1Id) || extraUserGuids.Contains(c.Participant2Id)).ToListAsync();
             context.Conversations.RemoveRange(relatedConversations);
 
             var relatedNotifications = await context.Notifications.Where(n => extraUserGuids.Contains(n.UserId)).ToListAsync();
@@ -54,7 +54,7 @@ public static class TestDataSeeder
             var relatedProfiles = await context.ProviderProfiles.Where(p => extraUserGuids.Contains(p.ProviderId)).ToListAsync();
             context.ProviderProfiles.RemoveRange(relatedProfiles);
 
-            var relatedWallets = await context.Wallets.Where(w => extraUserGuids.Contains(w.ProviderId)).ToListAsync();
+            var relatedWallets = await context.Wallets.Where(w => extraUserGuids.Contains(w.UserId)).ToListAsync();
             context.Wallets.RemoveRange(relatedWallets);
 
             context.Users.RemoveRange(extraUsers);
