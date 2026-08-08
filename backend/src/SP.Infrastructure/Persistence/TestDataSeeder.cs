@@ -222,7 +222,7 @@ public static class TestDataSeeder
         // 4. Seed Standalone Conversations and Messages
         void seedChat(Guid clientUserId, Guid providerUserId, bool isLocked, List<string> messagesList)
         {
-            var conv = Conversation.Create(clientUserId, providerUserId, 5);
+            var conv = Conversation.Create(clientUserId, providerUserId, 50);
             if (!isLocked) conv.Unlock();
             context.Conversations.Add(conv);
 

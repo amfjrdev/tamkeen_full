@@ -26,7 +26,7 @@ public sealed class Conversation : AggregateRoot
     public DateTime CreatedAt { get; private set; }
     public DateTime? UpdatedAt { get; private set; }
 
-    public static Conversation Create(Guid participant1Id, Guid participant2Id, int unlockCost = 5)
+    public static Conversation Create(Guid participant1Id, Guid participant2Id, int unlockCost = 50)
     {
         if (participant1Id == Guid.Empty)
             throw new ArgumentException("Participant 1 ID cannot be empty.", nameof(participant1Id));
