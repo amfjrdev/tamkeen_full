@@ -13,4 +13,5 @@ public interface IUserRepository : IRepository<User>
     Task<User?> GetByRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken = default);
     Task<IReadOnlyList<User>> GetByIdsAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken = default);
     Task<IReadOnlyList<User>> GetByRoleAsync(UserRole role, CancellationToken cancellationToken = default);
+    Task HardDeleteAsync(Guid userId, CancellationToken cancellationToken = default);
 }

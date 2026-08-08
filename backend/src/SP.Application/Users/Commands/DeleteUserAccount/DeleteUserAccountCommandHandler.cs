@@ -1,3 +1,4 @@
+using SP.Application.Abstractions.Authentication;
 using SP.Application.Abstractions.Messaging;
 using SP.Domain.Abstractions;
 using SP.Domain.Users;
@@ -8,10 +9,17 @@ namespace SP.Application.Users.Commands.DeleteUserAccount;
 public sealed class DeleteUserAccountCommandHandler : ICommandHandler<DeleteUserAccountCommand>
 {
     private readonly IUserRepository _userRepository;
+    private readonly IPasswordHasher _passwordHasher;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public DeleteUserAccountCommandHandler(IUserRepository userRepository)
+    public DeleteUserAccountCommandHandler(
+        IUserRepository userRepository,
+        IPasswordHasher passwordHasher,
+        IUnitOfWork unitOfWork)
     {
         _userRepository = userRepository;
+        _passwordHasher = passwordHasher;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Result> HandleAsync(DeleteUserAccountCommand command, CancellationToken cancellationToken = default)
@@ -25,17 +33,13 @@ public sealed class DeleteUserAccountCommandHandler : ICommandHandler<DeleteUser
         if (user is null)
             return Result.Failure(UserErrors.NotFound);
 
-        // Infrastructure layer will handle:
-        // - Password verification
-        // - Cascading deletes (bookings, reviews, etc.)
-        // - Data anonymization where required
-        
-        // Mark user as deleted
-        var deleteResult = user.Delete();
-        if (deleteResult.IsFailure)
-            return deleteResult;
+        // Verify password
+        if (user.Credential is null || !_passwordHasher.Verify(user.Credential.PasswordHash, command.Password))
+            return Result.Failure(UserErrors.InvalidPassword);
 
-        _userRepository.Update(user);
+        // Perform hard delete of user and all related records
+        await _userRepository.HardDeleteAsync(command.UserId, cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success();
     }
