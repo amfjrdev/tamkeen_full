@@ -148,19 +148,29 @@ public static class TestDataSeeder
             return user;
         }
 
+        string GetSeederValue(string key, string defaultValue)
+        {
+            var val = seederSection[key];
+            if (string.IsNullOrWhiteSpace(val) || val.Trim() == "<set-via-env>" || (key.EndsWith("Email") && !val.Contains("@")))
+            {
+                return defaultValue;
+            }
+            return val.Trim();
+        }
+
         // Admin
-        var adminEmail = seederSection["AdminEmail"] ?? "admin@test.com";
-        var adminPassword = seederSection["AdminPassword"] ?? "Admin123!";
+        var adminEmail = GetSeederValue("AdminEmail", "admin@tamkeendz.com");
+        var adminPassword = GetSeederValue("AdminPassword", "Admin123!");
         var admin = createUser(adminEmail, "System", "Administrator", "+1122334455", UserRole.Admin, adminPassword);
 
         // Client
-        var clientEmail = seederSection["ClientEmail"] ?? "client@test.com";
-        var clientPassword = seederSection["ClientPassword"] ?? "Client123!";
+        var clientEmail = GetSeederValue("ClientEmail", "client@test.com");
+        var clientPassword = GetSeederValue("ClientPassword", "Client123!");
         var defaultClient = createUser(clientEmail, "Jane", "Client", "+0987654321", UserRole.Client, clientPassword);
 
         // Provider
-        var providerEmail = seederSection["ProviderEmail"] ?? "provider@test.com";
-        var providerPassword = seederSection["ProviderPassword"] ?? "Provider123!";
+        var providerEmail = GetSeederValue("ProviderEmail", "provider@test.com");
+        var providerPassword = GetSeederValue("ProviderPassword", "Provider123!");
         var defaultProvider = createUser(providerEmail, "John", "Provider", "+1234567890", UserRole.Provider, providerPassword);
 
         context.Users.AddRange(seedUsers);
