@@ -11,6 +11,8 @@ using SP.Domain.Services;
 using SP.Domain.Services.Repositories;
 using SP.Domain.ProviderProfiles;
 using SP.Domain.ProviderProfiles.Repositories;
+using SP.Domain.Connects;
+using SP.Domain.Connects.Repositories;
 
 namespace SP.Application.Users.Commands.Register;
 
@@ -30,6 +32,8 @@ public sealed class RegisterCommandHandler : ICommandHandler<RegisterCommand, Au
     private readonly ICategoryRepository _categoryRepository;
     private readonly IServiceRepository _serviceRepository;
     private readonly IProviderProfileRepository _providerProfileRepository;
+    private readonly IWalletRepository _walletRepository;
+    private readonly IConnectTransactionRepository _connectTransactionRepository;
     private readonly IUnitOfWork _unitOfWork;
 
     public RegisterCommandHandler(
@@ -38,6 +42,8 @@ public sealed class RegisterCommandHandler : ICommandHandler<RegisterCommand, Au
         ICategoryRepository categoryRepository,
         IServiceRepository serviceRepository,
         IProviderProfileRepository providerProfileRepository,
+        IWalletRepository walletRepository,
+        IConnectTransactionRepository connectTransactionRepository,
         IUnitOfWork unitOfWork)
     {
         _userRepository = userRepository;
@@ -45,6 +51,8 @@ public sealed class RegisterCommandHandler : ICommandHandler<RegisterCommand, Au
         _categoryRepository = categoryRepository;
         _serviceRepository = serviceRepository;
         _providerProfileRepository = providerProfileRepository;
+        _walletRepository = walletRepository;
+        _connectTransactionRepository = connectTransactionRepository;
         _unitOfWork = unitOfWork;
     }
 
@@ -83,7 +91,28 @@ public sealed class RegisterCommandHandler : ICommandHandler<RegisterCommand, Au
         if (authResult.IsFailure)
             return Result.Failure<AuthenticationResult>(authResult.Error);
 
-        // 6. If provider and CategoryId is selected, create profile and default service
+        // 6. If provider, initialize wallet (first 100 get 200 free credits, rest get 0)
+        if (role == UserRole.Provider)
+        {
+            var existingProviders = await _userRepository.GetByRoleAsync(UserRole.Provider, cancellationToken);
+            if (existingProviders.Count < 100)
+            {
+                var wallet = Wallet.Create(user.Id, 200);
+                await _walletRepository.AddAsync(wallet, cancellationToken);
+
+                var tx = ConnectTransaction.Create(user.Id, 200, "Welcome Bonus", Guid.NewGuid().ToString(), null);
+                await _connectTransactionRepository.AddAsync(tx, cancellationToken);
+            }
+            else
+            {
+                var wallet = Wallet.Create(user.Id, 0);
+                await _walletRepository.AddAsync(wallet, cancellationToken);
+            }
+
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+        }
+
+        // 7. If provider and CategoryId is selected, create profile and default service
         if (role == UserRole.Provider && command.CategoryId.HasValue)
         {
             var category = await _categoryRepository.GetByIdAsync(command.CategoryId.Value, cancellationToken);
