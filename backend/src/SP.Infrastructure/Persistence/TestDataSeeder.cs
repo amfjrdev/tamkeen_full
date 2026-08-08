@@ -102,31 +102,13 @@ public static class TestDataSeeder
         var providerPassword = seederSection["ProviderPassword"] ?? "Provider123!";
         var defaultProvider = createUser(providerEmail, "John", "Provider", "+1234567890", UserRole.Provider, providerPassword);
 
-        // Realistic Extra Clients
-        var client1 = createUser("karim.hassan@test.com", "Karim", "Hassan", "+213550123456", UserRole.Client, "Client123!");
-        var client2 = createUser("amina.kacimi@test.com", "Amina", "Kacimi", "+213661987654", UserRole.Client, "Client123!");
-        var client3 = createUser("ryad.bensmail@test.com", "Ryad", "Bensmail", "+213770456123", UserRole.Client, "Client123!");
-        var client4 = createUser("selma.khaldi@test.com", "Selma", "Khaldi", "+213555789123", UserRole.Client, "Client123!");
-
-        // Realistic Extra Providers
-        var pPlumber = createUser("ahmed.plumber@test.com", "Ahmed", "Benali", "+213551111111", UserRole.Provider, "Provider123!");
-        var pElectrician = createUser("sara.electrician@test.com", "Sara", "Mansouri", "+213662222222", UserRole.Provider, "Provider123!");
-        var pCleaner = createUser("karim.cleaner@test.com", "Karim", "Daoud", "+213773333333", UserRole.Provider, "Provider123!");
-        var pPainter = createUser("lina.painter@test.com", "Lina", "Belkacem", "+213554444444", UserRole.Provider, "Provider123!");
-        var pCarpenter = createUser("youcef.carpenter@test.com", "Youcef", "Slimani", "+213665555555", UserRole.Provider, "Provider123!");
-
         context.Users.AddRange(seedUsers);
         await context.SaveChangesAsync();
 
         // 2. Seed ProviderProfiles, Portfolios, and Wallets
         var providersList = new[]
         {
-            (User: defaultProvider, HourlyRate: 1200m, ResponseMins: 15, Lat: 36.7372, Lng: 3.0865, About: "Prestataire généraliste expérimenté disponible pour diverses interventions rapides à Alger.", ProjectTitle: "Réalisations Générales", ProjectDesc: "Aperçu de mes services réguliers.", ProjectImage: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=500&auto=format&fit=crop&q=80"),
-            (User: pPlumber, HourlyRate: 1500m, ResponseMins: 10, Lat: 36.7525, Lng: 3.0420, About: "Artisan plombier chauffagiste certifié. Spécialiste de la recherche de fuites, dépannage en urgence et rénovation complète de salles de bain. Travail soigné et garanti.", ProjectTitle: "Rénovation de Salle de Bain", ProjectDesc: "Remplacement complet de la tuyauterie en cuivre et pose de douche italienne moderne.", ProjectImage: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=500&auto=format&fit=crop&q=80"),
-            (User: pElectrician, HourlyRate: 1800m, ResponseMins: 20, Lat: 36.7201, Lng: 3.1012, About: "Électricienne professionnelle. Installation, mise en conformité, dépannage rapide et pose de luminaires intelligents. 8 ans d'expérience.", ProjectTitle: "Mise aux normes électriques", ProjectDesc: "Installation d'un nouveau tableau électrique avec disjoncteurs différentiels.", ProjectImage: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=500&auto=format&fit=crop&q=80"),
-            (User: pCleaner, HourlyRate: 1000m, ResponseMins: 30, Lat: 36.7410, Lng: 3.0750, About: "Services de nettoyage résidentiel et commercial. Nettoyage de fin de chantier, lavage de vitres et désinfection. Équipe sérieuse et dynamique.", ProjectTitle: "Nettoyage Fin de Chantier", ProjectDesc: "Remise en état complète d'un appartement de 120m² après travaux de rénovation.", ProjectImage: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=500&auto=format&fit=crop&q=80"),
-            (User: pPainter, HourlyRate: 1300m, ResponseMins: 25, Lat: 36.7610, Lng: 3.0210, About: "Artiste peintre en bâtiment. Spécialiste des peintures décoratives modernes (Sable, Stucco) et ravalement de façades. Devis gratuit.", ProjectTitle: "Peinture Décorative Salon", ProjectDesc: "Application d'une peinture sablée beige avec finitions soignées.", ProjectImage: "https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=500&auto=format&fit=crop&q=80"),
-            (User: pCarpenter, HourlyRate: 2000m, ResponseMins: 40, Lat: 36.7115, Lng: 3.0915, About: "Ébéniste menuisier passionné. Fabrication de meubles sur mesure, montage de cuisines équipées et réparation de menuiseries en bois.", ProjectTitle: "Conception Dressing", ProjectDesc: "Dressing sur mesure en chêne massif avec éclairage LED intégré.", ProjectImage: "https://images.unsplash.com/photo-1533090161767-e6ffed986c88?w=500&auto=format&fit=crop&q=80")
+            (User: defaultProvider, HourlyRate: 1200m, ResponseMins: 15, Lat: 36.7372, Lng: 3.0865, About: "Prestataire généraliste expérimenté disponible pour diverses interventions rapides à Alger.", ProjectTitle: "Réalisations Générales", ProjectDesc: "Aperçu de mes services réguliers.", ProjectImage: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=500&auto=format&fit=crop&q=80")
         };
 
         foreach (var p in providersList)
@@ -157,31 +139,10 @@ public static class TestDataSeeder
         // 3. Seed Services
         var services = new List<Service>
         {
-            // Plumber Services
-            Service.Create(pPlumber.Id, plumbingCat.Id, "Réparation Fuite d'Eau", "Détection et réparation rapide de fuites sur tuyauteries cuivre, PVC et PER.", 1800, 60).Value,
-            Service.Create(pPlumber.Id, plumbingCat.Id, "Installation de Robinet", "Remplacement et pose de mitigeurs, mélangeurs et robinets d'arrêt.", 2500, 45).Value,
-            Service.Create(pPlumber.Id, plumbingCat.Id, "Débouchage Canalisation", "Désengorgement de lavabos, éviers, baignoires et WC avec furet professionnel.", 3000, 90).Value,
-
-            // Electrician Services
-            Service.Create(pElectrician.Id, electricalCat.Id, "Dépannage Court-Circuit", "Recherche de panne électrique et remplacement des composants défectueux.", 2500, 60).Value,
-            Service.Create(pElectrician.Id, electricalCat.Id, "Remplacement de Tableau Électrique", "Mise en conformité complète du tableau avec disjoncteurs différentiels modernes.", 12000, 180).Value,
-            Service.Create(pElectrician.Id, electricalCat.Id, "Pose de Luminaire", "Installation sécurisée de lustres, spots LED et appliques murales.", 1500, 30).Value,
-
-            // Cleaner Services
-            Service.Create(pCleaner.Id, cleaningCat.Id, "Nettoyage Standard de Maison", "Aspiration, lavage des sols, dépoussiérage et nettoyage des sanitaires.", 4000, 180).Value,
-            Service.Create(pCleaner.Id, cleaningCat.Id, "Nettoyage Profond / Après Fêtes", "Grand nettoyage de printemps incluant vitres, four et placards en profondeur.", 8000, 300).Value,
-
-            // Painter Services
-            Service.Create(pPainter.Id, paintingCat.Id, "Peinture de Chambre (Murs)", "Préparation des supports (enduit, ponçage) et application de deux couches de peinture acrylique.", 9500, 360).Value,
-            Service.Create(pPainter.Id, paintingCat.Id, "Rénovation Peinture Salon", "Peinture complète murs et plafond avec finitions satinées ou mates de haute qualité.", 18000, 720).Value,
-
-            // Carpenter Services
-            Service.Create(pCarpenter.Id, carpentryCat.Id, "Montage de Meuble en Kit", "Assemblage rapide et solide de tous vos meubles (IKEA, etc.).", 2500, 90).Value,
-            Service.Create(pCarpenter.Id, carpentryCat.Id, "Rabotage de Portes", "Ajustement et rabotage des portes en bois qui frottent sur le sol.", 2000, 45).Value,
-
             // Default Provider Services
-            Service.Create(defaultProvider.Id, plumbingCat.Id, "Réparation Fuite Standard", "Service de plomberie express.", 1500, 60).Value,
-            Service.Create(defaultProvider.Id, electricalCat.Id, "Diagnostic Électrique", "Recherche de pannes courantes.", 2000, 60).Value
+            Service.Create(defaultProvider.Id, plumbingCat.Id, "Réparation Fuite d'Eau", "Détection et réparation rapide de fuites sur tuyauteries cuivre, PVC et PER.", 1800, 60).Value,
+            Service.Create(defaultProvider.Id, electricalCat.Id, "Dépannage Court-Circuit", "Recherche de panne électrique et remplacement des composants défectueux.", 2500, 60).Value,
+            Service.Create(defaultProvider.Id, cleaningCat.Id, "Nettoyage Standard de Maison", "Aspiration, lavage des sols, dépoussiérage et nettoyage des sanitaires.", 4000, 180).Value
         };
 
         context.Services.AddRange(services);
@@ -209,7 +170,7 @@ public static class TestDataSeeder
             }
         }
 
-        seedChat(defaultClient.Id, pPlumber.Id, false, new List<string>
+        seedChat(defaultClient.Id, defaultProvider.Id, false, new List<string>
         {
             "Bonjour, j'ai une fuite sous mon évier de cuisine. Êtes-vous disponible demain matin ?",
             "Bonjour Jane! Oui, tout à fait. Je peux passer vers 9h. C'est un tuyau en PVC ou en cuivre ?",
@@ -217,22 +178,9 @@ public static class TestDataSeeder
             "Très bien, préparez le terrain et je m'occupe du reste. À demain !"
         });
 
-        seedChat(defaultClient.Id, pElectrician.Id, true, new List<string>
-        {
-            "Bonjour, j'aimerais changer mon tableau électrique complet.",
-            "Bonjour, c'est possible. Quel est le nombre de disjoncteurs actuel ?"
-        });
-
-        seedChat(client1.Id, pCleaner.Id, false, new List<string>
-        {
-            "Bonjour, j'ai besoin d'un nettoyage complet de mon appartement ce samedi.",
-            "Bonjour Karim, aucun problème. C'est quelle surface ?"
-        });
-
         await context.SaveChangesAsync();
 
         // 5. Seed Bookings, Payments, and Reviews
-        // Helper to seed booking with complete cycle
         void seedBookingCycle(Guid clientUserId, User providerUser, Service service, BookingStatus status, int? reviewRating, string? reviewComment)
         {
             var booking = Booking.Create(clientUserId, providerUser.Id, service.Id, DateTime.UtcNow.AddDays(3)).Value;
@@ -277,30 +225,18 @@ public static class TestDataSeeder
         }
 
         // Seed Bookings
-        // Pending booking for defaultClient and Ahmed Plumber
-        seedBookingCycle(defaultClient.Id, pPlumber, services[0], BookingStatus.Pending, null, null);
+        // Pending booking for defaultClient and defaultProvider
+        seedBookingCycle(defaultClient.Id, defaultProvider, services[0], BookingStatus.Pending, null, null);
 
-        // Accepted booking for defaultClient and Ahmed Plumber (Active Chat)
-        seedBookingCycle(defaultClient.Id, pPlumber, services[1], BookingStatus.Accepted, null, null);
+        // Accepted booking for defaultClient and defaultProvider (Active Chat)
+        seedBookingCycle(defaultClient.Id, defaultProvider, services[1], BookingStatus.Accepted, null, null);
 
-        // Completed booking with 5-star review
-        seedBookingCycle(defaultClient.Id, pPlumber, services[2], BookingStatus.Completed, 5, "Excellent travail! Ahmed a débouché les canalisations rapidement avec beaucoup de professionnalisme. Je recommande vivement.");
-
-        // Completed booking for client1 and Sara Electrician (4-star review)
-        seedBookingCycle(client1.Id, pElectrician, services[3], BookingStatus.Completed, 4, "Bonne prestation générale. Le court-circuit a été trouvé et réparé. Un peu en retard sur l'heure convenue mais très sympathique.");
-
-        // Completed booking for client2 and Lina Painter (5-star review)
-        seedBookingCycle(client2.Id, pPainter, services[8], BookingStatus.Completed, 5, "Magnifique ! Peinture impeccable, finitions soignées, nettoyage irréprochable après chantier.");
-
-        // Cancelled booking
-        seedBookingCycle(defaultClient.Id, pCarpenter, services[10], BookingStatus.Cancelled, null, null);
-
-        // Rejected booking
-        seedBookingCycle(defaultClient.Id, pElectrician, services[5], BookingStatus.Rejected, null, null);
+        // Completed booking for defaultClient and defaultProvider (shows review star)
+        seedBookingCycle(defaultClient.Id, defaultProvider, services[2], BookingStatus.Completed, 5, "Magnifique ! Peinture impeccable, finitions soignées, nettoyage irréprochable après chantier.");
 
         // Seed Notification
         var notif1 = Notification.Create(defaultClient.Id, "Bienvenue sur Tamkeen", "Votre compte a été créé avec succès. Vous pouvez maintenant rechercher des prestataires.").Value;
-        var notif2 = Notification.Create(defaultClient.Id, "Demande Acceptée", "Ahmed Benali a accepté votre demande de service pour le raccord de robinet.").Value;
+        var notif2 = Notification.Create(defaultClient.Id, "Demande Acceptée", "John Provider a accepté votre demande de service.").Value;
         context.Notifications.AddRange(notif1, notif2);
 
         await context.SaveChangesAsync();
