@@ -34,29 +34,41 @@ public static class TestDataSeeder
         {
             var extraUserGuids = extraUsers.Select(u => u.Id).ToList();
 
+            // 1. Delete standalone chat messages and conversations
+            var relatedConversations = await context.Conversations.Where(c => extraUserGuids.Contains(c.Participant1Id) || extraUserGuids.Contains(c.Participant2Id)).ToListAsync();
+            var relatedConversationIds = relatedConversations.Select(c => c.Id).ToList();
+            var relatedChats = await context.ChatMessagesStandalone.Where(m => extraUserGuids.Contains(m.SenderId) || relatedConversationIds.Contains(m.ConversationId)).ToListAsync();
+            context.ChatMessagesStandalone.RemoveRange(relatedChats);
+            context.Conversations.RemoveRange(relatedConversations);
+
+            // 2. Delete bookings (references users and services)
             var relatedBookings = await context.Bookings.Where(b => extraUserGuids.Contains(b.ClientId) || extraUserGuids.Contains(b.ProviderId)).ToListAsync();
             context.Bookings.RemoveRange(relatedBookings);
 
+            // 3. Delete payments (references users)
             var relatedPayments = await context.Payments.Where(p => extraUserGuids.Contains(p.UserId)).ToListAsync();
             context.Payments.RemoveRange(relatedPayments);
 
-            var relatedChats = await context.ChatMessagesStandalone.Where(m => extraUserGuids.Contains(m.SenderId)).ToListAsync();
-            context.ChatMessagesStandalone.RemoveRange(relatedChats);
+            // 4. Delete services (references providers, can be safely deleted now that bookings are removed)
+            var relatedServices = await context.Services.Where(s => extraUserGuids.Contains(s.ProviderId)).ToListAsync();
+            context.Services.RemoveRange(relatedServices);
 
-            var relatedConversations = await context.Conversations.Where(c => extraUserGuids.Contains(c.Participant1Id) || extraUserGuids.Contains(c.Participant2Id)).ToListAsync();
-            context.Conversations.RemoveRange(relatedConversations);
-
-            var relatedNotifications = await context.Notifications.Where(n => extraUserGuids.Contains(n.UserId)).ToListAsync();
-            context.Notifications.RemoveRange(relatedNotifications);
-
+            // 5. Delete provider portfolios, profiles, and transactions
             var relatedPortfolios = await context.Portfolios.Where(p => extraUserGuids.Contains(p.ProviderId)).ToListAsync();
             context.Portfolios.RemoveRange(relatedPortfolios);
 
             var relatedProfiles = await context.ProviderProfiles.Where(p => extraUserGuids.Contains(p.ProviderId)).ToListAsync();
             context.ProviderProfiles.RemoveRange(relatedProfiles);
 
+            var relatedTransactions = await context.ConnectTransactions.Where(t => extraUserGuids.Contains(t.UserId)).ToListAsync();
+            context.ConnectTransactions.RemoveRange(relatedTransactions);
+
+            // 6. Delete wallets, notifications, and finally the users
             var relatedWallets = await context.Wallets.Where(w => extraUserGuids.Contains(w.UserId)).ToListAsync();
             context.Wallets.RemoveRange(relatedWallets);
+
+            var relatedNotifications = await context.Notifications.Where(n => extraUserGuids.Contains(n.UserId)).ToListAsync();
+            context.Notifications.RemoveRange(relatedNotifications);
 
             context.Users.RemoveRange(extraUsers);
             await context.SaveChangesAsync();
