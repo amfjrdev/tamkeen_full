@@ -23,6 +23,8 @@ public static class TestDataSeeder
 {
     public static async Task SeedTestAccounts(ApplicationDbContext context, IConfiguration configuration)
     {
+        // Database cleanup is commented out to ensure 100% clean startup without database conflicts
+        /*
         try
         {
             // Unconditionally delete all extra client/provider accounts except defaults to clean the DB manually
@@ -80,6 +82,7 @@ public static class TestDataSeeder
         {
             // Fail-safe to guarantee backend never crashes at startup
         }
+        */
 
         // Seed configurations first
         await ConfigurationSeeder.SeedConfigurationsAsync(context);
