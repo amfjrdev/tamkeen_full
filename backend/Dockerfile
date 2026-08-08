@@ -36,6 +36,7 @@ ENV ASPNETCORE_ENVIRONMENT=Production
 EXPOSE 8080
 
 # Switch to the low-privileged 'app' user
+RUN mkdir -p /app/wwwroot/uploads && chown -R app:app /app/wwwroot/uploads
 USER app
 
 HEALTHCHECK --interval=20s --timeout=10s --start-period=60s --retries=5 \
