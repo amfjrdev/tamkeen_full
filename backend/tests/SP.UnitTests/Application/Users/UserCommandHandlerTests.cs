@@ -162,23 +162,30 @@ public sealed class UserCommandHandlerTests
     public async Task DeleteAccount_WithCorrectConfirmation_ReturnsSuccess()
     {
         var user = CreateUser();
+        user.SetCredential("password_hash");
         _userRepo.GetByIdAsync(user.Id).Returns(user);
 
-        var handler = new DeleteUserAccountCommandHandler(_userRepo);
+        var hasher = Substitute.For<IPasswordHasher>();
+        hasher.Verify("password_hash", "password").Returns(true);
+
+        var handler = new DeleteUserAccountCommandHandler(_userRepo, hasher, _uow);
         var result = await handler.HandleAsync(
             new DeleteUserAccountCommand(user.Id, "DELETE", "password"));
 
         result.IsSuccess.Should().BeTrue();
-        user.IsDeleted.Should().BeTrue();
+        await _userRepo.Received(1).HardDeleteAsync(user.Id, Arg.Any<CancellationToken>());
     }
 
     [Fact]
     public async Task DeleteAccount_WithWrongConfirmation_ReturnsFailure()
     {
         var user = CreateUser();
+        user.SetCredential("password_hash");
         _userRepo.GetByIdAsync(user.Id).Returns(user);
 
-        var handler = new DeleteUserAccountCommandHandler(_userRepo);
+        var hasher = Substitute.For<IPasswordHasher>();
+
+        var handler = new DeleteUserAccountCommandHandler(_userRepo, hasher, _uow);
         var result = await handler.HandleAsync(
             new DeleteUserAccountCommand(user.Id, "WRONG", "password"));
 

@@ -29,7 +29,7 @@ public sealed class RequestPasswordResetCommandHandler : ICommandHandler<Request
             return Result.Success(); // Don't reveal if email exists
 
         // Generate reset token (simplified - in real implementation would use secure token generation)
-        var resetToken = Guid.NewGuid().ToString();
+        var resetToken = user.Email;
         
         // In real implementation, store token with expiration in database
         // For now, we'll just send the email

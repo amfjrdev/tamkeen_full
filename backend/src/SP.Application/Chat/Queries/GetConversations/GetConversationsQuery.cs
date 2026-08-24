@@ -57,6 +57,9 @@ public sealed class GetConversationsQueryHandler
 
         foreach (var conv in conversations)
         {
+            if (conv.LastMessageText is null)
+                continue;
+
             var otherParticipantId = conv.Participant1Id == query.UserId ? conv.Participant2Id : conv.Participant1Id;
 
             if (!usersMap.TryGetValue(otherParticipantId, out var otherUser))
