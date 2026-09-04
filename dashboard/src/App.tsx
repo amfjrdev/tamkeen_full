@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { LandingPage } from './pages/LandingPage';
 import { LoginPage } from './pages/LoginPage';
 import { DashboardPage } from './pages/DashboardPage';
-import { UsersPage } from './pages/UsersPage';
+import { ClientsPage } from './pages/ClientsPage';
 import { ProvidersPage } from './pages/ProvidersPage';
 import { MessagingPage } from './pages/MessagingPage';
 import { CategoriesPage } from './pages/CategoriesPage';
@@ -15,6 +15,7 @@ type ActivePage =
   | 'Landing'
   | 'Login'
   | 'Dashboard'
+  | 'Clients'
   | 'Users'
   | 'Providers'
   | 'Messaging'
@@ -73,8 +74,9 @@ const App: React.FC = () => {
   switch (activePage) {
     case 'Dashboard':
       return <DashboardPage onNavigate={handleNavigate} />;
+    case 'Clients':
     case 'Users':
-      return <UsersPage onNavigate={handleNavigate} />;
+      return <ClientsPage onNavigate={handleNavigate} />;
     case 'Providers':
       return <ProvidersPage onNavigate={handleNavigate} />;
     case 'Messaging':

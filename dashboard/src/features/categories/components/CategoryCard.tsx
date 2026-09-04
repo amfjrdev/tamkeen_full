@@ -4,23 +4,49 @@ import { Icons } from '../../../components/common/Icons';
 
 interface CategoryCardProps {
   category: Category;
+  onDelete?: (id: string | number, name: string) => void;
+  isDeleting?: boolean;
 }
 
-export const CategoryCard: React.FC<CategoryCardProps> = ({ category }) => {
+export const CategoryCard: React.FC<CategoryCardProps> = ({ 
+  category, 
+  onDelete, 
+  isDeleting = false 
+}) => {
   const getIcon = (iconName: string) => {
-    // Dynamic mapping
     const IconComponent = Icons[iconName as keyof typeof Icons];
     return IconComponent ? <IconComponent /> : null;
   };
 
   return (
-    <div className="bg-[#111111] border border-gray-800 rounded-xl p-6 hover:border-indigo-500/40 hover:bg-[#141414] transition-all duration-300 flex flex-col shadow-lg group">
-      <div className={`w-12 h-12 rounded-xl ${category.color} flex items-center justify-center mb-4.5 shadow-md shadow-black/30 transition-transform duration-300 group-hover:scale-105`}>
-        {getIcon(category.icon)}
+    <div className="bg-[#111111] border border-gray-800 rounded-xl p-6 hover:border-indigo-500/40 hover:bg-[#141414] transition-all duration-300 flex flex-col shadow-lg group relative">
+      <div className="flex items-center justify-between mb-4.5">
+        <div className={`w-12 h-12 rounded-xl ${category.color} flex items-center justify-center shadow-md shadow-black/30 transition-transform duration-300 group-hover:scale-105`}>
+          {getIcon(category.icon)}
+        </div>
+        
+        {onDelete && (
+          <button
+            onClick={() => onDelete(category.id, category.name)}
+            disabled={isDeleting}
+            title={`Delete ${category.name}`}
+            aria-label={`Delete category ${category.name}`}
+            className="text-gray-500 hover:text-rose-500 hover:bg-rose-500/10 p-2 rounded-lg border border-transparent hover:border-rose-500/20 transition-all duration-200 active:scale-95 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            <Icons.trash className="w-4 h-4" />
+          </button>
+        )}
       </div>
-      <h3 className="text-white text-lg font-bold mb-5 tracking-tight group-hover:text-indigo-400 transition-colors">
+
+      <h3 className="text-white text-lg font-bold mb-1 tracking-tight group-hover:text-indigo-400 transition-colors">
         {category.name}
       </h3>
+      {category.description && (
+        <p className="text-gray-400 text-xs line-clamp-2 mb-4">
+          {category.description}
+        </p>
+      )}
+      {!category.description && <div className="mb-4" />}
       
       <div className="grid grid-cols-2 gap-4 mb-6">
         <div className="bg-black/20 p-2.5 rounded-lg border border-gray-900/60">

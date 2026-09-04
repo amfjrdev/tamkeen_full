@@ -42,7 +42,7 @@ export const DailyRevenueChart: React.FC<DailyRevenueChartProps> = ({ data }) =>
                 fontSize="9"
                 className="font-mono font-semibold"
               >
-                ${val.toLocaleString()}
+                {val.toLocaleString()} DA
               </text>
             </g>
           );
@@ -64,7 +64,7 @@ export const DailyRevenueChart: React.FC<DailyRevenueChartProps> = ({ data }) =>
                 fontSize="9"
                 className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 font-bold font-mono bg-black"
               >
-                ${d.value.toLocaleString()}
+                {d.value.toLocaleString()} DA
               </text>
 
               {/* Bar rectangle with gradient-like look */}

@@ -33,7 +33,7 @@ export const TopProvidersTable: React.FC<TopProvidersTableProps> = ({ providers 
                 </td>
                 <td className="px-6 py-4 text-white font-semibold text-sm">{provider.name}</td>
                 <td className="px-6 py-4 text-emerald-400 font-bold font-mono text-sm">
-                  ${provider.spent.toLocaleString()}
+                  {provider.spent.toLocaleString()} DA
                 </td>
                 <td className="px-6 py-4 text-gray-300 font-semibold font-mono text-sm">
                   {provider.credits.toLocaleString()} credits

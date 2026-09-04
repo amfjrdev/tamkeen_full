@@ -33,7 +33,7 @@ export const TransactionRow: React.FC<TransactionRowProps> = ({
         <span className="text-gray-500 text-xs">credits</span>
       </td>
       <td className="px-6 py-4 text-emerald-400 font-mono font-extrabold text-sm whitespace-nowrap">
-        ${transaction.amount}
+        {transaction.amount} DA
       </td>
       <td className="px-6 py-4 whitespace-nowrap">
         <MethodBadge method={transaction.method} />

@@ -7,7 +7,11 @@ export const categoryService = {
     return response.data;
   },
 
-  createCategory: async (category: { name: string; description: string }): Promise<void> => {
+  createCategory: async (category: { name: string; description?: string }): Promise<void> => {
     await apiClient.post('/admin-dashboard/categories', category);
+  },
+
+  deleteCategory: async (id: string | number): Promise<void> => {
+    await apiClient.delete(`/admin-dashboard/categories/${id}`);
   },
 };

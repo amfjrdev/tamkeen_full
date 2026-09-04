@@ -15,7 +15,7 @@ import type { DashboardData } from '../types';
 // Mock Data for fallback / local development
 const mockDashboardData: DashboardData = {
   stats: [
-    { label: 'Total Revenue', value: '$487K', change: '+28.4%', icon: 'revenue', color: 'green' },
+    { label: 'Total Revenue', value: '487K DA', change: '+28.4%', icon: 'revenue', color: 'green' },
     { label: 'Total Users', value: '12,543', change: '+12.5%', icon: 'users', color: 'blue' },
     { label: 'Active Providers', value: '3,284', change: '+8.2%', icon: 'providers', color: 'purple' },
     { label: 'Messages Today', value: '24,891', change: '+23.1%', icon: 'messages', color: 'pink' },
@@ -49,7 +49,7 @@ const mockDashboardData: DashboardData = {
   ],
   navItems: [
     { label: 'Dashboard', icon: 'dashboard', active: true },
-    { label: 'Users', icon: 'users', active: false },
+    { label: 'Clients', icon: 'users', active: false },
     { label: 'Providers', icon: 'providers', active: false },
     { label: 'Messaging', icon: 'messaging', active: false },
     { label: 'Categories', icon: 'categories', active: false },

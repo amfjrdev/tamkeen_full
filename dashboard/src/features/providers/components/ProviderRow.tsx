@@ -89,7 +89,7 @@ export const ProviderRow: React.FC<ProviderRowProps> = ({ provider }) => {
       <td className="px-6 py-4">
         <div className="flex flex-col gap-1 items-start">
           <span className={`text-sm font-bold font-mono ${provider.totalSpent > 0 ? 'text-emerald-400' : 'text-gray-500'}`}>
-            ${provider.totalSpent.toLocaleString()}
+            {provider.totalSpent.toLocaleString()} DA
           </span>
           {provider.lastSpent && (
             <span className="text-gray-500 text-[10px] font-medium font-mono">

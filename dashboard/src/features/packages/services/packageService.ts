@@ -70,7 +70,7 @@ const mockPackagesData: PackagesData = {
   ],
   navItems: [
     { label: 'Dashboard', icon: 'dashboard', active: false },
-    { label: 'Users', icon: 'users', active: false },
+    { label: 'Clients', icon: 'users', active: false },
     { label: 'Providers', icon: 'providers', active: false },
     { label: 'Messaging', icon: 'messaging', active: false },
     { label: 'Categories', icon: 'categories', active: false },

@@ -205,7 +205,7 @@ export const RevenuePage: React.FC<RevenuePageProps> = ({ onNavigate }) => {
                 {Object.entries(data.breakdown).map(([key, val]) => (
                   <div key={key} className="flex justify-between items-center border-b border-gray-800/40 pb-2">
                     <span className="text-gray-400 text-sm capitalize">{key} Packages</span>
-                    <span className="text-white font-bold font-mono text-sm">${val.toLocaleString()}</span>
+                    <span className="text-white font-bold font-mono text-sm">{val.toLocaleString()} DA</span>
                   </div>
                 ))}
               </div>
@@ -222,19 +222,19 @@ export const RevenuePage: React.FC<RevenuePageProps> = ({ onNavigate }) => {
               <div className="space-y-4">
                 <div className="flex justify-between items-center border-b border-gray-800/40 pb-2">
                   <span className="text-gray-400 text-sm">Gross Revenue</span>
-                  <span className="text-white font-bold font-mono text-sm">${data.earnings.gross.toLocaleString()}</span>
+                  <span className="text-white font-bold font-mono text-sm">{data.earnings.gross.toLocaleString()} DA</span>
                 </div>
                 <div className="flex justify-between items-center border-b border-gray-800/40 pb-2">
                   <span className="text-gray-400 text-sm">Processing Fees</span>
-                  <span className="text-rose-400 font-bold font-mono text-sm">-${Math.abs(data.earnings.fees).toLocaleString()}</span>
+                  <span className="text-rose-400 font-bold font-mono text-sm">-{Math.abs(data.earnings.fees).toLocaleString()} DA</span>
                 </div>
                 <div className="flex justify-between items-center border-b border-gray-800/40 pb-2">
                   <span className="text-gray-400 text-sm">Refunds</span>
-                  <span className="text-rose-400 font-bold font-mono text-sm">-${Math.abs(data.earnings.refunds).toLocaleString()}</span>
+                  <span className="text-rose-400 font-bold font-mono text-sm">-{Math.abs(data.earnings.refunds).toLocaleString()} DA</span>
                 </div>
                 <div className="pt-3 flex justify-between items-center">
                   <span className="text-white font-bold text-sm">Net Revenue</span>
-                  <span className="text-emerald-400 font-extrabold text-lg font-mono">${data.earnings.net.toLocaleString()}</span>
+                  <span className="text-emerald-400 font-extrabold text-lg font-mono">{data.earnings.net.toLocaleString()} DA</span>
                 </div>
               </div>
             </div>
@@ -250,19 +250,19 @@ export const RevenuePage: React.FC<RevenuePageProps> = ({ onNavigate }) => {
               <div className="space-y-4">
                 <div className="flex justify-between items-center border-b border-gray-800/40 pb-2">
                   <span className="text-gray-400 text-sm">Operating Costs</span>
-                  <span className="text-white font-bold font-mono text-sm">${data.profit.operating.toLocaleString()}</span>
+                  <span className="text-white font-bold font-mono text-sm">{data.profit.operating.toLocaleString()} DA</span>
                 </div>
                 <div className="flex justify-between items-center border-b border-gray-800/40 pb-2">
                   <span className="text-gray-400 text-sm">Marketing Spend</span>
-                  <span className="text-white font-bold font-mono text-sm">${data.profit.marketing.toLocaleString()}</span>
+                  <span className="text-white font-bold font-mono text-sm">{data.profit.marketing.toLocaleString()} DA</span>
                 </div>
                 <div className="flex justify-between items-center border-b border-gray-800/40 pb-2">
                   <span className="text-gray-400 text-sm">Other Expenses</span>
-                  <span className="text-white font-bold font-mono text-sm">${data.profit.other.toLocaleString()}</span>
+                  <span className="text-white font-bold font-mono text-sm">{data.profit.other.toLocaleString()} DA</span>
                 </div>
                 <div className="pt-3 flex justify-between items-center">
                   <span className="text-white font-bold text-sm">Net Profit</span>
-                  <span className="text-emerald-400 font-extrabold text-lg font-mono">${data.profit.net.toLocaleString()}</span>
+                  <span className="text-emerald-400 font-extrabold text-lg font-mono">{data.profit.net.toLocaleString()} DA</span>
                 </div>
               </div>
             </div>

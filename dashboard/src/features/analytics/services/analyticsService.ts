@@ -13,7 +13,7 @@ import type { AnalyticsData } from '../types';
 
 const mockAnalyticsData: AnalyticsData = {
   stats: [
-    { label: 'Total Revenue', value: '$104K', trend: '+28.4%', trendLabel: 'from last month', icon: 'dollar', color: 'green', positive: true },
+    { label: 'Total Revenue', value: '104K DA', trend: '+28.4%', trendLabel: 'from last month', icon: 'dollar', color: 'green', positive: true },
     { label: 'Active Users', value: '9,243', trend: '+15.2%', trendLabel: 'from last month', icon: 'users', color: 'blue', positive: true },
     { label: 'Avg Response Time', value: '2.4h', trend: '-12%', trendLabel: 'from last month', icon: 'clock', color: 'orange', positive: true },
     { label: 'Growth Rate', value: '34%', trend: '+8.3%', trendLabel: 'from last month', icon: 'trendingUp', color: 'purple', positive: true },
@@ -50,7 +50,7 @@ const mockAnalyticsData: AnalyticsData = {
   ],
   navItems: [
     { label: 'Dashboard', icon: 'dashboard', active: false },
-    { label: 'Users', icon: 'users', active: false },
+    { label: 'Clients', icon: 'users', active: false },
     { label: 'Providers', icon: 'providers', active: false },
     { label: 'Messaging', icon: 'messaging', active: false },
     { label: 'Categories', icon: 'categories', active: false },

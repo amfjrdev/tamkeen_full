@@ -4,8 +4,10 @@ export interface CategoryStat {
 }
 
 export interface Category {
-  id: number;
+  id: string | number;
+  localId?: number;
   name: string;
+  description?: string;
   icon: 'home' | 'wrench' | 'heart' | 'graduation' | 'car' | string;
   color: string;
   providers: number;

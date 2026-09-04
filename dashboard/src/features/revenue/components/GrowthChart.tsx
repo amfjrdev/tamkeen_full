@@ -70,7 +70,7 @@ export const GrowthChart: React.FC<GrowthChartProps> = ({ data }) => {
                 fontSize="10"
                 className="font-mono font-semibold"
               >
-                ${(val / 1000).toFixed(0)}k
+                {(val / 1000).toFixed(0)}k DA
               </text>
             </g>
           );

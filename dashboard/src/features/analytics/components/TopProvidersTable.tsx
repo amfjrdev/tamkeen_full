@@ -46,7 +46,7 @@ export const TopProvidersTable: React.FC<TopProvidersTableProps> = ({ providers 
                   </div>
                 </td>
                 <td className="px-6 py-4 text-emerald-400 font-extrabold text-sm font-mono whitespace-nowrap">
-                  ${provider.revenue.toLocaleString()}
+                  {provider.revenue.toLocaleString()} DA
                 </td>
               </tr>
             ))}

@@ -369,7 +369,7 @@ export const TransactionsPage: React.FC<TransactionsPageProps> = ({ onNavigate }
                       <div>
                         <p className="text-gray-500 text-xs font-semibold uppercase">Total Paid</p>
                         <p className="text-emerald-400 text-sm font-extrabold font-mono mt-0.5">
-                          ${selectedTxn.amount}
+                          {selectedTxn.amount} DA
                         </p>
                       </div>
                     </div>
@@ -422,7 +422,7 @@ export const TransactionsPage: React.FC<TransactionsPageProps> = ({ onNavigate }
                             <p className="text-[10px] text-indigo-400 font-semibold">{selectedTxn.credits} Connect Credits Package</p>
                           </td>
                           <td className="py-3 text-right font-mono">1</td>
-                          <td className="py-3 text-right font-semibold text-white font-mono">${selectedTxn.amount}</td>
+                          <td className="py-3 text-right font-semibold text-white font-mono">{selectedTxn.amount} DA</td>
                         </tr>
                       </tbody>
                     </table>
@@ -438,7 +438,7 @@ export const TransactionsPage: React.FC<TransactionsPageProps> = ({ onNavigate }
                       </div>
                       <div className="flex justify-between w-full max-w-[200px] font-bold text-white mt-1">
                         <span>Total Due:</span>
-                        <span className="text-emerald-400 font-mono">${selectedTxn.amount}</span>
+                        <span className="text-emerald-400 font-mono">{selectedTxn.amount} DA</span>
                       </div>
                     </div>
 

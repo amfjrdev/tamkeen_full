@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SP.Infrastructure.Persistence;
 using SP.Domain.Users;
+using SP.Domain.Categories;
 using SP.Domain.Payments;
 using SP.Domain.Payments.Enums;
 using SP.Domain.Bookings;
@@ -33,9 +34,11 @@ public static class AdminDashboardEndpoints
 
         // New dashboard endpoints
         group.MapGet("/admin-dashboard/users", GetUsersData).AllowAnonymous();
+        group.MapGet("/admin-dashboard/clients", GetUsersData).AllowAnonymous();
         group.MapGet("/admin-dashboard/providers", GetProvidersData).AllowAnonymous();
         group.MapGet("/admin-dashboard/categories", GetCategoriesData).AllowAnonymous();
         group.MapPost("/admin-dashboard/categories", CreateCategory).AllowAnonymous();
+        group.MapDelete("/admin-dashboard/categories/{id}", DeleteCategory).AllowAnonymous();
         group.MapPost("/admin-dashboard/conversations/{id:guid}/toggle-lock", ToggleConversationLock).AllowAnonymous();
         group.MapPost("/admin-dashboard/reports/{id:guid}/resolve", ResolveReport).AllowAnonymous();
 
@@ -231,7 +234,7 @@ public static class AdminDashboardEndpoints
             navItems = new[]
             {
                 new { label = "Dashboard", icon = "dashboard", active = true },
-                new { label = "Users", icon = "users", active = false },
+                new { label = "Clients", icon = "users", active = false },
                 new { label = "Providers", icon = "providers", active = false },
                 new { label = "Messaging", icon = "messaging", active = false },
                 new { label = "Categories", icon = "categories", active = false },
@@ -332,7 +335,7 @@ public static class AdminDashboardEndpoints
             navItems = new[]
             {
                 new { label = "Dashboard", icon = "dashboard", active = false },
-                new { label = "Users", icon = "users", active = false },
+                new { label = "Clients", icon = "users", active = false },
                 new { label = "Providers", icon = "providers", active = false },
                 new { label = "Messaging", icon = "messaging", active = true },
                 new { label = "Categories", icon = "categories", active = false },
@@ -365,8 +368,8 @@ public static class AdminDashboardEndpoints
             .SumAsync(p => p.Amount, ct);
 
         var totalRevStr = totalRevenueAmount > 0 
-            ? $"${totalRevenueAmount:N0}" 
-            : "$0";
+            ? $"{totalRevenueAmount:N0} DA" 
+            : "0 DA";
 
         var revenueToday = await dbContext.Payments.Where(p => p.Status == PaymentStatus.Paid && p.CreatedAt >= startOfToday).SumAsync(p => p.Amount, ct);
         var revenueYesterday = await dbContext.Payments.Where(p => p.Status == PaymentStatus.Paid && p.CreatedAt >= startOfYesterday && p.CreatedAt < startOfToday).SumAsync(p => p.Amount, ct);
@@ -557,12 +560,12 @@ public static class AdminDashboardEndpoints
             stats = new[]
             {
                 new { id = 1, label = "Total Revenue", value = totalRevStr, trend = trendMonth, icon = "dollar", color = "green", negative = false },
-                new { id = 2, label = "Revenue Today", value = $"${(int)revenueToday:N0}", trend = trendToday, icon = "chart-up", color = "blue", negative = false },
-                new { id = 3, label = "Revenue This Week", value = $"${(int)revenueThisWeek:N0}", trend = trendWeek, icon = "chart-up", color = "purple", negative = false },
-                new { id = 4, label = "Revenue This Month", value = $"${(int)revenueThisMonth:N0}", trend = trendMonth, icon = "chart-up", color = "pink", negative = false },
-                new { id = 5, label = "Revenue This Year", value = $"${(int)revenueThisYear:N0}", trend = trendYear, icon = "chart-up", color = "orange", negative = false },
+                new { id = 2, label = "Revenue Today", value = $"{(int)revenueToday:N0} DA", trend = trendToday, icon = "chart-up", color = "blue", negative = false },
+                new { id = 3, label = "Revenue This Week", value = $"{(int)revenueThisWeek:N0} DA", trend = trendWeek, icon = "chart-up", color = "purple", negative = false },
+                new { id = 4, label = "Revenue This Month", value = $"{(int)revenueThisMonth:N0} DA", trend = trendMonth, icon = "chart-up", color = "pink", negative = false },
+                new { id = 5, label = "Revenue This Year", value = $"{(int)revenueThisYear:N0} DA", trend = trendYear, icon = "chart-up", color = "orange", negative = false },
                 new { id = 6, label = "Connect Credits Sold", value = ((int)connectCreditsSold).ToString("N0"), trend = trendCredits, icon = "credit-card", color = "pink", negative = false },
-                new { id = 7, label = "Avg Revenue/Provider", value = $"${(int)avgRevenuePerProvider:N0}", trend = trendAvgRevenue, icon = "dollar", color = "blue", negative = false },
+                new { id = 7, label = "Avg Revenue/Provider", value = $"{(int)avgRevenuePerProvider:N0} DA", trend = trendAvgRevenue, icon = "dollar", color = "blue", negative = false },
                 new { id = 8, label = "Successful Payments", value = successfulPayments.ToString("N0"), trend = trendSuccessful, icon = "check-circle", color = "green", negative = false },
                 new { id = 9, label = "Failed Payments", value = failedPayments.ToString("N0"), trend = trendFailed, icon = "alert-circle", color = "orange", negative = true },
                 new { id = 10, label = "Pending Transactions", value = pendingTransactions.ToString("N0"), trend = trendPending, icon = "clock", color = "yellow", negative = false }
@@ -578,7 +581,7 @@ public static class AdminDashboardEndpoints
             navItems = new[]
             {
                 new { label = "Dashboard", icon = "dashboard", active = false },
-                new { label = "Users", icon = "users", active = false },
+                new { label = "Clients", icon = "users", active = false },
                 new { label = "Providers", icon = "providers", active = false },
                 new { label = "Messaging", icon = "messaging", active = false },
                 new { label = "Categories", icon = "categories", active = false },
@@ -671,7 +674,7 @@ public static class AdminDashboardEndpoints
             navItems = new[]
             {
                 new { label = "Dashboard", icon = "dashboard", active = false },
-                new { label = "Users", icon = "users", active = false },
+                new { label = "Clients", icon = "users", active = false },
                 new { label = "Providers", icon = "providers", active = false },
                 new { label = "Messaging", icon = "messaging", active = false },
                 new { label = "Categories", icon = "categories", active = false },
@@ -784,7 +787,7 @@ public static class AdminDashboardEndpoints
             navItems = new[]
             {
                 new { label = "Dashboard", icon = "dashboard", active = false },
-                new { label = "Users", icon = "users", active = false },
+                new { label = "Clients", icon = "users", active = false },
                 new { label = "Providers", icon = "providers", active = false },
                 new { label = "Messaging", icon = "messaging", active = false },
                 new { label = "Categories", icon = "categories", active = false },
@@ -1106,7 +1109,7 @@ public static class AdminDashboardEndpoints
             navItems = new[]
             {
                 new { label = "Dashboard", icon = "dashboard", active = false },
-                new { label = "Users", icon = "users", active = false },
+                new { label = "Clients", icon = "users", active = false },
                 new { label = "Providers", icon = "providers", active = false },
                 new { label = "Messaging", icon = "messaging", active = false },
                 new { label = "Categories", icon = "categories", active = false },
@@ -1122,17 +1125,36 @@ public static class AdminDashboardEndpoints
     private static async Task<IResult> GetUsersData(
         [FromQuery] string? role,
         [FromQuery] string? search,
-        ApplicationDbContext dbContext,
-        CancellationToken ct)
+        [FromQuery] string? status,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 10,
+        ApplicationDbContext dbContext = null!,
+        CancellationToken ct = default)
     {
         var query = dbContext.Users.AsQueryable();
 
+        // Default to clients only, unless explicitly specified
         if (!string.IsNullOrEmpty(role))
         {
-            if (role == "client")
-                query = query.Where(u => u.Role == UserRole.Client);
-            else if (role == "provider")
+            if (role.ToLower() == "provider")
                 query = query.Where(u => u.Role == UserRole.Provider);
+            else
+                query = query.Where(u => u.Role == UserRole.Client);
+        }
+        else
+        {
+            query = query.Where(u => u.Role == UserRole.Client);
+        }
+
+        if (!string.IsNullOrEmpty(status) && status.ToLower() != "all")
+        {
+            var stLower = status.ToLower();
+            if (stLower == "blocked")
+                query = query.Where(u => u.IsBlocked);
+            else if (stLower == "pending")
+                query = query.Where(u => !u.IsEmailVerified && !u.IsBlocked);
+            else if (stLower == "active")
+                query = query.Where(u => !u.IsBlocked);
         }
 
         if (!string.IsNullOrEmpty(search))
@@ -1141,11 +1163,23 @@ public static class AdminDashboardEndpoints
             query = query.Where(u => 
                 u.FirstName.ToLower().Contains(searchLower) || 
                 u.LastName.ToLower().Contains(searchLower) || 
-                u.Email.ToLower().Contains(searchLower));
+                u.Email.ToLower().Contains(searchLower) ||
+                (u.PhoneNumber != null && u.PhoneNumber.ToLower().Contains(searchLower)));
         }
+
+        var totalCount = await query.CountAsync(ct);
+
+        if (page < 1) page = 1;
+        if (pageSize < 1) pageSize = 10;
+        if (pageSize > 100) pageSize = 100;
+
+        var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+        if (totalPages == 0) totalPages = 1;
 
         var dbUsers = await query
             .OrderByDescending(u => u.CreatedAt)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync(ct);
 
         var userIds = dbUsers.Select(u => u.Id).ToList();
@@ -1157,25 +1191,32 @@ public static class AdminDashboardEndpoints
             .Select(g => new { ClientId = g.Key, Count = g.Count() })
             .ToDictionaryAsync(x => x.ClientId, x => x.Count, ct);
 
-        int localId = 1;
-        var users = dbUsers.Select(u => new
+        int startIndex = (page - 1) * pageSize + 1;
+        var clients = dbUsers.Select((u, index) => new
         {
-            id = localId++,
+            id = startIndex + index,
+            userId = u.Id.ToString(),
             name = $"{u.FirstName} {u.LastName}",
             email = u.Email,
+            phone = u.PhoneNumber ?? "",
             initials = $"{(u.FirstName.Length > 0 ? u.FirstName[0].ToString() : "")}{(u.LastName.Length > 0 ? u.LastName[0].ToString() : "")}".ToUpper(),
-            status = u.IsBlocked ? "blocked" : "active",
+            status = u.IsBlocked ? "blocked" : (!u.IsEmailVerified ? "pending" : "active"),
             joined = u.CreatedAt.ToString("yyyy-MM-dd"),
             requests = requestsCounts.TryGetValue(u.Id, out var reqs) ? reqs : 0
         }).ToList();
 
         return Results.Ok(new
         {
-            users,
+            clients,
+            users = clients,
+            totalCount,
+            page,
+            pageSize,
+            totalPages,
             navItems = new[]
             {
                 new { label = "Dashboard", icon = "dashboard", active = false },
-                new { label = "Users", icon = "users", active = true },
+                new { label = "Clients", icon = "users", active = true },
                 new { label = "Providers", icon = "providers", active = false },
                 new { label = "Messaging", icon = "messaging", active = false },
                 new { label = "Categories", icon = "categories", active = false },
@@ -1329,7 +1370,7 @@ public static class AdminDashboardEndpoints
             navItems = new[]
             {
                 new { label = "Dashboard", icon = "dashboard", active = false },
-                new { label = "Users", icon = "users", active = false },
+                new { label = "Clients", icon = "users", active = false },
                 new { label = "Providers", icon = "providers", active = true },
                 new { label = "Messaging", icon = "messaging", active = false },
                 new { label = "Categories", icon = "categories", active = false },
@@ -1380,8 +1421,10 @@ public static class AdminDashboardEndpoints
 
             return new
             {
-                id = localId++,
+                id = c.Id.ToString(),
+                localId = localId++,
                 name = c.Name,
+                description = c.Description,
                 icon = icons[idx % icons.Length],
                 color = colors[idx % colors.Length],
                 providers = providerCountPerCat.TryGetValue(c.Id, out var providers) ? providers : 0,
@@ -1410,7 +1453,7 @@ public static class AdminDashboardEndpoints
             navItems = new[]
             {
                 new { label = "Dashboard", icon = "dashboard", active = false },
-                new { label = "Users", icon = "users", active = false },
+                new { label = "Clients", icon = "users", active = false },
                 new { label = "Providers", icon = "providers", active = false },
                 new { label = "Messaging", icon = "messaging", active = false },
                 new { label = "Categories", icon = "categories", active = true },
@@ -1439,6 +1482,72 @@ public static class AdminDashboardEndpoints
         await dbContext.SaveChangesAsync(ct);
 
         return Results.Ok(new { id = category.Id });
+    }
+
+    private static async Task<IResult> DeleteCategory(
+        string id,
+        ApplicationDbContext dbContext,
+        CancellationToken ct)
+    {
+        Category? category = null;
+        if (Guid.TryParse(id, out var guidId))
+        {
+            category = await dbContext.Categories.FirstOrDefaultAsync(c => c.Id == guidId, ct);
+        }
+
+        if (category is null)
+        {
+            var allCats = await dbContext.Categories.ToListAsync(ct);
+            if (int.TryParse(id, out var intId) && intId > 0 && intId <= allCats.Count)
+            {
+                category = allCats[intId - 1];
+            }
+            else
+            {
+                category = allCats.FirstOrDefault(c => c.Name.Equals(id, StringComparison.OrdinalIgnoreCase));
+            }
+        }
+
+        if (category is null)
+        {
+            return Results.NotFound(new { message = "Category not found." });
+        }
+
+        // Clean up linked services to maintain database integrity
+        var services = await dbContext.Services.Where(s => s.CategoryId == category.Id).ToListAsync(ct);
+        if (services.Any())
+        {
+            var serviceIds = services.Select(s => s.Id).ToList();
+            var hasBookings = await dbContext.Bookings.AnyAsync(b => serviceIds.Contains(b.ServiceId), ct);
+            if (hasBookings)
+            {
+                var bookedServiceIds = await dbContext.Bookings
+                    .Where(b => serviceIds.Contains(b.ServiceId))
+                    .Select(b => b.ServiceId)
+                    .Distinct()
+                    .ToListAsync(ct);
+
+                var unbookedServices = services.Where(s => !bookedServiceIds.Contains(s.Id)).ToList();
+                if (unbookedServices.Any())
+                {
+                    dbContext.Services.RemoveRange(unbookedServices);
+                }
+
+                foreach (var bookedService in services.Where(s => bookedServiceIds.Contains(s.Id)))
+                {
+                    bookedService.Deactivate();
+                }
+            }
+            else
+            {
+                dbContext.Services.RemoveRange(services);
+            }
+        }
+
+        dbContext.Categories.Remove(category);
+        await dbContext.SaveChangesAsync(ct);
+
+        return Results.NoContent();
     }
 
     private static async Task<IResult> ToggleConversationLock(
