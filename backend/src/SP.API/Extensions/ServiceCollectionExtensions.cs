@@ -13,6 +13,8 @@ using SP.Application.Categories.Dtos;
 using SP.Application.Categories.Queries.GetAllCategories;
 using SP.Application.Categories.Queries.GetCategoryById;
 using SP.Application.Users.Commands.Login;
+using SP.Application.Users.Commands.RequestPasswordReset;
+using SP.Application.Users.Commands.ResetPassword;
 using SP.Application.Users.Dto;
 using SP.Application.Users.Queries.GetAllUsers;
 using SP.Application.Users.Queries.GetUserById;
@@ -308,7 +310,13 @@ public static class ServiceCollectionExtensions
             IQueryHandler<GetCategoryByIdQuery, CategoryResponseDto?>,
             GetCategoryByIdQueryHandler>();
 
-        // Users — queries
+        // Users — commands & queries
+        services.AddScoped<
+            ICommandHandler<RequestPasswordResetCommand>,
+            RequestPasswordResetCommandHandler>();
+        services.AddScoped<
+            ICommandHandler<ResetPasswordCommand>,
+            ResetPasswordCommandHandler>();
         services.AddScoped<
             IQueryHandler<GetAllUsersQuery, IReadOnlyList<UserResponseDto>>,
             GetAllUsersQueryHandler>();

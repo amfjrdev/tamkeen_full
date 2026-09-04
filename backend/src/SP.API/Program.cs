@@ -13,6 +13,7 @@ Log.Logger = new LoggerConfiguration()
 
 try
 {
+    DotEnvLoader.Load();
     Log.Information("Starting SP API");
 
     var builder = WebApplication.CreateBuilder(args);
@@ -290,3 +291,43 @@ finally
 
 // Make Program accessible to WebApplicationFactory in integration tests
 public partial class Program { }
+
+file static class DotEnvLoader
+{
+    public static void Load()
+    {
+        var current = Directory.GetCurrentDirectory();
+        var candidates = new List<string>
+        {
+            Path.Combine(current, ".env"),
+            Path.Combine(current, "backend", ".env"),
+            Path.Combine(current, "..", ".env"),
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ".env")
+        };
+
+        foreach (var path in candidates)
+        {
+            if (!File.Exists(path)) continue;
+            try
+            {
+                foreach (var rawLine in File.ReadAllLines(path))
+                {
+                    var line = rawLine.Trim();
+                    if (string.IsNullOrWhiteSpace(line) || line.StartsWith('#')) continue;
+                    var idx = line.IndexOf('=');
+                    if (idx <= 0) continue;
+                    var key = line[..idx].Trim();
+                    var val = line[(idx + 1)..].Trim();
+                    if (val.StartsWith('"') && val.EndsWith('"') && val.Length >= 2)
+                        val = val[1..^1];
+                    if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable(key)))
+                        Environment.SetEnvironmentVariable(key, val);
+                }
+            }
+            catch
+            {
+                // Ignore errors reading individual .env files
+            }
+        }
+    }
+}

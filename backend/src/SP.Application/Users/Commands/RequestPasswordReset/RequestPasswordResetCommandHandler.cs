@@ -24,20 +24,24 @@ public sealed class RequestPasswordResetCommandHandler : ICommandHandler<Request
 
     public async Task<Result> HandleAsync(RequestPasswordResetCommand command, CancellationToken cancellationToken = default)
     {
-        var user = await _userRepository.GetByEmailAsync(command.Email, cancellationToken);
+        if (string.IsNullOrWhiteSpace(command.Email))
+            return Result.Success();
+
+        var user = await _userRepository.GetByEmailAsync(command.Email.Trim(), cancellationToken);
         if (user is null)
             return Result.Success(); // Don't reveal if email exists
 
-        // Generate reset token (simplified - in real implementation would use secure token generation)
         var resetToken = user.Email;
-        
-        // In real implementation, store token with expiration in database
-        // For now, we'll just send the email
-        
+        var baseUrl = _appSettings.BaseUrl?.TrimEnd('/') ?? "https://api.tamkeendz.com";
+        var resetLink = $"{baseUrl}/reset-password?token={Uri.EscapeDataString(resetToken)}";
+        var fullName = $"{user.FirstName} {user.LastName}".Trim();
+        if (string.IsNullOrWhiteSpace(fullName))
+            fullName = user.Email;
+
         await _emailService.SendPasswordResetEmailAsync(
             Domain.Shared.Email.Create(user.Email).Value,
-            $"{user.FirstName} {user.LastName}",
-            $"{_appSettings.BaseUrl}/reset-password?token={resetToken}",
+            fullName,
+            resetLink,
             cancellationToken);
 
         return Result.Success();
