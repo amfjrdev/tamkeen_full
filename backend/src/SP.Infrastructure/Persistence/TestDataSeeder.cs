@@ -100,24 +100,9 @@ public static class TestDataSeeder
             await context.SaveChangesAsync();
         }
 
-        // If bookings already exist, we assume the DB is already fully seeded
-        if (await context.Bookings.AnyAsync())
+        // If users already exist, NEVER wipe or reseed to protect real user data
+        if (await context.Users.AnyAsync())
             return;
-
-        // Clear existing tables to prevent duplicate key violations and ensure clean relations
-        context.ChatMessagesStandalone.RemoveRange(context.ChatMessagesStandalone);
-        context.Conversations.RemoveRange(context.Conversations);
-        context.Notifications.RemoveRange(context.Notifications);
-        context.Payments.RemoveRange(context.Payments);
-        context.Bookings.RemoveRange(context.Bookings);
-        context.Portfolios.RemoveRange(context.Portfolios);
-        context.ProviderProfiles.RemoveRange(context.ProviderProfiles);
-        context.ConnectTransactions.RemoveRange(context.ConnectTransactions);
-        context.Wallets.RemoveRange(context.Wallets);
-        context.Services.RemoveRange(context.Services);
-        context.Users.RemoveRange(context.Users);
-        context.Categories.RemoveRange(context.Categories);
-        await context.SaveChangesAsync();
 
         var seederSection = configuration.GetSection("Seeder");
         var defaultAvatarUrl = configuration["App:DefaultAvatarUrl"]
