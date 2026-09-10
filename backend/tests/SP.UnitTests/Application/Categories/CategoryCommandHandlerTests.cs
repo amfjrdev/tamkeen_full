@@ -92,7 +92,7 @@ public sealed class CategoryCommandHandlerTests
         var result = await handler.HandleAsync(new DeleteCategoryCommand(category.Id), CancellationToken.None);
 
         result.IsSuccess.Should().BeTrue();
-        _categoryRepo.Received(1).Remove(category);
+        await _categoryRepo.Received(1).HardDeleteAsync(category.Id);
     }
 
     [Fact]

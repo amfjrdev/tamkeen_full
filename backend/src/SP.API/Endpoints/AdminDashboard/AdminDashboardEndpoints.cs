@@ -1513,35 +1513,18 @@ public static class AdminDashboardEndpoints
             return Results.NotFound(new { message = "Category not found." });
         }
 
-        // Clean up linked services to maintain database integrity
+        // Clean up linked services and bookings to maintain database integrity
         var services = await dbContext.Services.Where(s => s.CategoryId == category.Id).ToListAsync(ct);
         if (services.Any())
         {
             var serviceIds = services.Select(s => s.Id).ToList();
-            var hasBookings = await dbContext.Bookings.AnyAsync(b => serviceIds.Contains(b.ServiceId), ct);
-            if (hasBookings)
+            var bookings = await dbContext.Bookings.Where(b => serviceIds.Contains(b.ServiceId)).ToListAsync(ct);
+            if (bookings.Any())
             {
-                var bookedServiceIds = await dbContext.Bookings
-                    .Where(b => serviceIds.Contains(b.ServiceId))
-                    .Select(b => b.ServiceId)
-                    .Distinct()
-                    .ToListAsync(ct);
-
-                var unbookedServices = services.Where(s => !bookedServiceIds.Contains(s.Id)).ToList();
-                if (unbookedServices.Any())
-                {
-                    dbContext.Services.RemoveRange(unbookedServices);
-                }
-
-                foreach (var bookedService in services.Where(s => bookedServiceIds.Contains(s.Id)))
-                {
-                    bookedService.Deactivate();
-                }
+                dbContext.Bookings.RemoveRange(bookings);
             }
-            else
-            {
-                dbContext.Services.RemoveRange(services);
-            }
+
+            dbContext.Services.RemoveRange(services);
         }
 
         dbContext.Categories.Remove(category);

@@ -100,8 +100,8 @@ public static class TestDataSeeder
             await context.SaveChangesAsync();
         }
 
-        // If users already exist, NEVER wipe or reseed to protect real user data
-        if (await context.Users.AnyAsync())
+        // If admin already exists, we assume the DB is already initialized
+        if (await context.Users.AnyAsync(u => u.Role == UserRole.Admin))
             return;
 
         var seederSection = configuration.GetSection("Seeder");
