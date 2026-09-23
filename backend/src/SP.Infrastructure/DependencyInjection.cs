@@ -1,3 +1,4 @@
+using SP.Domain.ServiceRequests.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -75,6 +76,8 @@ public static class DependencyInjection
         services.AddScoped<IPaymentRepository, PaymentRepository>();
         services.AddScoped<IAppConfigurationRepository, AppConfigurationRepository>();
         services.AddScoped<IConnectPackRepository, ConnectPackRepository>();
+        services.AddScoped<IServiceRequestRepository, ServiceRequestRepository>();
+
 
         // ── Payments ──────────────────────────────────────────────────────
         services.Configure<ChargilyOptions>(configuration.GetSection(ChargilyOptions.SectionName));

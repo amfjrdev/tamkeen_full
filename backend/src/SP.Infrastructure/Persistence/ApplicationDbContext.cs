@@ -8,6 +8,7 @@ using SP.Domain.Notifications;
 using SP.Domain.Portfolio;
 using SP.Domain.ProviderProfiles;
 using SP.Domain.Services;
+using SP.Domain.ServiceRequests;
 using SP.Domain.Shared;
 using SP.Domain.Users;
 
@@ -31,7 +32,9 @@ public sealed class ApplicationDbContext : DbContext
     public DbSet<SP.Domain.Payments.Payment> Payments => Set<SP.Domain.Payments.Payment>();
     public DbSet<AppConfiguration> AppConfigurations => Set<AppConfiguration>();
     public DbSet<SP.Domain.Connects.ConnectPack> ConnectPacks => Set<SP.Domain.Connects.ConnectPack>();
-
+    public DbSet<ServiceRequest> ServiceRequests => Set<ServiceRequest>();
+    public DbSet<ServiceRequestApplication> ServiceRequestApplications => Set<ServiceRequestApplication>();
+    public DbSet<ServiceRequestReview> ServiceRequestReviews => Set<ServiceRequestReview>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
