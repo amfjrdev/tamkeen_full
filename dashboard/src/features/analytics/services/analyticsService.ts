@@ -52,6 +52,7 @@ const mockAnalyticsData: AnalyticsData = {
     { label: 'Dashboard', icon: 'dashboard', active: false },
     { label: 'Clients', icon: 'users', active: false },
     { label: 'Providers', icon: 'providers', active: false },
+    { label: 'Service Requests', icon: 'requests', active: false },
     { label: 'Messaging', icon: 'messaging', active: false },
     { label: 'Categories', icon: 'categories', active: false },
     { label: 'Revenue', icon: 'revenue', active: false },

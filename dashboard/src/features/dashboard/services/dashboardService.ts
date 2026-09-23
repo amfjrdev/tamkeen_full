@@ -51,6 +51,7 @@ const mockDashboardData: DashboardData = {
     { label: 'Dashboard', icon: 'dashboard', active: true },
     { label: 'Clients', icon: 'users', active: false },
     { label: 'Providers', icon: 'providers', active: false },
+    { label: 'Service Requests', icon: 'requests', active: false },
     { label: 'Messaging', icon: 'messaging', active: false },
     { label: 'Categories', icon: 'categories', active: false },
     { label: 'Revenue', icon: 'revenue', active: false },

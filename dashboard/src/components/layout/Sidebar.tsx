@@ -37,7 +37,20 @@ export const Sidebar: React.FC<SidebarProps> = ({ navItems, isOpen, onClose, onN
         </div>
 
         <nav className="px-3 py-4 space-y-1 overflow-y-auto h-[calc(100vh-140px)]">
-          {navItems
+          {(() => {
+            const hasRequests = navItems.some(i => i.label.toLowerCase() === 'service requests');
+            let items = [...navItems];
+            if (!hasRequests) {
+              const providersIndex = items.findIndex(i => i.label.toLowerCase() === 'providers');
+              const reqItem = { label: 'Service Requests', icon: 'requests', active: false };
+              if (providersIndex !== -1) {
+                items.splice(providersIndex + 1, 0, reqItem);
+              } else {
+                items.push(reqItem);
+              }
+            }
+            return items;
+          })()
             .filter((item) => item.label.toLowerCase() !== 'settings')
             .map((item, idx) => (
               <button
