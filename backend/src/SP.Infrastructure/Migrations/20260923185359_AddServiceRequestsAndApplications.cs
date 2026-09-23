@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -35,15 +35,15 @@ namespace SP.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_ServiceRequests", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ServiceRequests_Users_ClientId",
-                        column: x => x.ClientId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_ServiceRequests_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ServiceRequests_Users_ClientId",
+                        column: x => x.ClientId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -121,45 +121,14 @@ namespace SP.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ServiceRequests_Wilaya_Status",
-                table: "ServiceRequests",
-                columns: new[] { "Wilaya", "Status" });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ServiceRequests_ClientId",
-                table: "ServiceRequests",
-                column: "ClientId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ServiceRequests_CategoryId",
-                table: "ServiceRequests",
-                column: "CategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ServiceRequests_SelectedProviderId",
-                table: "ServiceRequests",
-                column: "SelectedProviderId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ServiceRequests_CreatedAt",
-                table: "ServiceRequests",
-                column: "CreatedAt");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ServiceRequestApplications_ServiceRequestId_ProviderId",
-                table: "ServiceRequestApplications",
-                columns: new[] { "ServiceRequestId", "ProviderId" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ServiceRequestApplications_ProviderId",
                 table: "ServiceRequestApplications",
                 column: "ProviderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ServiceRequestReviews_ServiceRequestId",
-                table: "ServiceRequestReviews",
-                column: "ServiceRequestId",
+                name: "IX_ServiceRequestApplications_ServiceRequestId_ProviderId",
+                table: "ServiceRequestApplications",
+                columns: new[] { "ServiceRequestId", "ProviderId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -171,16 +140,47 @@ namespace SP.Infrastructure.Migrations
                 name: "IX_ServiceRequestReviews_ProviderId",
                 table: "ServiceRequestReviews",
                 column: "ProviderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ServiceRequestReviews_ServiceRequestId",
+                table: "ServiceRequestReviews",
+                column: "ServiceRequestId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ServiceRequests_CategoryId",
+                table: "ServiceRequests",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ServiceRequests_ClientId",
+                table: "ServiceRequests",
+                column: "ClientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ServiceRequests_CreatedAt",
+                table: "ServiceRequests",
+                column: "CreatedAt");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ServiceRequests_SelectedProviderId",
+                table: "ServiceRequests",
+                column: "SelectedProviderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ServiceRequests_Wilaya_Status",
+                table: "ServiceRequests",
+                columns: new[] { "Wilaya", "Status" });
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ServiceRequestReviews");
+                name: "ServiceRequestApplications");
 
             migrationBuilder.DropTable(
-                name: "ServiceRequestApplications");
+                name: "ServiceRequestReviews");
 
             migrationBuilder.DropTable(
                 name: "ServiceRequests");
