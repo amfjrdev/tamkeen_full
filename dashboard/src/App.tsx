@@ -4,6 +4,7 @@ import { LoginPage } from './pages/LoginPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { ClientsPage } from './pages/ClientsPage';
 import { ProvidersPage } from './pages/ProvidersPage';
+import { ServiceRequestsPage } from './pages/ServiceRequestsPage';
 import { MessagingPage } from './pages/MessagingPage';
 import { CategoriesPage } from './pages/CategoriesPage';
 import { RevenuePage } from './pages/RevenuePage';
@@ -18,6 +19,7 @@ type ActivePage =
   | 'Clients'
   | 'Users'
   | 'Providers'
+  | 'Service Requests'
   | 'Messaging'
   | 'Categories'
   | 'Revenue'
@@ -79,6 +81,8 @@ const App: React.FC = () => {
       return <ClientsPage onNavigate={handleNavigate} />;
     case 'Providers':
       return <ProvidersPage onNavigate={handleNavigate} />;
+    case 'Service Requests':
+      return <ServiceRequestsPage onNavigate={handleNavigate} />;
     case 'Messaging':
       return <MessagingPage onNavigate={handleNavigate} />;
     case 'Categories':
@@ -100,9 +104,9 @@ const App: React.FC = () => {
           </p>
           <button
             onClick={() => setActivePage('Dashboard')}
-            className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm px-6 py-2.5 rounded-lg transition-colors"
+            className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-medium rounded-lg transition-colors cursor-pointer"
           >
-            Return to Dashboard
+            Back to Dashboard
           </button>
         </div>
       );
