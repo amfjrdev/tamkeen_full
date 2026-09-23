@@ -53,6 +53,7 @@ public sealed class ApplyToServiceRequestCommandHandler : ICommandHandler<ApplyT
         _conversationRepository = conversationRepository;
         _unitOfWork = unitOfWork;
     }
+    
 
     public async Task<Result<Guid>> HandleAsync(
         ApplyToServiceRequestCommand command,
