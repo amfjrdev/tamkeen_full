@@ -1,3 +1,4 @@
+using SP.API.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -41,6 +42,9 @@ public static class AdminDashboardEndpoints
         group.MapDelete("/admin-dashboard/categories/{id}", DeleteCategory).AllowAnonymous();
         group.MapPost("/admin-dashboard/conversations/{id:guid}/toggle-lock", ToggleConversationLock).AllowAnonymous();
         group.MapPost("/admin-dashboard/reports/{id:guid}/resolve", ResolveReport).AllowAnonymous();
+        group.MapGet("/admin-dashboard/service-requests", GetAdminServiceRequests).AllowAnonymous();
+        group.MapPost("/admin-dashboard/service-requests/{id:guid}/approve", ApproveServiceRequest).AllowAnonymous();
+        group.MapPost("/admin-dashboard/service-requests/{id:guid}/reject", RejectServiceRequest).AllowAnonymous();
 
         return group;
     }
@@ -1569,5 +1573,41 @@ public static class AdminDashboardEndpoints
         await dbContext.SaveChangesAsync(ct);
 
         return Results.NoContent();
+    }
+
+    private static async Task<IResult> GetAdminServiceRequests(
+        [FromQuery] SP.Domain.ServiceRequests.Enums.ServiceRequestStatus? status,
+        [FromQuery] string? wilaya,
+        [FromQuery] string? search,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 20,
+        SP.Application.Abstractions.Messaging.IDispatcher dispatcher = null!,
+        CancellationToken ct = default)
+    {
+        var query = new SP.Application.ServiceRequests.Queries.GetAdminServiceRequests.GetAdminServiceRequestsQuery(
+            status, wilaya, search, page, pageSize);
+        var result = await dispatcher.QueryAsync(query, ct);
+        return result.IsFailure ? result.Error.ToProblem() : Results.Ok(result.Value);
+    }
+
+    private static async Task<IResult> ApproveServiceRequest(
+        Guid id,
+        SP.Application.Abstractions.Messaging.IDispatcher dispatcher = null!,
+        CancellationToken ct = default)
+    {
+        var command = new SP.Application.ServiceRequests.Commands.ApproveServiceRequest.ApproveServiceRequestCommand(id);
+        var result = await dispatcher.SendAsync(command, ct);
+        return result.IsFailure ? result.Error.ToProblem() : Results.NoContent();
+    }
+
+    private static async Task<IResult> RejectServiceRequest(
+        Guid id,
+        [FromBody] SP.Application.ServiceRequests.Dtos.RejectServiceRequestRequest? body,
+        SP.Application.Abstractions.Messaging.IDispatcher dispatcher = null!,
+        CancellationToken ct = default)
+    {
+        var command = new SP.Application.ServiceRequests.Commands.RejectServiceRequest.RejectServiceRequestCommand(id, body?.Reason);
+        var result = await dispatcher.SendAsync(command, ct);
+        return result.IsFailure ? result.Error.ToProblem() : Results.NoContent();
     }
 }
