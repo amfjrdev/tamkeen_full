@@ -1,3 +1,4 @@
+using SP.Domain.Shared;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -38,6 +39,7 @@ public sealed class ApplyToServiceRequestCommandHandler : ICommandHandler<ApplyT
     private readonly IWalletRepository _walletRepository;
     private readonly IConnectTransactionRepository _transactionRepository;
     private readonly IConversationRepository _conversationRepository;
+    private readonly IAppConfigurationRepository _configurationRepository;
     private readonly IUnitOfWork _unitOfWork;
 
     public ApplyToServiceRequestCommandHandler(
@@ -45,12 +47,14 @@ public sealed class ApplyToServiceRequestCommandHandler : ICommandHandler<ApplyT
         IWalletRepository walletRepository,
         IConnectTransactionRepository transactionRepository,
         IConversationRepository conversationRepository,
+        IAppConfigurationRepository configurationRepository,
         IUnitOfWork unitOfWork)
     {
         _requestRepository = requestRepository;
         _walletRepository = walletRepository;
         _transactionRepository = transactionRepository;
         _conversationRepository = conversationRepository;
+        _configurationRepository = configurationRepository;
         _unitOfWork = unitOfWork;
     }
     
@@ -72,6 +76,11 @@ public sealed class ApplyToServiceRequestCommandHandler : ICommandHandler<ApplyT
         if (existingTx is not null)
             return Result.Failure<Guid>(ServiceRequestErrors.AlreadyApplied);
 
+        var config = await _configurationRepository.GetByKeyAsync("service_requests.connects_cost", cancellationToken);
+        int cost = config is not null && int.TryParse(config.Value, out var parsedCost) && parsedCost >= 0
+            ? parsedCost
+            : command.ConnectsCost;
+
         // 1. Debit Connects safely
         var wallet = await _walletRepository.GetByUserIdAsync(command.ProviderId, cancellationToken);
         if (wallet is null)
@@ -80,13 +89,13 @@ public sealed class ApplyToServiceRequestCommandHandler : ICommandHandler<ApplyT
             await _walletRepository.AddAsync(wallet, cancellationToken);
         }
 
-        var debitResult = wallet.Debit(command.ConnectsCost);
+        var debitResult = wallet.Debit(cost);
         if (debitResult.IsFailure)
             return Result.Failure<Guid>(ServiceRequestErrors.InsufficientConnects);
 
         var transaction = ConnectTransaction.Create(
             command.ProviderId,
-            -command.ConnectsCost,
+            -cost,
             "ServiceRequestApplication",
             idempotencyKey,
             command.RequestId);
@@ -99,7 +108,7 @@ public sealed class ApplyToServiceRequestCommandHandler : ICommandHandler<ApplyT
             wilaya,
             command.CoverLetter,
             command.ProposedPrice,
-            command.ConnectsCost);
+            cost);
 
         if (appResult.IsFailure)
             return Result.Failure<Guid>(appResult.Error);

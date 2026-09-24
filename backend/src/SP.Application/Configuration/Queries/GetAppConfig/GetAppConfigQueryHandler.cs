@@ -59,7 +59,8 @@ public sealed class GetAppConfigQueryHandler
             FeatureFlags: featureFlags,
             MinAppVersion: GetConfigValue(configDict, "app.min_version") ?? "1.0.0",
             MaintenanceMode: GetBoolConfigValue(configDict, "app.maintenance_mode"),
-            MaintenanceMessage: GetConfigValue(configDict, "app.maintenance_message")
+            MaintenanceMessage: GetConfigValue(configDict, "app.maintenance_message"),
+            ServiceRequestConnectsCost: GetIntConfigValue(configDict, "service_requests.connects_cost") == 0 ? 10 : GetIntConfigValue(configDict, "service_requests.connects_cost")
         );
 
         return Result.Success(response);

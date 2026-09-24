@@ -39,4 +39,19 @@ export const serviceRequestService = {
       reason: reason || 'Does not comply with community guidelines',
     });
   },
+  getConnectsCost: async (): Promise<number> => {
+    try {
+      const response = await apiClient.get<{ connectsCost: number }>('/admin-dashboard/service-requests/settings');
+      return response.data.connectsCost ?? 10;
+    } catch {
+      return 10;
+    }
+  },
+
+  updateConnectsCost: async (connectsCost: number): Promise<number> => {
+    const response = await apiClient.put<{ connectsCost: number }>('/admin-dashboard/service-requests/settings', {
+      connectsCost,
+    });
+    return response.data.connectsCost;
+  },
 };

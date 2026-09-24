@@ -26,6 +26,9 @@ export const ServiceRequestsPage: React.FC<ServiceRequestsPageProps> = ({ onNavi
   // Modal
   const [selectedRequest, setSelectedRequest] = useState<ServiceRequestSummary | null>(null);
   const [feedback, setFeedback] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  const [connectsCost, setConnectsCost] = useState<number>(10);
+  const [inputCost, setInputCost] = useState<string>('10');
+  const [isSavingCost, setIsSavingCost] = useState<boolean>(false);
 
   const loadRequests = useCallback(async () => {
     try {
@@ -49,11 +52,34 @@ export const ServiceRequestsPage: React.FC<ServiceRequestsPageProps> = ({ onNavi
 
   useEffect(() => {
     loadRequests();
+    serviceRequestService.getConnectsCost().then((c) => {
+      setConnectsCost(c);
+      setInputCost(c.toString());
+    });
   }, [loadRequests]);
 
   const showToast = (message: string, type: 'success' | 'error' = 'success') => {
     setFeedback({ message, type });
     setTimeout(() => setFeedback(null), 4000);
+  };
+
+  const handleSaveCost = async () => {
+    const val = parseInt(inputCost, 10);
+    if (isNaN(val) || val < 0) {
+      showToast('Please enter a valid number of Connects (>= 0)', 'error');
+      return;
+    }
+    try {
+      setIsSavingCost(true);
+      const updated = await serviceRequestService.updateConnectsCost(val);
+      setConnectsCost(updated);
+      setInputCost(updated.toString());
+      showToast(`Connects cost updated to ${updated} Connects.`);
+    } catch (err) {
+      showToast('Failed to update Connects cost', 'error');
+    } finally {
+      setIsSavingCost(false);
+    }
   };
 
   const handleApprove = async (id: string) => {
@@ -138,6 +164,35 @@ export const ServiceRequestsPage: React.FC<ServiceRequestsPageProps> = ({ onNavi
             <div>
               <h1 className="text-2xl font-bold text-white tracking-tight">Service Requests Moderation</h1>
               <p className="text-gray-400 text-xs mt-1">Review, moderate, and manage client-submitted marketplace requests.</p>
+            </div>
+
+            {/* Admin Connects Control */}
+            <div className="flex items-center gap-3 bg-[#141414] border border-gray-800 rounded-xl px-4 py-2.5 shadow-sm">
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+                <span className="text-xs font-semibold text-gray-300">Connects per Proposal:</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <input
+                  type="number"
+                  min="0"
+                  max="1000"
+                  value={inputCost}
+                  onChange={(e) => setInputCost(e.target.value)}
+                  className="w-16 px-2.5 py-1 bg-black/50 border border-gray-700 rounded-lg text-sm text-center font-bold text-amber-400 focus:outline-none focus:border-indigo-500"
+                />
+                <button
+                  onClick={handleSaveCost}
+                  disabled={isSavingCost || inputCost === connectsCost.toString()}
+                  className={
+                    inputCost !== connectsCost.toString()
+                      ? "px-3 py-1 text-xs font-semibold rounded-lg transition-all bg-indigo-600 hover:bg-indigo-500 text-white cursor-pointer shadow-md"
+                      : "px-3 py-1 text-xs font-semibold rounded-lg transition-all bg-gray-800 text-gray-500 cursor-not-allowed"
+                  }
+                >
+                  {isSavingCost ? 'Saving...' : 'Save'}
+                </button>
+              </div>
             </div>
           </div>
 

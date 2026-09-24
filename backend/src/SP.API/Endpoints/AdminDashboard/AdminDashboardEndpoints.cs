@@ -45,6 +45,8 @@ public static class AdminDashboardEndpoints
         group.MapGet("/admin-dashboard/service-requests", GetAdminServiceRequests).AllowAnonymous();
         group.MapPost("/admin-dashboard/service-requests/{id:guid}/approve", ApproveServiceRequest).AllowAnonymous();
         group.MapPost("/admin-dashboard/service-requests/{id:guid}/reject", RejectServiceRequest).AllowAnonymous();
+        group.MapGet("/admin-dashboard/service-requests/settings", GetServiceRequestsSettings).AllowAnonymous();
+        group.MapPut("/admin-dashboard/service-requests/settings", UpdateServiceRequestsSettings).AllowAnonymous();
 
         return group;
     }
@@ -1610,4 +1612,49 @@ public static class AdminDashboardEndpoints
         var result = await dispatcher.SendAsync(command, ct);
         return result.IsFailure ? result.Error.ToProblem() : Results.NoContent();
     }
+
+    private static async Task<IResult> GetServiceRequestsSettings(
+        ApplicationDbContext dbContext,
+        CancellationToken ct)
+    {
+        var config = await dbContext.AppConfigurations
+            .FirstOrDefaultAsync(c => c.Key == "service_requests.connects_cost", ct);
+        
+        var cost = config is not null && int.TryParse(config.Value, out var cVal) && cVal >= 0
+            ? cVal
+            : 10;
+
+        return Results.Ok(new { connectsCost = cost });
+    }
+
+    private static async Task<IResult> UpdateServiceRequestsSettings(
+        [FromBody] UpdateServiceRequestsSettingsRequest body,
+        ApplicationDbContext dbContext,
+        CancellationToken ct)
+    {
+        if (body.ConnectsCost < 0)
+            return Results.BadRequest(new { error = "Connects cost must be 0 or greater." });
+
+        var config = await dbContext.AppConfigurations
+            .FirstOrDefaultAsync(c => c.Key == "service_requests.connects_cost", ct);
+
+        if (config is null)
+        {
+            config = SP.Domain.Shared.AppConfiguration.Create(
+                "service_requests.connects_cost",
+                body.ConnectsCost.ToString(),
+                "service_requests",
+                true);
+            dbContext.AppConfigurations.Add(config);
+        }
+        else
+        {
+            config.UpdateValue(body.ConnectsCost.ToString());
+        }
+
+        await dbContext.SaveChangesAsync(ct);
+        return Results.Ok(new { connectsCost = body.ConnectsCost });
+    }
 }
+
+public sealed record UpdateServiceRequestsSettingsRequest(int ConnectsCost);

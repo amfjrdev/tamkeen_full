@@ -16,5 +16,6 @@ public sealed record AppConfigResponse(
     Dictionary<string, bool> FeatureFlags,
     string MinAppVersion,
     bool MaintenanceMode,
-    string? MaintenanceMessage
+    string? MaintenanceMessage,
+    int ServiceRequestConnectsCost = 10
 );
